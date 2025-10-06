@@ -5,9 +5,9 @@ import React from 'react';
 
 function Homepage() {
     return (
-    <div className="">
+    <div className="w-full">
         <Navbar />
-        <div className="w-full grid grid-cols-5 my-10 content-center">
+        <div className=" grid grid-cols-5 my-10 content-center">
             <div>Welcome to the homepage!</div>
         </div>
     </div>

@@ -7,10 +7,17 @@ import '@fontsource/roboto/700.css';
 import './index.css'
 import { BrowserRouter as Router } from 'react-router-dom';
 import Homepage from './Homepage/Homepage.jsx'
+import Sheet from './Sheets/Sheet.jsx';
+import SheetListings from './Sheets/SheetListings.jsx';
+import { Routes, Route } from 'react-router-dom';
 
 createRoot(document.getElementById('root')).render(
   <Router>
-    {/* Add your routes or components here */}
-    <Homepage />
+    <Routes>
+      <Route path="/" element={<Homepage />} />
+      <Route path="/sheets" element={<SheetListings />} />
+      <Route path="/login" element={<Homepage />} />
+      <Route path="/NewSheet" element={<Sheet />} />
+    </Routes>
   </Router>
 )
