@@ -11,18 +11,21 @@ function Navbar() {
     const location = useLocation();
     const pathname = location.pathname || '/';
 
-
     return (
         <AppBar position="static" color="inherit" className='!bg-slate-300'>
-            <Toolbar className='!flex !items-center !w-full'>
+            <Toolbar className='!flex !items-center  !w-full'>
                 {/* Logo */}
                 <Typography
+                
                     variant="h6"
                     component={RouterLink}
                     to="/"
                     className='!text-black !font-medium !text-2xl'
                 >
-                    DnD Yonder
+                    <div className="text-3xl mr-2">
+
+                        DnD Yonder
+                    </div>
                 </Typography>
 
                 {/* Left buttons */}
