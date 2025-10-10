@@ -4,46 +4,47 @@ import Checkbox from "@mui/material/Checkbox";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import { grey } from "@mui/material/colors";
-import { useState } from "react";
 
-const AttributeRow = ({ labelName, showExpertise , modifier, proficiencyBonus}) => {
-    const grey400 = grey[400]; // assuming you want to use MUI's grey[400]
-    console.log("Rendering AttributeRow:", { labelName, showExpertise, modifier, proficiencyBonus });
-    const [expertise, setExp] = useState(false);
-    const [proficient, setProf] = useState(false);
+const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftFun}) => {
+    const grey400 = grey[400];
 
+    function ChangeExpertise(e) {
+        // Coerce to boolean and ensure expertise implies proficiency
+        const isExpert = !!e.target.checked;
+        skill.expertise = isExpert;
 
-    function setProficiency(value) {
-
-        if(value === false) {
-            setExp(false);
-            setProf(false);
-        } else {
-            setProf(true);
+        if (skill.expertise) {
+            skill.proficient = true;
         }
 
+        // compute value but don't rely on it for controlled state — return for display
+        const newVal = parseInt(attributeModifier + (skill.proficient ? proficiencyBonus : 0) + (skill.expertise ? proficiencyBonus : 0));
+        skill.value = newVal;
+
+        // shallow-copy parent draft to trigger re-render (you can make this deeper/safer in normalization)
+        updateDraftFun(prev => ({ ...prev }));
     }
 
-    function setExpertise(value) {
-        if(value === true) {
-            setProf(true);
-            setExp(true);
-        } else {
-            setExp(false);
-        }
+    function GetValue() {
+        // compute on the fly without causing accidental undefined <-> defined flips
+        const val = parseInt(attributeModifier + (skill.proficient ? proficiencyBonus : 0) + (skill.expertise ? proficiencyBonus : 0));
+        // keep local cached value up-to-date for persistence if you like
+        skill.value = val;
+        return val;
     }
 
-    function getFinalModifier() {
-        if(expertise) {
-            return modifier + (2 * proficiencyBonus);
+    function ChangeProficiency(e) {
+        const isProf = !!e.target.checked;
+        skill.proficient = isProf;
+
+        if (!skill.proficient) {
+            skill.expertise = false;
         }
 
-        else if(proficient) {
-            return modifier + proficiencyBonus;
-        }
+        const newVal = parseInt(attributeModifier + (skill.proficient ? proficiencyBonus : 0) + (skill.expertise ? proficiencyBonus : 0));
+        skill.value = newVal;
 
-
-        return modifier;
+        updateDraftFun(prev => ({ ...prev }));
     }
 
     return (
@@ -51,7 +52,7 @@ const AttributeRow = ({ labelName, showExpertise , modifier, proficiencyBonus}) 
             {/* Expertise slot - always occupies space so layout doesn't shift */}
             <Box
                 sx={{
-                    width: 36, // reserve checkbox width (adjust if you want more/less)
+                    width: 36,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -62,22 +63,20 @@ const AttributeRow = ({ labelName, showExpertise , modifier, proficiencyBonus}) 
                 <Checkbox
                     icon={<CircleOutlinedIcon />}
                     checkedIcon={<AdjustIcon />}
-                    size="sm"
-                    checked={expertise}
-                    onChange={(e) => setExpertise(e.target.checked)}
-                    // keep in DOM but hide when not needed
+                    size="small"                      // use valid MUI size value
+                    checked={!!skill.expertise}      // coerce to boolean to avoid uncontrolled->controlled
+                    onChange={(e) => ChangeExpertise(e)}
                     sx={{
                         padding: 0,
                         marginBottom: 0.2,
                         marginRight: -1.5,
                         color: grey400,
-                        visibility: showExpertise ? "visible" : "hidden",
-                        pointerEvents: showExpertise ? "auto" : "none",
+                        visibility: skill.has_expertise ? "visible" : "hidden",
+                        pointerEvents: skill.has_expertise ? "auto" : "none",
                         "&.Mui-checked": {
                             color: "#363636ff",
                         },
                     }}
-                    inputProps={{ tabIndex: showExpertise ? 0 : -1, "aria-hidden": !showExpertise }}
                 />
             </Box>
 
@@ -86,8 +85,8 @@ const AttributeRow = ({ labelName, showExpertise , modifier, proficiencyBonus}) 
                 icon={<CircleOutlinedIcon />}
                 checkedIcon={<AdjustIcon />}
                 size="medium"
-                checked={proficient}
-                onChange={(e) => setProficiency(e.target.checked)}
+                checked={!!skill.proficient}       // coerce here as well
+                onChange={(e) => ChangeProficiency(e)}
                 sx={{
                     padding: 0,
                     color: grey400,
@@ -98,11 +97,11 @@ const AttributeRow = ({ labelName, showExpertise , modifier, proficiencyBonus}) 
             />
 
             {/* Modifier */}
-            <div className="mx-1 w-2/12 text-center border-2 border-gray-400 rounded focus-visible:outline-none">{getFinalModifier()}</div>
+            <div className="mx-1 w-2/12 text-center border-2 border-gray-400 rounded focus-visible:outline-none">{GetValue()}</div>
 
             {/* Label/Name */}
             <div className="mx-1 w-7/10 text-center border-2 border-gray-400 rounded focus-visible:outline-none">
-                {labelName}
+                {skill.name}
             </div>
         </div>
     );

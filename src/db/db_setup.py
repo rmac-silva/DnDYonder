@@ -4,7 +4,7 @@
 import sqlite3
 
 def setup_database():
-    conn = sqlite3.connect("yonder-db.db")
+    conn = sqlite3.connect("./src/db/yonder-db.db")
     c = conn.cursor()
     
     # Create tables if they do not exist
@@ -17,7 +17,7 @@ def setup_database():
 def create_users_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS users (
-        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        hashed_email TEXT PRIMARY KEY,
         username TEXT NOT NULL,
         password TEXT NOT NULL,
         salt TEXT NOT NULL
@@ -27,8 +27,40 @@ def create_users_table(c):
 def create_sheets_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS sheets (
-        FOREIGN KEY(user_id) REFERENCES users(user_id),
-        sheet_id INTEGER AUTOINCREMENT,
+        sheet_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        hashed_email TEXT NOT NULL,
         content TEXT NOT NULL,
-        PRIMARY KEY(sheet_id, user_id)
-        ''')
+        FOREIGN KEY(hashed_email) REFERENCES users(hashed_email)
+        );''')
+    
+def create_classes_table(c):
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS classes (
+        name TEXT NOT NULL,
+        content TEXT
+        );''')
+    
+def create_weapons_table(c):
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS weapons (
+        name TEXT NOT NULL,
+        content TEXT
+        );''')
+    
+def create_tools_table(c):
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS tools (
+        name TEXT NOT NULL,
+        content TEXT
+        );''')
+    
+def create_class_features_table(c):
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS class_features (
+        class_name TEXT NOT NULL,
+        feature_name TEXT NOT NULL,
+        content TEXT,
+        FOREIGN KEY(class_name) REFERENCES classes(name)
+        );''')
+    
+setup_database()

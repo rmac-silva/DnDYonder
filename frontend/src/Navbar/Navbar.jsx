@@ -4,19 +4,22 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { useAuth } from '../Auth/AuthContext';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 
-function Navbar() {
 
+function Navbar() {
     const location = useLocation();
     const pathname = location.pathname || '/';
+    const { isLoggedIn, logout, email } = useAuth();
+
 
     return (
         <AppBar position="static" color="inherit" className='!bg-slate-300'>
             <Toolbar className='!flex !items-center  !w-full'>
                 {/* Logo */}
                 <Typography
-                
+
                     variant="h6"
                     component={RouterLink}
                     to="/"
@@ -42,21 +45,26 @@ function Navbar() {
                     >
                         Home
                     </Button>
-                    <Button
-                        component={RouterLink}
-                        to="/Sheets"
-                        sx={{
-                            fontWeight: 600,
-                            fontSize: '1.125rem',
-                            textTransform: 'none',
-                            color: pathname === '/Sheets' ? 'primary.main' : 'text.primary',
-                        }}
-                    >
-                        Sheets
-                    </Button>
+
+                    {isLoggedIn &&
+                        <Button
+                            component={RouterLink}
+                            to={`/Sheets/${email}`}
+                            sx={{
+                                fontWeight: 600,
+                                fontSize: '1.125rem',
+                                textTransform: 'none',
+                                color: pathname === `/Sheets/${email}` ? 'primary.main' : 'text.primary',
+                            }}
+                        >
+                            Sheets
+                        </Button>
+                    }
+
                 </Box>
 
-                {/* Right button */}
+                {/* Login Button */}
+                {!isLoggedIn &&
                 <Box className='!flex !ml-auto'>
                     <Button
                         component={RouterLink}
@@ -67,10 +75,28 @@ function Navbar() {
                             textTransform: 'none',
                             color: pathname === '/Login' ? 'primary.main' : 'text.primary',
                         }}
-                    >
+                        >
                         Login
                     </Button>
                 </Box>
+                    }
+                {/* Logout button */}
+                {isLoggedIn &&
+                <Box className='!flex !ml-auto'>
+                    <Button
+                        component={RouterLink}
+                        onClick={() => {logout()}}
+                        sx={{
+                            fontWeight: 600,
+                            fontSize: '1.125rem',
+                            textTransform: 'none',
+                            color: pathname === '/Login' ? 'primary.main' : 'text.primary',
+                        }}
+                        >
+                        Logout
+                    </Button>
+                </Box>
+                    }
             </Toolbar>
         </AppBar>
     );
