@@ -1,7 +1,7 @@
 import React from 'react';
 import AttributeRow from './Attributes.jsx';
 
-function StatBlock({ label, attribute, proficiencyBonus, updateDraftFun }) {
+function StatBlock({ label, draft, attribute, proficiencyBonus, updateDraftFun }) {
     
     function GetModOfStat() {
         let val = parseInt(Math.floor((parseInt(attribute.value) - 10) / 2));
@@ -10,6 +10,65 @@ function StatBlock({ label, attribute, proficiencyBonus, updateDraftFun }) {
 
     function GetSkillsOfStat() {
         return attribute.skills;
+    }
+
+    function GetAllSkills() {
+        let allSkills = [];
+        for (const attrKey in draft.attributes) {
+            const attr = draft.attributes[attrKey];
+            allSkills = allSkills.concat(attr.skills);
+        }
+
+        return allSkills;
+    }
+
+    function CheckIfSelectedMaxClassProficiencies() {
+        let classProficiencies = draft.class?.skill_proficiencies;
+
+        let allSkills = GetAllSkills();
+
+        //Filter to only proficient skills
+        let proficientSkills = allSkills.filter(skill => skill.proficient);
+
+        //Count how many proficient skills are in the classProficiencies list
+        let count = 0;
+        let max = draft.class?.num_skill_proficiencies;
+
+        for (let skill of proficientSkills) {
+            if (classProficiencies && classProficiencies.includes(skill.name)) {
+                count++;
+            }
+
+        }
+        return count >= max;
+    }
+
+    function canBeProficient(skillName) {
+        //First check if the class grants proficiency in this skill
+        let classProficiencies = draft.class?.skill_proficiencies;
+        let attributeProficiencies = draft.class?.attribute_proficiencies;
+
+        let maxedOut = CheckIfSelectedMaxClassProficiencies();
+
+        if (attributeProficiencies && skillName === "Saving Throw" && attributeProficiencies.includes(attribute.name)) {
+            attribute.skills[0].proficient = true;
+            return true;
+        } else if( skillName === "Saving Throw") {
+            attribute.skills[0].proficient = false;
+            return false;
+        }
+
+        if (maxedOut) {
+            return false;
+        }
+
+        if (classProficiencies && classProficiencies.includes(skillName)) {
+            
+            return true;
+        }
+        
+
+
     }
  
 
@@ -33,7 +92,7 @@ function StatBlock({ label, attribute, proficiencyBonus, updateDraftFun }) {
             {/* Attributes column (children) — allow shrinking and wrapping */}
             <div className="flex flex-col w-full flex-1 min-w-0">
                 {GetSkillsOfStat().map(skill => {
-                    return <AttributeRow key={skill.name} skill={skill} attributeModifier={GetModOfStat()} proficiencyBonus={proficiencyBonus} updateDraftFun={updateDraftFun} />;
+                    return <AttributeRow key={skill.name} skill={skill} attributeModifier={GetModOfStat()} proficiencyBonus={proficiencyBonus} updateDraftFun={updateDraftFun} canBeProficientFromClass={canBeProficient(skill.name)} />;
                 })}
             </div>
         </div>

@@ -23,6 +23,7 @@ import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 
+
 import GetArmorProficiencies from '../Lists/ArmorProficiencies';
 import GetWeaponProficiencies from '../Lists/WeaponProficiencies';
 import GetToolProficiencies from '../Lists/ToolProficiencies';
@@ -31,163 +32,193 @@ import GetSkillProficiencies from '../Lists/SkillProficiencies';
 import GetStartingEquipment from '../Lists/StartingEquipment';
 import GetClassFeats from '../Lists/ClassFeature';
 
-const ClassSelect = ({ sheet, setSheet }) => {
-    const [loading, setLoading] = useState(true);
-    const [fetchedClasses, setFetchedClasses] = useState([]);
-    const [creatingNewClass, setCreatingNewClass] = useState(false);
-    const [selectedClassId, setSelectedClassId] = useState('');
-    const [newClass, setNewClass] = useState({
-        class_name: '',
+const ClassSelect = ({ sheet, setSheet, selectClass }) => {
+  const [loading, setLoading] = useState(true);
+  const [fetchedClasses, setFetchedClasses] = useState([]);
+  const [forceRefresh, setForceRefresh] = useState(false);
+  const [creatingNewClass, setCreatingNewClass] = useState(false);
+  const [newClass, setNewClass] = useState({
+    class_name: '',
 
-        hit_die: 'd6',
-        starting_hitpoints: '',
-        hitpoints_per_level: '',
+    hit_die: 'd6',
+    starting_hitpoints: '',
+    hitpoints_per_level: '',
 
-        armor_proficiencies: [],
-        weapon_proficiencies: [],
-        tool_proficiencies: [],
+    armor_proficiencies: [],
+    weapon_proficiencies: [],
+    tool_proficiencies: [],
 
-        attribute_proficiencies: [],
-        skill_proficiencies: [],
+    attribute_proficiencies: [],
+    skill_proficiencies: [],
 
-        starting_equipment: [],
+    starting_equipment: [],
+    starting_equipment_choices: [],
 
-        class_features: [],
+    class_features: [],
+  });
+
+  useEffect(() => {
+    let mounted = true;
+    const getClasses = async () => {
+      try {
+        const res = await fetch('http://127.0.0.1:8000/info/classes');
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ detail: 'Unknown' }));
+          throw new Error(`HTTP ${res.status} - ${err.detail}`);
+        }
+        const data = await res.json();
+        if (!mounted) return;
+        // expecting data.classes or an array
+        // console.log('Fetched classes:', data.classes);
+        setFetchedClasses(data.classes);
+      } catch (err) {
+        console.error('Error fetching classes:', err);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    getClasses();
+    if (forceRefresh) setForceRefresh(false);
+    return () => {
+      mounted = false;
+    };
+  }, [forceRefresh]);
+
+  const handleChangingClass = (e) => {
+    const val = e.target.value;
+    if (val === 'new') {
+      // open dialog for creating a class
+      setCreatingNewClass(true);
+      return;
+    }
+    // find class and pass to parent if provided
+
+    const cls = fetchedClasses.find((c) => String(c.c_name) === String(val));
+
+    if (!cls) {
+      sheet.class = null;
+    } else {
+      sheet.class = cls.c_content;
+    }
+    setSheet({ ...sheet });
+    selectClass();
+
+
+  };
+
+  const setArmorProficiencies = (value) => {
+    newClass.armor_proficiencies = value;
+    console.log("New armor proficiencies", newClass.armor_proficiencies);
+    setNewClass({ ...newClass });
+  }
+  const setWeaponProficiencies = (value) => {
+    newClass.weapon_proficiencies = value;
+    console.log("New weapon proficiencies", newClass.weapon_proficiencies);
+    setNewClass({ ...newClass });
+  }
+  const setAttributeProficiencies = (value) => {
+    newClass.attribute_proficiencies = value;
+    // console.log("New attribute proficiencies", newClass.attribute_proficiencies);
+    setNewClass({ ...newClass });
+  }
+  const setSkillProficiencies = (value) => {
+    newClass.skill_proficiencies = value;
+    console.log("New skill proficiencies", newClass.skill_proficiencies);
+    setNewClass({ ...newClass });
+  }
+  const setNumSkillProficiencies = (value) => {
+    newClass.num_skill_proficiencies = value;
+    console.log("New number of skill proficiencies", newClass.num_skill_proficiencies);
+    setNewClass({ ...newClass });
+  }
+  const setToolProficiencies = (value) => {
+    newClass.tool_proficiencies = value;
+    // console.log("New tool proficiencies", newClass.tool_proficiencies);
+    setNewClass({ ...newClass });
+  }
+  const setEquipment = (value) => {
+    newClass.starting_equipment = value;
+    console.log("New starting equipment", newClass.starting_equipment);
+    setNewClass({ ...newClass });
+  }
+  const setClassFeats = (value) => {
+    newClass.class_features = value;
+    setNewClass({ ...newClass });
+  }
+
+  const handleDialogClose = () => {
+    setCreatingNewClass(false);
+    // reset newClass state if desired
+    setNewClass({
+      class_name: '',
+
+      hit_die: 'd6',
+      used_hit_dice: 0,
+      starting_hitpoints: '',
+      hitpoints_per_level: '',
+
+      armor_proficiencies: [],
+      weapon_proficiencies: [],
+      tool_proficiencies: [],
+
+      attribute_proficiencies: [],
+      skill_proficiencies: [],
+      num_skill_proficiencies: 0,
+      starting_equipment: [],
+      starting_equipment_choices: [],
+
+
+      class_features: [],
+    });
+  };
+
+  const handleCreateClass = async () => {
+    // For now just log; you can POST to backend here and refresh classes afterwards
+    console.log('Creating class:', newClass);
+
+    // POST to backend
+    const payload = {
+      'class': newClass,
+      'token': localStorage.getItem('authToken'),
+    }
+    const res = await fetch('http://127.0.0.1:8000/info/classes', {
+      method: 'POST', // or PUT depending on your API
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
     });
 
-    useEffect(() => {
-        let mounted = true;
-        const getClasses = async () => {
-            try {
-                const res = await fetch('http://127.0.0.1:8000/info/classes');
-                if (!res.ok) {
-                    const err = await res.json().catch(() => ({ detail: 'Unknown' }));
-                    throw new Error(`HTTP ${res.status} - ${err.detail}`);
-                }
-                const data = await res.json();
-                if (!mounted) return;
-                // expecting data.classes or an array
-                setFetchedClasses(Array.isArray(data) ? data : data.classes ?? []);
-            } catch (err) {
-                console.error('Error fetching classes:', err);
-            } finally {
-                if (mounted) setLoading(false);
-            }
-        };
-        getClasses();
-        return () => {
-            mounted = false;
-        };
-    }, []);
-
-    const handleSelectChange = (e) => {
-        const val = e.target.value;
-        setSelectedClassId(val);
-        if (val === 'new') {
-            // open dialog for creating a class
-            setCreatingNewClass(true);
-            return;
-        }
-        // find class and pass to parent if provided
-        fetchedClasses.forEach(element => {
-            if (element.class_name === val) {
-                sheet.class = element;
-                setSheet({ ...sheet });
-                return;
-            }
-        });
-    };
-
-    const setArmorProficiencies = (value) => {
-        newClass.armor_proficiencies = value;
-        console.log("New armor proficiencies", newClass.armor_proficiencies);
-        setNewClass({ ...newClass });
-    }
-    const setWeaponProficiencies = (value) => {
-        newClass.weapon_proficiencies = value;
-        console.log("New weapon proficiencies", newClass.weapon_proficiencies);
-        setNewClass({ ...newClass });
-    }
-    const setAttributeProficiencies = (value) => {
-        newClass.attribute_proficiencies = value;
-        console.log("New attribute proficiencies", newClass.attribute_proficiencies);
-        setNewClass({ ...newClass });
-    }
-    const setSkillProficiencies = (value) => {
-        newClass.skill_proficiencies = value;
-        console.log("New skill proficiencies", newClass.skill_proficiencies);
-        setNewClass({ ...newClass });
-    }
-    const setToolProficiencies = (value) => {
-        newClass.tool_proficiencies = value;
-        console.log("New tool proficiencies", newClass.tool_proficiencies);
-        setNewClass({ ...newClass });
-    }
-    const setEquipment = (value) => {
-        newClass.tool_proficiencies = value;
-        console.log("New starting equipment", newClass.tool_proficiencies);
-        setNewClass({ ...newClass });
-    }
-    const setClassFeats = (value) => {
-        newClass.class_features = value;
-        console.log("New class features", newClass.class_features);
-        setNewClass({ ...newClass });
+    if (!res.ok) {
+      throw new Error(`Save failed: ${res.status}`);
     }
 
-    const handleDialogClose = () => {
-        setCreatingNewClass(false);
-        // reset newClass state if desired
-        setNewClass({
-            class_name: '',
+    // close dialog
+    setCreatingNewClass(false);
 
-            hit_die: 'd6',
-            starting_hitpoints: '',
-            hitpoints_per_level: '',
+    // Optional: refresh classes list or inform parent
+    // For now we call onClassChange with the newClass object (no id)
+    setFetchedClasses([...fetchedClasses, [{ c_name: newClass.class_name, c_content: JSON.stringify(newClass) }]]);
+    setForceRefresh(true);
+    sheet.class = newClass;
+    setSheet({ ...sheet });
 
-            armor_proficiencies: [],
-            weapon_proficiencies: [],
-            tool_proficiencies: [],
+  };
 
-            attribute_proficiencies: [],
-            skill_proficiencies: [],
-
-            starting_equipment: [],
-
-            class_features: [],
-        });
-    };
-
-    const handleCreateClass = async () => {
-        // For now just log; you can POST to backend here and refresh classes afterwards
-        console.log('Creating class:', newClass);
-
-        // Example: POST to backend and then refresh classes
-        // await fetch('http://127.0.0.1:8000/info/classes', { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(newClass) });
-
-        // close dialog
-        // setCreatingNewClass(false);
-
-        // Optional: refresh classes list or inform parent
-        // For now we call onClassChange with the newClass object (no id)
-        // onClassChange?.(newClass);
-    };
-
-    return (
-        <>
+  return (
+    <>
       <FormControl fullWidth variant="standard" margin="normal">
         <InputLabel id="class-select-label">Class</InputLabel>
         <Select
           labelId="class-select-label"
           id="class-select"
-          value={selectedClassId}
-          onChange={handleSelectChange}
+          value={sheet.class?.class_name || ''}
+          onChange={handleChangingClass}
           disabled={loading}
         >
           <MenuItem value="">— Select —</MenuItem>
           <MenuItem value="new">Add New Class…</MenuItem>
           {fetchedClasses.map((cls) => (
-            <MenuItem key={`class-${cls.id}`} value={String(cls.id)}>
-              {cls.class_name ?? cls.name ?? `Class ${cls.id}`}
+            <MenuItem key={`class-${cls.c_name}`} value={String(cls.c_name)}>
+              {cls.c_name}
             </MenuItem>
           ))}
         </Select>
@@ -252,27 +283,42 @@ const ClassSelect = ({ sheet, setSheet }) => {
           {/* Multi-select Autocompletes (searchable) */}
 
           <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
-            
-            <GetWeaponProficiencies value={newClass.weapon_proficiencies} onChange={setWeaponProficiencies}/>
+
+            <GetWeaponProficiencies value={newClass.weapon_proficiencies} onChange={setWeaponProficiencies} />
 
             <GetArmorProficiencies value={newClass.armor_proficiencies} onChange={setArmorProficiencies} />
 
-            <GetToolProficiencies value={newClass.tool_proficiencies} onChange={setToolProficiencies}/>
+            <GetToolProficiencies value={newClass.tool_proficiencies} onChange={setToolProficiencies} />
           </Box>
 
-          
-          <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
-          <GetAttributeProficiencies value={newClass.attribute_proficiencies} onChange={setAttributeProficiencies}/>
-          <GetSkillProficiencies value={newClass.skill_proficiencies} onChange={setSkillProficiencies}/>
-           <GetStartingEquipment value={newClass.starting_equipment} onChange={setEquipment} /> 
-            </Box>  
 
-          
+          <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
+            <GetAttributeProficiencies value={newClass.attribute_proficiencies} onChange={setAttributeProficiencies} />
+            <GetSkillProficiencies value={newClass.skill_proficiencies} onChange={setSkillProficiencies} />
+
+            {/* A text field for number of skill proficiencies to choose from: */}
+            <TextField
+              className='w-30'
+              label="Nr. Choices"
+              variant="outlined"
+
+              onChange={(e) => setNumSkillProficiencies(e.target.value)}
+              size="medium"
+            />
+
+
+          </Box>
+          <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
+            <GetStartingEquipment newClass={newClass} setNewClass={setNewClass} />
+          </Box>
+
+
+
 
 
 
           <Box mt={2}>
-            <GetClassFeats value={newClass.class_features} onChange={setClassFeats} playerClass={newClass.class_name}/>
+            <GetClassFeats onChange={setClassFeats} />
           </Box>
         </DialogContent>
 
@@ -284,7 +330,7 @@ const ClassSelect = ({ sheet, setSheet }) => {
         </DialogActions>
       </Dialog>
     </>
-    );
+  );
 };
 
 export default ClassSelect;

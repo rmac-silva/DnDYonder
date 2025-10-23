@@ -54,13 +54,13 @@ def create_tools_table(c):
         content TEXT
         );''')
     
-def create_class_features_table(c):
+def create_armors_table(c):
     c.execute('''
-        CREATE TABLE IF NOT EXISTS class_features (
-        class_name TEXT NOT NULL,
-        feature_name TEXT NOT NULL,
-        content TEXT,
-        FOREIGN KEY(class_name) REFERENCES classes(name)
+        CREATE TABLE IF NOT EXISTS armors (
+        name TEXT NOT NULL,
+        content TEXT
         );''')
+    
+
     
 setup_database()

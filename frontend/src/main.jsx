@@ -13,7 +13,7 @@ import Homepage from './Homepage/Homepage.jsx'
 
 // Sheets
 import Sheet from './Sheets/Sheet.jsx';
-import SheetListings from './Sheets/SheetListings.jsx';
+import SheetListings from './Sheets/SheetListingsPage/SheetListings.jsx';
 
 // Auth
 import { AuthProvider } from './Auth/AuthContext.jsx';

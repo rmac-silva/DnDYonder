@@ -1,6 +1,21 @@
-import React from 'react';
+import {React,useState} from 'react';
 
-function PlayerStats() {
+function PlayerStats({draft, setDraft}) {
+
+    const [currentHP, setCurrentHP] = useState(draft.stats.current_hp);
+
+    function GetMaxHP() {
+        let startingHitpoints = parseInt(draft.class?.starting_hitpoints);
+        let hpPerLevel = parseInt(draft.class?.hitpoints_per_level);
+        let level = parseInt(draft.stats.level);
+        let conMod = Math.floor((draft.attributes.Constitution.value - 10) / 2);
+        let maxHP = (startingHitpoints + conMod) + ((hpPerLevel + conMod) * (level - 1));
+        if (isNaN(maxHP) || !isFinite(maxHP)) {
+            return "";
+        }
+        return maxHP;
+    }
+
     return (
         <>
             {/* Top row: AC, Initiative, Speed */}
@@ -50,17 +65,24 @@ function PlayerStats() {
                 
                 {/*HP*/}
                 <div className="relative  inline-block">
-                    <label htmlFor="hp-current" className="sr-only">Current HP</label>
+                    <label htmlFor="hp-current" className="absolute left-24 top-1  z-20 text-2xl font-semibold">Current HP</label>
+
                     <input
                         id="hp-current"
+                        value={currentHP}
+                        onChange={(e) => setCurrentHP(e.target.value)}
+                        onBlur={(e) => {draft.stats.current_hp = parseInt(currentHP); setDraft({...draft})}}
                         type="text"
                         placeholder="HP"
                         className="w-78 h-36 text-center border-2 bg-white border-gray-400 text-5xl font-semibold rounded-2xl focus-visible:outline-none"
                     />
+
                     <input
                         id="hp-max"
                         type="text"
                         placeholder=""
+                        readOnly
+                        value={GetMaxHP()}
                         className="absolute -top-5 -left-7 w-24 h-26 text-center border-2 border-gray-400 bg-zinc-100 text-3xl font-semibold rounded z-10 focus-visible:outline-none"
                     />
                     <label htmlFor="hp-max" className="absolute -left-6 -top-5 z-20 text-2xl font-semibold">Max HP</label>
@@ -70,6 +92,7 @@ function PlayerStats() {
                 <input
                         id="temp-hp-current"
                         type="text"
+                        
                         placeholder="Temp.HP"
                         className="w-56 h-36 text-pretty text-center bg-white border-2 border-gray-400 text-5xl font-semibold rounded-2xl focus-visible:outline-none"
                     />

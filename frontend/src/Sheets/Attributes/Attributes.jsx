@@ -5,7 +5,7 @@ import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import { grey } from "@mui/material/colors";
 
-const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftFun}) => {
+const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftFun, canBeProficientFromClass}) => {
     const grey400 = grey[400];
 
     function ChangeExpertise(e) {
@@ -74,7 +74,7 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
                         visibility: skill.has_expertise ? "visible" : "hidden",
                         pointerEvents: skill.has_expertise ? "auto" : "none",
                         "&.Mui-checked": {
-                            color: "#363636ff",
+                            color: "#1f1f1f",
                         },
                     }}
                 />
@@ -85,13 +85,14 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
                 icon={<CircleOutlinedIcon />}
                 checkedIcon={<AdjustIcon />}
                 size="medium"
-                checked={!!skill.proficient}       // coerce here as well
+                checked={skill.name === "Saving Throw" && canBeProficientFromClass ? true : !!skill.proficient} // coerce here as well
                 onChange={(e) => ChangeProficiency(e)}
                 sx={{
                     padding: 0,
-                    color: grey400,
+                    color: canBeProficientFromClass ? "#3172f5" : grey400,
+                    
                     "&.Mui-checked": {
-                        color: "#363636ff",
+                        color:  "#1f1f1f",
                     },
                 }}
             />

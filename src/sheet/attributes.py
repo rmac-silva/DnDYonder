@@ -6,6 +6,7 @@ class Skill():
     def __init__(self, name: Skills, value: int = 0, proficient: bool = False, expertise: bool | None = False):
         self.name = name
         self.value = value
+        self.locked = False
         self.proficient = proficient
         self.expertise = expertise
 
@@ -15,7 +16,8 @@ class Skill():
             "value": self.value,
             "proficient": self.proficient,
             "expertise": self.expertise,
-            "has_expertise": False if self.expertise is None else True
+            "has_expertise": False if self.expertise is None else True,
+            "locked": self.locked
         }
 
 class Attribute():

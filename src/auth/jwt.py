@@ -63,6 +63,4 @@ class JWTManager:
                 return (False, "Token does not contain an email.")
             return (True, email)
         except JWTError as e:
-            #We got here, why?
-            print(f"JWT Error: expired signature!!!{str(e)}")
             return (False, f"Could not decode token: {str(e)}")

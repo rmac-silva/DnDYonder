@@ -1,11 +1,11 @@
 import { React, useEffect, useState } from 'react'
-import { useAuth } from '../Auth/AuthContext.jsx';
+import { useAuth } from '../../Auth/AuthContext.jsx';
 import { Link as RouterLink } from 'react-router-dom';
 import CreateNewSheet from './CreateNewSheet.jsx';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Navbar from '../Navbar/Navbar.jsx';
+import Navbar from '../../Navbar/Navbar.jsx';
 
 /*
 TODO: Add confirmation dialog before deleting a sheet
@@ -85,7 +85,6 @@ function SheetListings() {
                     { method: "GET" }
                 );
                 const data = await response.json();
-
                 if (response.ok) {
                     setSheets(data);
                 }

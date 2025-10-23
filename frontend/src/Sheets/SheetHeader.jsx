@@ -1,0 +1,59 @@
+import React from 'react';
+import ClassSelect from './Class/ClassSelect.jsx';
+
+function SheetHeader({draft,setDraft}) {
+
+    const textClasses = 'focus-visible:outline-none';
+
+    return (<div className="flex bg-white rounded shadow font-semibold p-4 justify-between">
+        <div className="flex-1 mr-4">
+            <label htmlFor="characterName" className="block text-xl text-gray-700">
+                Character Name:
+            </label>
+            {/* Character Name */}
+            <input
+                type="text"
+                onBlur={(e) => { draft.name = e.target.value; setDraft({ ...draft }) }}
+                defaultValue={draft.name}
+                placeholder="Grommisk"
+                className={`mt-1 px-2 py-2 block w-full border-b-2 !text-gray-700 !text-3xl ${textClasses}`}
+            />
+        </div>
+
+        <div className="flex-2 grid grid-cols-2 gap-4">
+            {/* Class */}
+            <ClassSelect sheet={draft} setSheet={setDraft}  />
+
+            {/* Background */}
+            <input
+                type="text"
+                placeholder="Background"
+                onBlur={(e) => { draft.background.background = e.target.value; setDraft({ ...draft }) }}
+                defaultValue={draft.background.background}
+                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md ${textClasses}`}
+            />
+
+            {/* Race */}
+            <input
+                type="text"
+                defaultValue={draft.race.race}
+                onBlur={(e) => { draft.race.race = e.target.value; setDraft({ ...draft }) }}
+
+                placeholder="Race"
+                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md ${textClasses}`}
+            />
+
+            {/* Alignment */}
+            <input
+                type="text"
+                defaultValue={draft.race.alignment}
+                onBlur={(e) => { draft.race.alignment = e.target.value; setDraft({ ...draft }) }}
+
+                placeholder="Alignment"
+                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md ${textClasses}`}
+            />
+        </div>
+    </div>)
+}
+
+export default SheetHeader;

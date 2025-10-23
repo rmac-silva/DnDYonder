@@ -37,7 +37,7 @@ const GetSkillProficiencies = ({value = [], onChange}) => {
                       onChange={(_, newValue) => {console.log("New value",newValue); onChange(newValue)}}
                       disableClearable={false}
                      
-                    renderInput={(params) => <TextField {...params} label="Skill Proficiencies" placeholder="Acrobatics, Arcana..." />}
+                    renderInput={(params) => <TextField {...params} label="Possible Skill Proficiencies" placeholder="Acrobatics, Arcana..." />}
                     filterSelectedOptions
                     />
                   </FormControl>

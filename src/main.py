@@ -154,6 +154,20 @@ def get_available_classes( ):
     else:
         raise HTTPException(status_code=500, detail="Could not fetch classes")
 
+@app.post("/info/classes")
+def save_new_class(data: dict):
+    email = jwt_manager.fetch_email_from_token(data.get('token', False))
+    
+    if email[0] is False:
+        raise HTTPException(status_code=403, detail=email[1])
+    
+
+    res = info_manager.save_new_class(data.get('class', {}))
+    if res[0] is False:
+        raise HTTPException(status_code=500, detail=res[1])
+    else:
+        return res[1]
+
 @app.get("/info/weapons")
 def get_available_weapons( ):
     res = info_manager.get_available_weapons()
@@ -191,5 +205,16 @@ def get_class_feats( playerClass : str):
     else:
         raise HTTPException(status_code=500, detail="Could not fetch class features")
 
-
+@app.post("/info/save_item")
+def save_new_item(item: dict):
+    email = jwt_manager.fetch_email_from_token(item.get('token', False))
+    
+    if email[0] is False:
+        raise HTTPException(status_code=403, detail=email[1])
+    else:
+        res = info_manager.save_new_item(item.get('item', {}),item.get('type', ''))
+        if res[0] is False:
+            raise HTTPException(status_code=500, detail=res[1])
+        else:
+            return res[1]
 #endregion
