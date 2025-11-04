@@ -2,9 +2,9 @@ import {React, useState} from 'react';
 import Button from '@mui/material/Button';
 
 
-function SkillProfSelection({sheet,setSheet}) {
+function SkillProfSelection({sheet,setSheet, onValid, selectedSkills, setSelectedSkills}) {
 
-    const [selectedSkills, setSelectedSkills] = useState([]);
+    
     const [canSelectMore, setCanSelectMore] = useState(true);
 
     const ABILITY_SKILL_MAP = {
@@ -60,8 +60,10 @@ function SkillProfSelection({sheet,setSheet}) {
         // This only gets updated on next frame. So we need to use a local array to check
         if (selectedSkills.length + change >= parseInt(sheet.class.num_skill_proficiencies)) {
             setCanSelectMore(false);
+            onValid(true);
         } else {
             setCanSelectMore(true);
+            onValid(false);
         }
     }
 

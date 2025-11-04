@@ -43,18 +43,20 @@ export default function MiscProfs({ draft = {}, setDraft }) {
     draft?.misc?.proficiencies?.forEach(prof => {
       mergedProfs += prof + "\n";
     });
+    
+    draft.class.tool_proficiencies.forEach(toolProf => {
+      mergedProfs += toolProf + "\n";
+    })
+    draft.race.tool_proficiencies.forEach(toolProf => {
+      mergedProfs += toolProf + "\n";
+    })
+
+    draft.class.tool_proficiencies = []; //Clear these out to avoid duplication on future loads
+    draft.race.tool_proficiencies = []; //Clear these out to avoid duplication on future loads
+
     setProficiencies(mergedProfs.trim());
   }, []);
   
-
-  const loadProficiencies = () => {
-    /*When you select a class, change draft.misc.proficiencies to include the tool and weapon proficiencies. This should only be done
-    upon class select. Making it even more relevant to select the class prior to editing the sheet.
-
-    For now just load whatever is stored on the sheet.
-    But a question surges, how do we remove the old ones if we change class? We might delete stuff the player has 
-    written. */
-  }
 
   return (
     <Box mt={4} className='flex flex-col items-center !w-full'>

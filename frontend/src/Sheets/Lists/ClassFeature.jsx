@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-const GetClassFeats = ({ value = [], onChange, }) => {
+const GetClassFeats = ({ onChange, label }) => {
 
 
   // This listing is used in a new class, where no class features are defined yet.
@@ -26,7 +26,7 @@ const GetClassFeats = ({ value = [], onChange, }) => {
   return (<>
     <Box display="flex" flexDirection="column" gap={2} alignItems="stretch" mt={2} mb={2}>
       <Typography variant="h6" gutterBottom>
-        Class Features
+        {label} Features
       </Typography>
       {classFeatures.map((feature, index) => (
         <Box key={index} display="flex" flexDirection="column" gap={1} p={2} border="1px solid #ccc" borderRadius="8px">
@@ -60,6 +60,7 @@ const GetClassFeats = ({ value = [], onChange, }) => {
           {/* Level requirement */}
           <TextField
             label={`Level Requirement`}
+            type='number'
             variant="outlined"
             value={feature.level_requirement}
             onChange={(e) => {

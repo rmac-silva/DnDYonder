@@ -14,11 +14,13 @@ import Homepage from './Homepage/Homepage.jsx'
 // Sheets
 import Sheet from './Sheets/Sheet.jsx';
 import SheetListings from './Sheets/SheetListingsPage/SheetListings.jsx';
-
+import { init as initItemCache } from './Sheets/Inventory/ItemCache';
 // Auth
 import { AuthProvider } from './Auth/AuthContext.jsx';
 import Login from './Auth/Login.jsx';
 import Register from './Auth/Register.jsx';
+
+initItemCache().catch(err => console.error('ItemCache init failed', err));
 
 createRoot(document.getElementById('root')).render(
   <Router>

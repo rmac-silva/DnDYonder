@@ -41,6 +41,10 @@ function SheetListings() {
 
     const getClassIcon = (className) => {
 
+        if(className === null || className === undefined) {
+            return null;
+        }
+
         switch (className.toLowerCase()) {
             case "artificer":
                 return (<i className="fa-solid fa-gears text-4xl"></i>)
@@ -87,6 +91,7 @@ function SheetListings() {
                 const data = await response.json();
                 if (response.ok) {
                     setSheets(data);
+                    console.log("Fetched sheets:", data);
                 }
 
             } catch (error) {
@@ -133,13 +138,13 @@ function SheetListings() {
                                                 color: 'inherit',
                                             }}
                                         >
-                                            {getClassIcon(sheet.class.class_name)}
+                                            {getClassIcon(sheet.class?.class_name)}
 
                                             <Typography variant="h5" component="div" sx={{ fontWeight: 600 }}>
                                                 {sheet.name}
                                             </Typography>
                                             <Typography variant="h6" component="div" sx={{ fontWeight: 500 }}>
-                                                {sheet.class.class_name}
+                                                {sheet.class?.class_name}
                                             </Typography>
                                         </Button>
                                         <i

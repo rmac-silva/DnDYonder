@@ -89,7 +89,7 @@ class ToolTypes(Enum):
     POISONERS_KIT = "Poisoner's kit"
     THIEVES_TOOLS = "Thieves' tools"
     
-class Languages(Enum):
+class Language(Enum):
     ABYSSAL = "Abyssal"
     AQUAN = "Aquan"
     AURAN = "Auran"

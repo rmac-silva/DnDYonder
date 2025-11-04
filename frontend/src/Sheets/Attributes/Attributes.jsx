@@ -5,7 +5,7 @@ import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import { grey } from "@mui/material/colors";
 
-const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftFun, canBeProficientFromClass}) => {
+const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftFun,locked}) => {
     const grey400 = grey[400];
 
     function ChangeExpertise(e) {
@@ -21,7 +21,7 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
         const newVal = parseInt(attributeModifier + (skill.proficient ? proficiencyBonus : 0) + (skill.expertise ? proficiencyBonus : 0));
         skill.value = newVal;
 
-        // shallow-copy parent draft to trigger re-render (you can make this deeper/safer in normalization)
+        //Update the draft
         updateDraftFun(prev => ({ ...prev }));
     }
 
@@ -34,6 +34,11 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
     }
 
     function ChangeProficiency(e) {
+        // if(locked) {
+        //     alert("This skill's proficiency is locked by your class.");
+        //     return; //Do nothing if the skill is from the class
+        // }
+
         const isProf = !!e.target.checked;
         skill.proficient = isProf;
 
@@ -85,11 +90,11 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
                 icon={<CircleOutlinedIcon />}
                 checkedIcon={<AdjustIcon />}
                 size="medium"
-                checked={skill.name === "Saving Throw" && canBeProficientFromClass ? true : !!skill.proficient} // coerce here as well
+                checked={!!skill.proficient} // coerce here as well
                 onChange={(e) => ChangeProficiency(e)}
                 sx={{
                     padding: 0,
-                    color: canBeProficientFromClass ? "#3172f5" : grey400,
+                    color : grey400,
                     
                     "&.Mui-checked": {
                         color:  "#1f1f1f",

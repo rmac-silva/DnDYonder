@@ -7,6 +7,7 @@ class CharacterStats():
         self.proficiency_bonus = self.get_proficiency_bonus()
         
         self.armor_class = 10 #TODO - Set based on armor and dexterity modifier (if applicable)
+        self.armor_class_temp = 0 #TODO - Set based on armor and dexterity modifier (if applicable)
         self.initiative_bonus = 0 #TODO - Set based on dexterity modifier
         self.speed = 30 #TODO - Set based on race
         
@@ -49,6 +50,7 @@ class CharacterStats():
             "level": self.level,
             "proficiency_bonus": self.get_proficiency_bonus(),
             "armor_class": self.armor_class,
+            "armor_class_temp": self.armor_class_temp,
             "initiative_bonus": self.initiative_bonus,
             "speed": self.speed,
             "max_hp": self.max_hp,
@@ -65,6 +67,7 @@ class CharacterStats():
         self.level = data.get("level", 1)
         self.proficiency_bonus = self.get_proficiency_bonus()
         self.armor_class = data.get("armor_class", 10)
+        self.armor_class_temp = data.get("armor_class_temp", 0)
         self.initiative_bonus = data.get("initiative_bonus", 0)
         self.speed = data.get("speed", 30)
         self.max_hp = data.get("max_hp", 10)

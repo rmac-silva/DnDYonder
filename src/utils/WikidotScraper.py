@@ -51,3 +51,5 @@ class WikidotScraper():
             print(f"\n\nKEY: {key}\n")
             pp.pprint(value)
             print("\n\n")
+
+WikidotScraper("https://dnd5e.wikidot.com/monk").print_results()

@@ -1,5 +1,7 @@
 from typing import List
 from items.item import Item, ItemChoice
+from sheet.spellcasting import Spellcasting
+from sheet.subclass import Subclass
 from utils.enums import ArmorType, WeaponType, ToolTypes, Attributes, Skills
 from misc.feature import ClassFeature
 
@@ -34,6 +36,11 @@ class CharacterClass():
         #Class Features
         self.class_features : List[ClassFeature] = []
         
+        # Subclass and Spellcasting
+        self.subclass = Subclass()
+        self.spellcasting = Spellcasting()
+        
+        
     def jsonify(self):
         """Convert the CharacterClass object into a JSON-serializable dictionary."""
         return {
@@ -48,9 +55,11 @@ class CharacterClass():
             "attribute_proficiency": [attr.value for attr in self.attribute_proficiency],
             "skill_proficiency": [skill.value for skill in self.skill_proficiency],
             "num_skill_proficiencies": self.num_skill_proficiencies,
-            "starting_equipment": [item.__dict__ for item in self.starting_equipment],
-            "        ": [choice.__dict__ for choice in self.starting_equipment_choices],
-            "class_features": [feature.__dict__ for feature in self.class_features]
+            "starting_equipment": [item.jsonify() for item in self.starting_equipment],
+            "starting_equipment_choices": [choice.jsonify() for choice in self.starting_equipment_choices],
+            "class_features": [feature.jsonify() for feature in self.class_features],
+            "spellcasting": self.spellcasting.jsonify(),
+            "subclass": self.subclass.jsonify()
         }
         
     def load_from_dict(self, data: dict):
@@ -69,7 +78,10 @@ class CharacterClass():
         self.num_skill_proficiencies = data.get("num_skill_proficiencies", 0)
         self.starting_equipment = [Item(**item) for item in data.get("starting_equipment", [])]
         self.starting_equipment_choices = [ItemChoice(**choice) for choice in data.get("starting_equipment_choices", [])]
+        
         self.class_features = [ClassFeature(**feature) for feature in data.get("class_features", [])]
+        self.spellcasting = data.get("spellcasting", False)
+        self.subclass = data.get("subclass", False)
     
     def get_features(self) -> List[dict]:
         return [feature.__dict__ for feature in self.class_features]

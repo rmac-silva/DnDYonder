@@ -20,9 +20,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Autocomplete from '@mui/material/Autocomplete';
-import Chip from '@mui/material/Chip';
-
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 import GetArmorProficiencies from '../Lists/ArmorProficiencies';
 import GetWeaponProficiencies from '../Lists/WeaponProficiencies';
@@ -32,11 +31,15 @@ import GetSkillProficiencies from '../Lists/SkillProficiencies';
 import GetStartingEquipment from '../Lists/StartingEquipment';
 import GetClassFeats from '../Lists/ClassFeature';
 
-const ClassSelect = ({ sheet, setSheet, selectClass }) => {
+const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   const [loading, setLoading] = useState(true);
   const [fetchedClasses, setFetchedClasses] = useState([]);
   const [forceRefresh, setForceRefresh] = useState(false);
   const [creatingNewClass, setCreatingNewClass] = useState(false);
+
+  const [hasSubclass, setHasSubclass] = useState(false);
+  const [hasSpellcasting, setHasSpellcasting] = useState(false);
+
   const [newClass, setNewClass] = useState({
     class_name: '',
 
@@ -55,6 +58,19 @@ const ClassSelect = ({ sheet, setSheet, selectClass }) => {
     starting_equipment_choices: [],
 
     class_features: [],
+    spellcasting: {
+      level: -1,
+      spell_slots: {},
+      spells_known: [],
+      spellcasting_ability: '',
+    },
+    subclass: {
+      selected: false,
+      name: '',
+      description: '',
+      level: -1,
+      features: []
+    },
   });
 
   useEffect(() => {
@@ -108,13 +124,16 @@ const ClassSelect = ({ sheet, setSheet, selectClass }) => {
 
   const setArmorProficiencies = (value) => {
     newClass.armor_proficiencies = value;
-    console.log("New armor proficiencies", newClass.armor_proficiencies);
+
     setNewClass({ ...newClass });
   }
   const setWeaponProficiencies = (value) => {
     newClass.weapon_proficiencies = value;
-    console.log("New weapon proficiencies", newClass.weapon_proficiencies);
+
     setNewClass({ ...newClass });
+
+    //Refresh starting equipment options
+    setForceRefresh(true);
   }
   const setAttributeProficiencies = (value) => {
     newClass.attribute_proficiencies = value;
@@ -123,12 +142,12 @@ const ClassSelect = ({ sheet, setSheet, selectClass }) => {
   }
   const setSkillProficiencies = (value) => {
     newClass.skill_proficiencies = value;
-    console.log("New skill proficiencies", newClass.skill_proficiencies);
+
     setNewClass({ ...newClass });
   }
   const setNumSkillProficiencies = (value) => {
     newClass.num_skill_proficiencies = value;
-    console.log("New number of skill proficiencies", newClass.num_skill_proficiencies);
+
     setNewClass({ ...newClass });
   }
   const setToolProficiencies = (value) => {
@@ -136,11 +155,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass }) => {
     // console.log("New tool proficiencies", newClass.tool_proficiencies);
     setNewClass({ ...newClass });
   }
-  const setEquipment = (value) => {
-    newClass.starting_equipment = value;
-    console.log("New starting equipment", newClass.starting_equipment);
-    setNewClass({ ...newClass });
-  }
+
   const setClassFeats = (value) => {
     newClass.class_features = value;
     setNewClass({ ...newClass });
@@ -169,6 +184,20 @@ const ClassSelect = ({ sheet, setSheet, selectClass }) => {
 
 
       class_features: [],
+      spellcasting:{
+        level:-1,
+        spell_slots:{},
+        max_level_spellslots:9,
+        spells_known:[],
+        spellcasting_ability:'',
+      },
+      subclass: {
+        name: '',
+        description: '',
+        level: -1,
+        features: [],
+        selected: false
+      },
     });
   };
 
@@ -212,7 +241,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass }) => {
           id="class-select"
           value={sheet.class?.class_name || ''}
           onChange={handleChangingClass}
-          disabled={loading}
+          disabled={loading || disabled}
         >
           <MenuItem value="">— Select —</MenuItem>
           <MenuItem value="new">Add New Class…</MenuItem>
@@ -264,6 +293,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass }) => {
             </FormControl>
 
             <TextField
+              type='number'
               label="Starting HP"
               variant="outlined"
               value={newClass.starting_hitpoints}
@@ -272,6 +302,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass }) => {
             />
 
             <TextField
+              type='number'
               label="HP / Level"
               variant="outlined"
               value={newClass.hitpoints_per_level}
@@ -299,6 +330,8 @@ const ClassSelect = ({ sheet, setSheet, selectClass }) => {
             {/* A text field for number of skill proficiencies to choose from: */}
             <TextField
               className='w-30'
+              type='number'
+
               label="Nr. Choices"
               variant="outlined"
 
@@ -306,8 +339,108 @@ const ClassSelect = ({ sheet, setSheet, selectClass }) => {
               size="medium"
             />
 
+            <Box display="flex" flexDirection="column" gap={1}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={hasSpellcasting}
+                    onChange={(e) => setHasSpellcasting(e.target.checked)}
+                  />
+                }
+                label="Has Spellcasting?"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={hasSubclass}
+                    onChange={(e) => setHasSubclass(e.target.checked)}
+                  />
+                }
+                label="Has Subclass?"
+              />
+            </Box>
+
 
           </Box>
+
+          {hasSpellcasting &&
+            <>
+              <div className='font-semibold text-xl'>Spellcasting Details:</div>
+              <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
+                <TextField
+                  label="Spellcasting Level"
+                  variant="outlined"
+                  type='number'
+                  sx={{ maxWidth: 130 }}
+                  value={newClass.spellcasting.level}
+                  onChange={(e) => setNewClass((s) => ({
+                    ...s,
+                    spellcasting: {
+                      ...s.spellcasting,
+                      level: e.target.value
+                    }
+                  }))}
+                  size="medium"
+                />
+              </Box>
+            </>
+          }
+
+          {hasSubclass &&
+            <>
+              <div className='font-semibold text-xl'>Subclass Details:</div>
+              <Box display="flex" flexDirection="row" gap={2} mt={2} mb={2}>
+
+                <TextField
+
+                  label="Subclass Name"
+                  variant="outlined"
+                  value={newClass.subclass.name}
+                  onChange={(e) => setNewClass((s) => ({
+                    ...s,
+                    subclass: {
+                      ...s.subclass,
+                      name: e.target.value
+                    }
+                  }))}
+
+                />
+                <TextField
+
+                  label="Subclass Level"
+                  variant="outlined"
+                  type='number'
+                  sx={{ maxWidth: 140 }}
+                  value={newClass.subclass.level}
+                  onChange={(e) => setNewClass((s) => ({
+                    ...s,
+                    subclass: {
+                      ...s.subclass,
+                      level: e.target.value
+                    }
+                  }))}
+
+                />
+
+
+              </Box>
+              <TextField
+                className='!w-2/3'
+                label="Subclass Description"
+                variant="outlined"
+                value={newClass.subclass.description}
+                onChange={(e) => setNewClass((s) => ({
+                  ...s,
+                  subclass: {
+                    ...s.subclass,
+                    description: e.target.value
+                  }
+                }))}
+
+              />
+            </>
+          }
+
           <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
             <GetStartingEquipment newClass={newClass} setNewClass={setNewClass} />
           </Box>
@@ -318,7 +451,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass }) => {
 
 
           <Box mt={2}>
-            <GetClassFeats onChange={setClassFeats} />
+            <GetClassFeats onChange={setClassFeats} label={"Class"} />
           </Box>
         </DialogContent>
 

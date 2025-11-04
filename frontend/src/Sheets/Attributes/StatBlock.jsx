@@ -1,7 +1,8 @@
 import React from 'react';
 import AttributeRow from './Attributes.jsx';
 
-function StatBlock({ label, draft, attribute, proficiencyBonus, updateDraftFun }) {
+
+function StatBlock({ label, attribute, proficiencyBonus, updateDraftFun }) {
     
     function GetModOfStat() {
         let val = parseInt(Math.floor((parseInt(attribute.value) - 10) / 2));
@@ -11,77 +12,18 @@ function StatBlock({ label, draft, attribute, proficiencyBonus, updateDraftFun }
     function GetSkillsOfStat() {
         return attribute.skills;
     }
-
-    function GetAllSkills() {
-        let allSkills = [];
-        for (const attrKey in draft.attributes) {
-            const attr = draft.attributes[attrKey];
-            allSkills = allSkills.concat(attr.skills);
-        }
-
-        return allSkills;
-    }
-
-    function CheckIfSelectedMaxClassProficiencies() {
-        let classProficiencies = draft.class?.skill_proficiencies;
-
-        let allSkills = GetAllSkills();
-
-        //Filter to only proficient skills
-        let proficientSkills = allSkills.filter(skill => skill.proficient);
-
-        //Count how many proficient skills are in the classProficiencies list
-        let count = 0;
-        let max = draft.class?.num_skill_proficiencies;
-
-        for (let skill of proficientSkills) {
-            if (classProficiencies && classProficiencies.includes(skill.name)) {
-                count++;
-            }
-
-        }
-        return count >= max;
-    }
-
-    function canBeProficient(skillName) {
-        //First check if the class grants proficiency in this skill
-        let classProficiencies = draft.class?.skill_proficiencies;
-        let attributeProficiencies = draft.class?.attribute_proficiencies;
-
-        let maxedOut = CheckIfSelectedMaxClassProficiencies();
-
-        if (attributeProficiencies && skillName === "Saving Throw" && attributeProficiencies.includes(attribute.name)) {
-            attribute.skills[0].proficient = true;
-            return true;
-        } else if( skillName === "Saving Throw") {
-            attribute.skills[0].proficient = false;
-            return false;
-        }
-
-        if (maxedOut) {
-            return false;
-        }
-
-        if (classProficiencies && classProficiencies.includes(skillName)) {
-            
-            return true;
-        }
-        
-
-
-    }
  
 
     return (
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4">
-            <div className="flex flex-col md:mr-8 items-center flex-shrink-0">
+            <div className="flex flex-col md:mr-8 items-center  flex-shrink-0">
                 <label  className="-mb-10 text-3xl font-semibold">{label}</label>
                 <input
                     type="text"
                     placeholder={label}
                     defaultValue={attribute.value} 
                     onBlur={(e) => {attribute.value = parseInt(e.target.value); updateDraftFun(prev => ({...prev}));}} //Here we are passing a function to the setState hook. This function will be run with whatever the state was previously. In this case we're simply copying the state, faking a change to force React to update
-                    className="w-28 h-28 md:w-36 md:h-36 text-center border-2 border-gray-400 text-4xl md:text-6xl font-semibold rounded focus-visible:outline-none"
+                    className=" w-28 h-28 md:w-36 md:h-36 text-center border-2 border-gray-400 text-4xl md:text-6xl font-semibold rounded focus-visible:outline-none"
                 />
                 
                 <div className="w-12 md:w-16 h-8 text-center border-2 border-gray-400 font-semibold text-lg md:text-xl rounded mt-1">
@@ -92,7 +34,7 @@ function StatBlock({ label, draft, attribute, proficiencyBonus, updateDraftFun }
             {/* Attributes column (children) — allow shrinking and wrapping */}
             <div className="flex flex-col w-full flex-1 min-w-0">
                 {GetSkillsOfStat().map(skill => {
-                    return <AttributeRow key={skill.name} skill={skill} attributeModifier={GetModOfStat()} proficiencyBonus={proficiencyBonus} updateDraftFun={updateDraftFun} canBeProficientFromClass={canBeProficient(skill.name)} />;
+                    return <AttributeRow key={skill.name} skill={skill} attributeModifier={GetModOfStat()} proficiencyBonus={proficiencyBonus} updateDraftFun={updateDraftFun} locked={skill.locked} />;
                 })}
             </div>
         </div>

@@ -1,8 +1,8 @@
 import { React,useState,useEffect} from 'react';
 import Button from '@mui/material/Button';
-function StartingEquipmentSelection({ sheet, setSheet }) {
+function StartingEquipmentSelection({ sheet, setSheet, onValid, selectedItems, setSelectedItems }) {
 
-    const [selectedItems, setSelectedItems] = useState([]); // [ [ {name: "item1", selected: false}, {name: "item2", selected: true} ], [ {...} ] ]
+    
 
     useEffect(() => {
         // Initialize item choices from sheet, to help manage which items are selected
@@ -10,12 +10,37 @@ function StartingEquipmentSelection({ sheet, setSheet }) {
 
         // Map over the options to create the initial state
         const initialSelectedItems = options.map(itemSet =>
-            itemSet.map(itemOption => ({ name: itemOption.name, selected: false }))
+            itemSet.map(itemOption => {
+            const nameCounts = itemOption.reduce((acc, item) => {
+                acc[item.name] = (acc[item.name] || 0) + 1;
+                return acc;
+            }, {});
+            const joinedName = Object.entries(nameCounts)
+                .map(([name, count]) => (count > 1 ? `${name} (${count})` : name))
+                .join(", ");
+            return { name: joinedName, selected: false };
+            })
         );
 
         // Set the selected items state
         setSelectedItems(initialSelectedItems);
     }, [sheet.class.starting_equipment_choices]);
+
+    const allChoicesMade = () => {
+        var allMade = true;
+        //Chekcs if all item sets have a selected item
+        selectedItems.forEach(itemSet => {
+            
+            const hasSelected = itemSet.some(item => (item.selected === true)); //Checks if an element of an array has a certain element
+           
+            if (!hasSelected) {
+                
+                allMade = false; //You can't just return true here because you're inside a function scope for each element in the array. That's why it wanted to do a forloop instead.
+            }
+        })
+
+        return allMade;
+    }
 
     const handleOptionSelect = (setIndex, optionIndex) => {
 
@@ -30,8 +55,15 @@ function StartingEquipmentSelection({ sheet, setSheet }) {
             //Deselect it
             selectedItem.selected = false;
 
-            //Remove it from the sheet starting equipment
-            sheet.class.starting_equipment = sheet.class.starting_equipment.filter(i => i.name !== selectedItem.name);
+            //Remove it from the sheet starting equipment. Remove only 1 instance in case of duplicates
+            var removed = false;
+            sheet.class.starting_equipment = sheet.class.starting_equipment.filter(i => {
+                if (i.name === selectedItem.name && !removed) {
+                    removed = true;
+                    return false;
+                }
+                return true;
+            });
 
             setSheet({ ...sheet });
         } else {
@@ -54,12 +86,15 @@ function StartingEquipmentSelection({ sheet, setSheet }) {
 
             //Update the sheet state
             setSheet({ ...sheet });
-        }
 
+            
+        }
+        //Update the form validity
+        onValid(allChoicesMade());
         //Update the selected items state
         selectedItems[setIndex] = updatedSet;
         setSelectedItems([...selectedItems]);
-        console.log("Sheet Status:", sheet);
+        
     }
 
     return (<>
@@ -75,17 +110,17 @@ function StartingEquipmentSelection({ sheet, setSheet }) {
                 {selectedItems.map((item, setIndex) => (
                     <div key={setIndex} className='flex flex-row space-x-2 align-center mb-2'>
                         {/* Create a button for each option in the set. When clicked check if any other option in the set is selected, if so deselect it and select this one. */}
-                        {item.map((option, optionIndex) => (
-                            <>
+                        {item.map((options, optionIndex) => (
+                            <div key={optionIndex}>
                                 <Button
-                                    key={optionIndex}
-                                    variant={option.selected ? 'contained' : 'outlined'}
+                                    
+                                    variant={options.selected ? 'contained' : 'outlined'}
                                     onClick={() => { handleOptionSelect(setIndex, optionIndex) }}
                                 >
-                                    {option.name}
+                                    {options.name}
                                 </Button>
                                 {optionIndex < item.length - 1 && <span className='ml-2'> or </span>}
-                            </>
+                            </div>
                         ))}
                     </div>
                 ))}

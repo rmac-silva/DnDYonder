@@ -25,7 +25,7 @@ const GetAttributeProficiencies = ({value = [], onChange}) => {
                       onChange={(_, newValue) => {console.log("New value",newValue); onChange(newValue)}}
                       disableClearable={false}
                      
-                    renderInput={(params) => <TextField {...params} label="Attribute Proficiencies" placeholder="Str, Dex..." />}
+                    renderInput={(params) => <TextField {...params} label="Saving Throws" placeholder="Str, Dex..." />}
                     filterSelectedOptions
                     />
                   </FormControl>

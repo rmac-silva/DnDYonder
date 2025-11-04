@@ -24,6 +24,40 @@ class InfoManager():
                 formatted_array.append({'c_name': cclass[0], 'c_content': json.loads(cclass[1])})
             return (True, formatted_array)
         
+    def get_available_subclasses(self):
+        conn = self.dbm.c().connection
+        
+        com = """
+        SELECT name,content FROM subclasses;
+        """
+        
+        res = conn.execute(com).fetchall()
+        
+        if res is None:
+            return (True, [])
+        else:
+            formatted_array = []
+            for cclass in res:
+                formatted_array.append({'c_name': cclass[0], 'c_content': json.loads(cclass[1])})
+            return (True, formatted_array)
+
+    def get_available_races(self):
+        conn = self.dbm.c().connection
+
+        com = """
+        SELECT name,content FROM races;
+        """
+
+        res = conn.execute(com).fetchall()
+
+        if res is None:
+            return (True, [])
+        else:
+            formatted_array = []
+            for race in res:
+                formatted_array.append({'r_name': race[0], 'r_content': json.loads(race[1])})
+            return (True, formatted_array)
+
     def get_available_weapons(self):
         conn = self.dbm.c().connection
         
@@ -79,18 +113,43 @@ class InfoManager():
     def get_all_equipment(self):
         items_merged = []
         
-        weapons = self.get_available_weapons()
-        if weapons[0]:
-            items_merged.extend(weapons[1])
-            
-        tools = self.get_available_tools()
-        if tools[0]:
-            items_merged.extend(tools[1])
-            
-        armors = self.get_available_armors()
-        if armors[0]:
-            items_merged.extend(armors[1])
-            
+        conn = self.dbm.c().connection
+        
+        com = """
+        SELECT name,content FROM weapons;
+        """
+        
+        res = conn.execute(com).fetchall()
+        if(res is not None):
+            for weapon in res:
+                items_merged.append({'name':weapon[0],'content':json.loads(weapon[1]),'type':'Weapon'})
+        
+        com = """
+        SELECT name,content FROM armors;
+        """
+        
+        res = conn.execute(com).fetchall()
+        if(res is not None):
+            for armor in res:
+                items_merged.append({'name':armor[0],'content':json.loads(armor[1]),'type':'Armor'})
+        
+        com = """
+        SELECT name,content FROM tools;
+        """
+        res = conn.execute(com).fetchall()
+        if(res is not None):
+            for tool in res:
+                items_merged.append({'name':tool[0],'content':json.loads(tool[1]),'type':'Tool'})
+        
+        com = """
+        SELECT name,content FROM miscellaneous;
+        """
+        res = conn.execute(com).fetchall()
+        if(res is not None):
+            for misc in res:
+                items_merged.append({'name':misc[0],'content':json.loads(misc[1]),'type':'Misc.'})
+                
+        
         return (True,items_merged) 
         
     def get_class_features(self, playerClass: str):
@@ -137,6 +196,14 @@ class InfoManager():
             conn.execute(com, (item.get('name',''), json.dumps(item)))
             conn.commit()
             return (True, "Tool added successfully")
+        
+        if(type == 'Misc.'):
+            com = """
+            INSERT INTO miscellaneous (name, content) VALUES (?, ?);
+            """
+            conn.execute(com, (item.get('name',''), json.dumps(item)))
+            conn.commit()
+            return (True, "Miscellaneous item added successfully")
         else:
              return (False, "Invalid item type")
          
@@ -156,3 +223,37 @@ class InfoManager():
         except Exception as e:
             return (False, str(e)) 
         
+    def save_new_subclass(self, playerClass: dict) -> tuple[bool, str]:
+        try:
+            
+            conn = self.dbm.c().connection
+            
+            com = """
+                INSERT INTO subclasses (name, content) VALUES (?, ?);
+                """
+
+            conn.execute(com, (playerClass.get('name',''), json.dumps(playerClass)))
+            conn.commit()
+
+            return (True, "Subclass added successfully")
+        except Exception as e:
+            return (False, str(e))
+    
+            
+
+
+    def save_new_race(self, playerRace: dict) -> tuple[bool, str]:
+        try:
+            
+            conn = self.dbm.c().connection
+            
+            com = """
+                INSERT INTO races (name, content) VALUES (?, ?);
+                """
+                
+            conn.execute(com, (playerRace.get('race',''), json.dumps(playerRace)))
+            conn.commit()
+            
+            return (True, "Race added successfully")
+        except Exception as e:
+            return (False, str(e)) 

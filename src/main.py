@@ -167,6 +167,52 @@ def save_new_class(data: dict):
         raise HTTPException(status_code=500, detail=res[1])
     else:
         return res[1]
+    
+@app.get("/info/subclasses")
+def get_available_subclasses( ):
+    res = info_manager.get_available_subclasses()
+    
+    if res[0]:
+        return {"subclasses": res[1]}
+    else:
+        raise HTTPException(status_code=500, detail="Could not fetch classes")
+
+@app.post("/info/subclasses")
+def save_new_subclass(data: dict):
+    email = jwt_manager.fetch_email_from_token(data.get('token', False))
+    
+    if email[0] is False:
+        raise HTTPException(status_code=403, detail=email[1])
+    
+
+    res = info_manager.save_new_subclass(data.get('subclass', {}))
+    if res[0] is False:
+        raise HTTPException(status_code=500, detail=res[1])
+    else:
+        return res[1]
+    
+@app.get("/info/races")
+def get_available_races( ):
+    res = info_manager.get_available_races()
+
+    if res[0]:
+        return {"races": res[1]}
+    else:
+        raise HTTPException(status_code=500, detail="Could not fetch races")
+
+@app.post("/info/races")
+def save_new_race(data: dict):
+    email = jwt_manager.fetch_email_from_token(data.get('token', False))
+    
+    if email[0] is False:
+        raise HTTPException(status_code=403, detail=email[1])
+    
+
+    res = info_manager.save_new_race(data.get('race', {}))
+    if res[0] is False:
+        raise HTTPException(status_code=500, detail=res[1])
+    else:
+        return res[1]
 
 @app.get("/info/weapons")
 def get_available_weapons( ):

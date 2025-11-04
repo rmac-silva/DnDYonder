@@ -3,6 +3,13 @@ import {React,useState} from 'react';
 function PlayerStats({draft, setDraft}) {
 
     const [currentHP, setCurrentHP] = useState(draft.stats.current_hp);
+    const [tempHP, setTempHP] = useState(draft.stats.temporary_hp);
+
+    const [ac,setAC] = useState(parseInt(draft.stats.armor_class));
+    const [tempAC,setTempAC] = useState(parseInt(draft.stats.armor_class_temp));
+
+    const[iniBonus,setIniBonus] = useState(parseInt(draft.stats.initiative_bonus));
+    const[speed,setSpeed] = useState(parseInt(draft.stats.speed));
 
     function GetMaxHP() {
         let startingHitpoints = parseInt(draft.class?.starting_hitpoints);
@@ -19,82 +26,96 @@ function PlayerStats({draft, setDraft}) {
     return (
         <>
             {/* Top row: AC, Initiative, Speed */}
-            <div className="flex  items-start space-x-12 justify-center mb-16 mt-1">
+            <div className="flex w-full items-start space-x-12 justify-center mb-16 mt-1">
                 <div className='flex flex-col items-center'>
                     <div className="relative bg-white inline-block">
-                    <label htmlFor='ac-input' className="absolute left-13 text-3xl font-semibold">AC</label>
+                    <label htmlFor='ac-input' className="absolute left-11 text-2xl font-semibold">AC</label>
                     <input
                         type="text"
                         placeholder={"AC"}
                         id='ac-input'
-                        className="w-36 h-36 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
+                        value={parseInt(ac)}
+                        onChange={(e) => {setAC(parseInt(e.target.value))}}
+                        onBlur={(e) => {draft.stats.armor_class = parseInt(e.target.value); setDraft({...draft})}}
+                        className="w-30 h-30 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
                     />
                     <input
                         type="text"
                         placeholder={"T. AC"}
                         id='temp-ac-input'
-                        className="w-18 h-18 absolute -bottom-6 -right-8 text-center bg-zinc-100 border-2 border-gray-400 text-3xl font-semibold rounded focus-visible:outline-none"
+                        value={parseInt(tempAC)}
+                        onChange={(e) => {setTempAC(parseInt(e.target.value))}}
+                        onBlur={(e) => {draft.stats.armor_class_temp = parseInt(e.target.value); setDraft({...draft})}}
+                        className="w-18 h-18 absolute -bottom-6 -right-8 text-center bg-zinc-100 border-2 border-gray-400 text-2xl font-semibold rounded focus-visible:outline-none"
                     />
                     </div>
                 </div>
 
                 <div className='flex bg-white flex-col items-center'>
-                    <label htmlFor='ini-input' className="absolute text-3xl font-semibold">Initiative</label>
+                    <label htmlFor='ini-input' className="absolute text-2xl font-semibold">Initiative</label>
                     <input
                         type="text"
                         placeholder={"Ini."}
                         id='ini-input'
-                        className="w-36 h-36 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
+                        value={parseInt(iniBonus)}
+                        onChange={(e) => {setIniBonus(parseInt(e.target.value))}}
+                        onBlur={(e) => {draft.stats.initiative_bonus = parseInt(e.target.value); setDraft({...draft})}}
+                        className="w-30 h-30 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
                     />
                 </div>
 
                 <div className='flex bg-white flex-col items-center'>
-                    <label htmlFor='ac-input' className="absolute text-3xl font-semibold">Speed</label>
+                    <label htmlFor='spd-input' className="absolute text-2xl font-semibold">Speed</label>
                     <input
                         type="text"
                         placeholder={"Spd."}
-                        id='ac-input'
-                        className="w-36 h-36 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
+                        id='spd-input'
+                        value={parseInt(speed)}
+                        onChange={(e) => {setSpeed(parseInt(e.target.value))}}
+                        onBlur={(e) => {draft.stats.speed = parseInt(e.target.value); setDraft({...draft})}}
+                        className="w-30 h-30 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
                     />
                 </div>
 
             </div>
 
             {/*HP & Temporary Hitpoints*/}
-            <div className="flex items-start space-x-12 justify-center mb-8">
+            <div className="flex items-start space-x-6 justify-center mb-8">
                 
                 {/*HP*/}
                 <div className="relative  inline-block">
-                    <label htmlFor="hp-current" className="absolute left-24 top-1  z-20 text-2xl font-semibold">Current HP</label>
+                    <label htmlFor="hp-current" className="absolute left-18 top-1  z-20 text-2xl font-semibold">Current HP</label>
 
                     <input
                         id="hp-current"
                         value={currentHP}
                         onChange={(e) => setCurrentHP(e.target.value)}
-                        onBlur={(e) => {draft.stats.current_hp = parseInt(currentHP); setDraft({...draft})}}
+                        onBlur={() => {draft.stats.current_hp = parseInt(currentHP); setDraft({...draft})}}
                         type="text"
                         placeholder="HP"
-                        className="w-78 h-36 text-center border-2 bg-white border-gray-400 text-5xl font-semibold rounded-2xl focus-visible:outline-none"
+                        className="w-52 h-36 text-center border-2 bg-white border-gray-400 text-5xl font-semibold rounded-2xl focus-visible:outline-none"
                     />
 
+<label htmlFor="hp-max" className="absolute -left-6 -top-5 z-20 text-xl font-semibold">Max HP</label>
                     <input
                         id="hp-max"
                         type="text"
-                        placeholder=""
+                        placeholder="Max HP"
                         readOnly
                         value={GetMaxHP()}
-                        className="absolute -top-5 -left-7 w-24 h-26 text-center border-2 border-gray-400 bg-zinc-100 text-3xl font-semibold rounded z-10 focus-visible:outline-none"
+                        className="absolute -top-5 -left-7 w-20 h-22 text-center border-2 border-gray-400 bg-zinc-100 text-2xl font-semibold rounded z-10 focus-visible:outline-none"
                     />
-                    <label htmlFor="hp-max" className="absolute -left-6 -top-5 z-20 text-2xl font-semibold">Max HP</label>
                 </div>
                 {/*Temporary HP*/}
                 <div className="relative inline-block">
                 <input
                         id="temp-hp-current"
                         type="text"
-                        
+                        value={parseInt(tempHP)}
+                        onChange={(e) => setTempHP(parseInt(e.target.value))}
+                        onBlur={() => {draft.stats.temporary_hp = parseInt(tempHP); setDraft({...draft})}}
                         placeholder="Temp.HP"
-                        className="w-56 h-36 text-pretty text-center bg-white border-2 border-gray-400 text-5xl font-semibold rounded-2xl focus-visible:outline-none"
+                        className="w-52 h-36 text-pretty text-center bg-white border-2 border-gray-400 text-5xl font-semibold rounded-2xl focus-visible:outline-none"
                     />
                     <label htmlFor="temp-hp-current" className="w-28 absolute right-13.5 border-gray-400  border-2 bg-zinc-100 rounded -top-8 z-20 text-pretty text-center text-xl font-semibold">Temporary Hitpoints</label>
                 </div>

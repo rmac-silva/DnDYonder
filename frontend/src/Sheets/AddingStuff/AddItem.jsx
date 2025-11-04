@@ -18,16 +18,18 @@ import FormControl from '@mui/material/FormControl';
 import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
+import ItemCache from '../Inventory/ItemCache';
 
 const AddItem = ({ onAddItem, isOpen, itemTypeDefault }) => {
     const [itemType, setItemType] = useState(itemTypeDefault || 'Weapon'); // Default to 'Weapon'
 
-    const [newTool, setNewTool] = useState({
+    const emptyTool = {
         name: '', description: '', weight: '', cost: '',
         features: [],
-    });
+    }
+    const [newTool, setNewTool] = useState(emptyTool);
 
-    const [newWeapon, setNewWeapon] = useState({
+    const emptyWeapon = {
         name: '', description: '', weight: '', cost: '',
         features: [],
         attacks: [{
@@ -36,7 +38,8 @@ const AddItem = ({ onAddItem, isOpen, itemTypeDefault }) => {
         }],
         range: '',
         properties: [],
-    });
+    }
+    const [newWeapon, setNewWeapon] = useState(emptyWeapon);
 
     const weaponProperties = [
         "Ammunition", "Finesse", "Heavy", "Light", "Loading", "Range", "Reach", "Special", "Thrown", "Two-Handed", "Versatile"
@@ -46,14 +49,15 @@ const AddItem = ({ onAddItem, isOpen, itemTypeDefault }) => {
         "Acid", "Bludgeoning", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Piercing", "Poison", "Psychic", "Radiant", "Slashing", "Thunder"
     ];
 
-    const [newArmor, setNewArmor] = useState({
+    const emptyArmor = {
         name: '', description: '', weight: '', cost: '',
         features: [],
         armor_class: '',
         armor_type: '',
         stealth_disadvantage: false,
-        str_requirement: 0,
-    });
+        strength_requirement: 0,
+    }
+    const [newArmor, setNewArmor] = useState(emptyArmor);
 
     const validateItem = (item) => {
         // Check if the item has a name and description
@@ -82,6 +86,8 @@ const AddItem = ({ onAddItem, isOpen, itemTypeDefault }) => {
 
         if (!res.ok) {
             throw new Error(`Save failed: ${res.status}`);
+        } else {
+            ItemCache.ForceCacheRefresh();//Update the cache after adding a new item
         }
 
     }
@@ -94,15 +100,22 @@ const AddItem = ({ onAddItem, isOpen, itemTypeDefault }) => {
 
             await saveNewItemToBackend(newWeapon);
             onAddItem(newWeapon);
+            setNewWeapon(emptyWeapon);
+
         }
         else if (itemType === 'Armor' && validateItem(newArmor)) {
             await saveNewItemToBackend(newArmor);
             onAddItem(newArmor);
+            setNewArmor(emptyArmor);
         }
-        else if (itemType === 'Tool' && validateItem(newTool)) {
+        else if (itemType === 'Tool' || itemType === "Misc." && validateItem(newTool)) {
             await saveNewItemToBackend(newTool);
             onAddItem(newTool);
+            setNewTool(emptyTool);
         }
+
+        
+
     };
 
     const updateActiveItem = (value) => {
@@ -112,7 +125,7 @@ const AddItem = ({ onAddItem, isOpen, itemTypeDefault }) => {
         else if (itemType === 'Armor') {
             setNewArmor((s) => ({ ...s, ...value }));
         }
-        else if (itemType === 'Tool') {
+        else if (itemType === 'Tool' || itemType === "Misc.") {
             setNewTool((s) => ({ ...s, ...value }));
         }
     }
@@ -158,6 +171,7 @@ const AddItem = ({ onAddItem, isOpen, itemTypeDefault }) => {
                             <MenuItem value="Weapon">Weapon</MenuItem>
                             <MenuItem value="Tool">Tool</MenuItem>
                             <MenuItem value="Armor">Armor</MenuItem>
+                            <MenuItem value="Misc.">Misc.</MenuItem>
                         </Select>
                     </FormControl>
 

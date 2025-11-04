@@ -10,8 +10,8 @@ class Item():
         self.weight = weight
         self.cost = cost
         self.features = features #Dis. on stealth, STR requirements
-        self.selected = False # For starting equipment selection
         
+        self.selected = False # For starting equipment selection
     def jsonify(self):
         """Convert the Item object into a JSON-serializable dictionary."""
         return {
@@ -83,10 +83,10 @@ class Armor(Item):
     
 class ItemChoice():
     
-    def __init__(self, choices: List[Item] = []):
+    def __init__(self, choices: List[List[Item]] = []):
         self.choices = choices
 
     def jsonify(self):
         return {
-            "choices": [item.jsonify() for item in self.choices]
+            "choices": [[item.jsonify() for item in group] for group in self.choices]
         }

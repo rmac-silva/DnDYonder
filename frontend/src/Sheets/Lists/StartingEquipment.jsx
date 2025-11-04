@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState,useEffect } from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -7,31 +7,44 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddItem from '../AddingStuff/AddItem';
+import ItemCache from '../Inventory/ItemCache';
 
 const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
   const [newItemDialogOpen, setNewItemDialogOpen] = useState(false);
-
-  const [options, setOptions] = useState([
-    "Add a new item..."
-  ]);
-
   const [showFixedPicker, setShowFixedPicker] = useState(false);
   const [fixedSelectedNames, setFixedSelectedNames] = useState([]);
+  const [cacheTick, setCacheTick] = useState(0); // keep if you want a tick
+  const [equipmentOptions, setEquipmentOptions] = useState(() => {
+    return ["Add a new item...","Any Simple Weapon","Any Martial Weapon"].concat((ItemCache.getAllNames() || []).map(n => n.charAt(0).toUpperCase() + n.slice(1)));
+  });
 
-  const handleNewItem = (newItem) => {
-        setNewItemDialogOpen(false);
+  useEffect(() => {
+    // update local options immediately and on notifications
+    const updateOptions = () => {
+      setEquipmentOptions(["Add a new item...","Any Simple Weapon","Any Martial Weapon"].concat((ItemCache.getAllNames() || []).map(n => n.charAt(0).toUpperCase() + n.slice(1))));
+      setCacheTick(t => t + 1);
+    };
+    // subscribe
+    const unsub = ItemCache.subscribeItemCache(updateOptions);
+    // also call once to ensure up-to-date on mount
+    updateOptions();
+    return unsub;
+  }, []);
 
-        if(newItem === null || !newItem.name || newItem.name.trim() === '') {
-            return;
-        }
+  const handleNewItem = async (newItem) => {
+    setNewItemDialogOpen(false);
+    if (!newItem?.name || newItem.name.trim() === '') return;
 
-        setOptions((prevOptions) => [...prevOptions, newItem.name]);
-        // optional: immediately add to fixed selection
-        setFixedSelectedNames((prev) => [...prev, newItem.name]);
-    }
+    // await refresh so the options are updated before any immediate UI work
+    await ItemCache.ForceCacheRefresh();
+
+    // optional: immediately add to fixed selection
+    setFixedSelectedNames((prev) => [...prev, newItem.name]);
+  };
 
   const AddStartingItem = (newValue) => {
         // handle "Add a new item..." placeholder
+        console.log("New value:", newValue);
         if(newValue.includes("Add a new item...")) {
             setNewItemDialogOpen(true);
             // remove placeholder from selection
@@ -40,27 +53,12 @@ const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
         setFixedSelectedNames(newValue);
     }
 
-  const GetEquipmentList = async () => {
-    try {
-      const res = await fetch('http://127.0.0.1:8000/info/equipment');
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ detail: 'Unknown' }));
-        throw new Error(`HTTP ${res.status} - ${err.detail}`);
-      }
-      const data = await res.json();
-      setOptions((prevOptions) => [
-        ...prevOptions,
-        ...(Array.isArray(data.equipment) ? data.equipment : [])
-      ]);
-
-    } catch (err) {
-      console.error('Error fetching equipment:', err);
-    }
+  const GetEquipmentList = () => {
+    // keep for backward compatibility, or use equipmentOptions directly
+    return equipmentOptions;
   }
 
-  useEffect(() => {
-    GetEquipmentList();
-  }, []);
+  
 
   // Fixed equipment handlers
   const openFixedPicker = () => setShowFixedPicker(true);
@@ -88,21 +86,54 @@ const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
   };
 
   // Choice groups handlers
+  // Now each option is an array of items (allow multiple, duplicates allowed)
   const addChoiceGroup = () => {
     setNewClass(prev => {
       const next = { ...(prev || {}) };
       next.starting_equipment_choices = Array.isArray(next.starting_equipment_choices) ? [...next.starting_equipment_choices] : [];
-      next.starting_equipment_choices.push([null, null]); // two empty options by default
+      // default group: two empty options (each option is an array)
+      next.starting_equipment_choices.push([[], []]);
       return next;
     });
   };
 
-  const updateChoice = (groupIndex, optionIndex, itemName) => {
-    const selected = itemName ? { name: itemName } : null;
+  // local input state for per-option selection before "Add"
+  const [optionInputs, setOptionInputs] = useState({}); // key: `${gi}-${oi}` => string
+
+  const setOptionInput = (gi, oi, value) => {
+    setOptionInputs(prev => ({ ...prev, [`${gi}-${oi}`]: value }));
+  };
+
+  const getOptionInput = (gi, oi) => {
+    return optionInputs[`${gi}-${oi}`] || null;
+  };
+
+  const addItemToOption = (groupIndex, optionIndex, itemName) => {
+    if (!itemName || itemName === "Add a new item...") {
+      if (itemName === "Add a new item...") setNewItemDialogOpen(true);
+      return;
+    }
+    const newEntry = { name: itemName, uid: `${Date.now()}-${Math.random().toString(36).slice(2,8)}` };
     setNewClass(prev => {
       const next = { ...(prev || {}) };
-      next.starting_equipment_choices = Array.isArray(next.starting_equipment_choices) ? next.starting_equipment_choices.map(g => Array.isArray(g) ? [...g] : []) : [];
-      next.starting_equipment_choices[groupIndex][optionIndex] = selected;
+      next.starting_equipment_choices = Array.isArray(next.starting_equipment_choices) ? next.starting_equipment_choices.map(g => Array.isArray(g) ? g.map(o => Array.isArray(o) ? [...o] : []) : []) : [];
+      // ensure group exists
+      if (!next.starting_equipment_choices[groupIndex]) next.starting_equipment_choices[groupIndex] = [];
+      // ensure option exists
+      if (!Array.isArray(next.starting_equipment_choices[groupIndex][optionIndex])) next.starting_equipment_choices[groupIndex][optionIndex] = [];
+      next.starting_equipment_choices[groupIndex][optionIndex].push(newEntry);
+      return next;
+    });
+    setOptionInput(groupIndex, optionIndex, null);
+  };
+
+  const removeItemFromOption = (groupIndex, optionIndex, itemIndex) => {
+    setNewClass(prev => {
+      const next = { ...(prev || {}) };
+      next.starting_equipment_choices = Array.isArray(next.starting_equipment_choices) ? next.starting_equipment_choices.map(g => Array.isArray(g) ? g.map(o => Array.isArray(o) ? [...o] : []) : []) : [];
+      if (!next.starting_equipment_choices[groupIndex]) return next;
+      if (!Array.isArray(next.starting_equipment_choices[groupIndex][optionIndex])) return next;
+      next.starting_equipment_choices[groupIndex][optionIndex].splice(itemIndex, 1);
       return next;
     });
   };
@@ -111,7 +142,8 @@ const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
     setNewClass(prev => {
       const next = { ...(prev || {}) };
       next.starting_equipment_choices = Array.isArray(next.starting_equipment_choices) ? next.starting_equipment_choices.map(g => Array.isArray(g) ? [...g] : []) : [];
-      next.starting_equipment_choices[groupIndex].push(null);
+      if (!next.starting_equipment_choices[groupIndex]) next.starting_equipment_choices[groupIndex] = [];
+      next.starting_equipment_choices[groupIndex].push([]); // new empty option (array)
       return next;
     });
   };
@@ -120,6 +152,7 @@ const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
     setNewClass(prev => {
       const next = { ...(prev || {}) };
       next.starting_equipment_choices = Array.isArray(next.starting_equipment_choices) ? next.starting_equipment_choices.map(g => Array.isArray(g) ? [...g] : []) : [];
+      if (!next.starting_equipment_choices[groupIndex]) return next;
       next.starting_equipment_choices[groupIndex].splice(optionIndex, 1);
       return next;
     });
@@ -134,7 +167,6 @@ const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
     });
   };
 
-  const selectableOptions = options.filter(o => o !== "Add a new item...");
 
   return (<div className='w-full mt-4'>
     <div className='font-semibold text-2xl'>Starting Equipment</div>
@@ -148,7 +180,7 @@ const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
       <FormControl sx={{ minWidth: 360, mb: 2 }}>
         <Autocomplete
           multiple
-          options={options}
+          options={equipmentOptions}      // use reactive state
           value={fixedSelectedNames}
           onChange={(_, newValue) => { AddStartingItem(newValue); }}
           disableClearable={false}
@@ -189,36 +221,62 @@ const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
             <div>
               <Button size="small" color="success" onClick={() => addOptionToGroup(gi)} sx={{ mr: 1 }}>+ Choice</Button>
               <Button size="small" color="error" onClick={() => removeChoiceGroup(gi)}>Remove Group</Button>
-              
-
             </div>
           </div>
 
           <div style={{ marginTop: 8 }}>
-            {(group || []).map((optionItem, oi) => (
-              <div key={oi} style={{ marginBottom: 6, display: "flex", alignItems: "center" }}>
-                <div style={{ width: 28 }}>{String.fromCharCode(65 + oi)}.</div>
-                <FormControl sx={{ minWidth: 300 }}>
-                  <Autocomplete
-                    options={selectableOptions}
-                    value={optionItem?.name || null}
-                    onChange={(_, newValue) => {
-                      if (newValue === "Add a new item...") {
-                        setNewItemDialogOpen(true);
-                        return;
-                      }
-                      updateChoice(gi, oi, newValue || null);
-                    }}
-                    renderInput={(params) => <TextField {...params} label="Select item" />}
-                    disableClearable
-                    clearOnEscape
-                    getOptionLabel={(opt) => opt}
-                    isOptionEqualToValue={(option, value) => option === value}
-                  />
-                </FormControl>
-                <Button size="small" color="error" onClick={() => removeOptionFromGroup(gi, oi)} sx={{ ml: 1 }}>Remove Option</Button>
-              </div>
-            ))}
+            {(group || []).map((optionItem, oi) => {
+              // coerce legacy single item / null into array-of-items for display
+              const itemsArray = Array.isArray(optionItem) ? optionItem : (optionItem ? [optionItem] : []);
+              return (
+                <div key={oi} style={{ marginBottom: 6, display: "flex", alignItems: "center" }}>
+                  <div style={{ width: 28 }}>{String.fromCharCode(65 + oi)}.</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <FormControl sx={{ minWidth: 300 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <Autocomplete
+                          sx={{minWidth:200}}
+                          options={GetEquipmentList()}
+                          value={getOptionInput(gi, oi)}
+                          onChange={(_, newValue) => {
+                            // instant add: when an option is selected, add it immediately and clear the input
+                            if (!newValue) {
+                              setOptionInput(gi, oi, null);
+                              return;
+                            }
+                            if (newValue === "Add a new item...") {
+                              setNewItemDialogOpen(true);
+                              setOptionInput(gi, oi, null);
+                              return;
+                            }
+                            // add immediately (preserves duplicates via uid)
+                            addItemToOption(gi, oi, newValue);
+                          }}
+                          renderInput={(params) => <TextField {...params} label="Select item to add" />}
+                          clearOnEscape
+                          getOptionLabel={(opt) => opt}
+                          isOptionEqualToValue={(option, value) => option === value}
+                        />
+                        {/* removed the separate 'Add' button: selection now adds instantly */}
+                      </div>
+                    </FormControl>
+
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                      {itemsArray.map((it, idx) => (
+                        <Chip
+                          key={it?.uid || `${it?.name}-${idx}`}
+                          label={it?.name || JSON.stringify(it)}
+                          onDelete={() => removeItemFromOption(gi, oi, idx)}
+                          variant="outlined"
+                        />
+                      ))}
+                    </div>
+
+                    <Button size="small" color="error" onClick={() => removeOptionFromGroup(gi, oi)} sx={{ ml: 1 }}>Remove Option</Button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       ))}
