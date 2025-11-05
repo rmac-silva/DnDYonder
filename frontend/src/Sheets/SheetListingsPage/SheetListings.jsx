@@ -91,7 +91,7 @@ function SheetListings() {
                 const data = await response.json();
                 if (response.ok) {
                     setSheets(data);
-                    console.log("Fetched sheets:", data);
+                    // console.log("Fetched sheets:", data);
                 }
 
             } catch (error) {

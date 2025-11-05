@@ -15,7 +15,7 @@ function SheetHeader({draft,setDraft}) {
                 onBlur={(e) => { draft.name = e.target.value; setDraft({ ...draft }) }}
                 defaultValue={draft.name}
                 placeholder="Grommisk"
-                className={`mt-1 px-2 py-2 block w-full border-b-2 !text-gray-700 !text-3xl ${textClasses}`}
+                className={`mt-1 px-2 py-2 block w-full border-b-2 !text-gray-700 !text-4xl font-semibold ${textClasses}`}
             />
         </div>
 

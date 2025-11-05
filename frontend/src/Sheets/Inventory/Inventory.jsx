@@ -45,10 +45,13 @@ function Inventory({draft, setDraft}) {
     }
 
     const handleRemoveItem = (index) => {
+        console.log("Removing item at index ", index, "Items: ", itemLines);
+        if (window.confirm(`Are you sure you want to remove ${itemLines[index].name}?`)) {
         itemLines.splice(index,1);
         setItemLines([...itemLines]);
         draft.misc.inventory = itemLines;
         setDraft({...draft});
+        }
 
     }
 

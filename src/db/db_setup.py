@@ -24,9 +24,9 @@ def create_users_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS users (
         hashed_email TEXT PRIMARY KEY,
-        username TEXT NOT None,
-        password TEXT NOT None,
-        salt TEXT NOT None
+        username TEXT NOT NULL,
+        password TEXT NOT NULL,
+        salt TEXT NOT NULL
         );'''
     )
     
@@ -34,56 +34,64 @@ def create_sheets_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS sheets (
         sheet_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        hashed_email TEXT NOT None,
-        content TEXT NOT None,
+        hashed_email TEXT NOT NULL,
+        content TEXT NOT NULL,
         FOREIGN KEY(hashed_email) REFERENCES users(hashed_email)
         );''')
     
 def create_classes_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS classes (
-        name TEXT NOT None,
+        name TEXT NOT NULL,
         content TEXT
         );''')
     
 def create_subclasses_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS subclasses (
-        name TEXT NOT None,
+        name TEXT NOT NULL,
         content TEXT
         );''')
+    
+def create_spells_table(c):
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS spells (
+        name TEXT NOT NULL,
+        content TEXT
+        );''')
+    
 def create_races_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS races (
-        name TEXT NOT None,
+        name TEXT NOT NULL,
         content TEXT
         );''')
     
 def create_weapons_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS weapons (
-        name TEXT NOT None,
+        name TEXT NOT NULL,
         content TEXT
         );''')
     
 def create_tools_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS tools (
-        name TEXT NOT None,
+        name TEXT NOT NULL,
         content TEXT
         );''')
     
 def create_miscellaneous_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS miscellaneous (
-        name TEXT NOT None,
+        name TEXT NOT NULL,
         content TEXT
         );''')
     
 def create_armors_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS armors (
-        name TEXT NOT None,
+        name TEXT NOT NULL,
         content TEXT
         );''')
     

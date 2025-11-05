@@ -40,6 +40,23 @@ class InfoManager():
             for cclass in res:
                 formatted_array.append({'c_name': cclass[0], 'c_content': json.loads(cclass[1])})
             return (True, formatted_array)
+        
+    def get_available_spells(self):
+        conn = self.dbm.c().connection
+        
+        com = """
+        SELECT name,content FROM spells;
+        """
+        
+        res = conn.execute(com).fetchall()
+        
+        if res is None:
+            return (True, [])
+        else:
+            formatted_array = []
+            for spell in res:
+                formatted_array.append({'s_name': spell[0], 's_content': json.loads(spell[1])})
+            return (True, formatted_array)
 
     def get_available_races(self):
         conn = self.dbm.c().connection
@@ -228,6 +245,33 @@ class InfoManager():
             
             conn = self.dbm.c().connection
             
+            com = """
+                INSERT INTO subclasses (name, content) VALUES (?, ?);
+                """
+
+            conn.execute(com, (playerClass.get('name',''), json.dumps(playerClass)))
+            conn.commit()
+
+            return (True, "Subclass added successfully")
+        except Exception as e:
+            return (False, str(e))
+        
+    def save_new_spell(self, spell: dict) -> tuple[bool, str]:
+        try:
+            
+            conn = self.dbm.c().connection
+
+            com = """
+                INSERT INTO spells (name, content) VALUES (?, ?);
+                """
+
+            conn.execute(com, (spell.get('name',''), json.dumps(spell)))
+            conn.commit()
+
+            return (True, "Spell added successfully")
+        except Exception as e:
+            return (False, str(e))
+
             com = """
                 INSERT INTO subclasses (name, content) VALUES (?, ?);
                 """

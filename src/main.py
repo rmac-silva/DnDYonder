@@ -191,6 +191,29 @@ def save_new_subclass(data: dict):
     else:
         return res[1]
     
+@app.get("/info/spells")
+def get_available_spells( ):
+    res = info_manager.get_available_spells()
+
+    if res[0]:
+        return {"spells": res[1]}
+    else:
+        raise HTTPException(status_code=500, detail="Could not fetch spells")
+
+@app.post("/info/spells")
+def save_new_spell(data: dict):
+    email = jwt_manager.fetch_email_from_token(data.get('token', False))
+    
+    if email[0] is False:
+        raise HTTPException(status_code=403, detail=email[1])
+    
+
+    res = info_manager.save_new_spell(data.get('spell', {}))
+    if res[0] is False:
+        raise HTTPException(status_code=500, detail=res[1])
+    else:
+        return res[1]
+    
 @app.get("/info/races")
 def get_available_races( ):
     res = info_manager.get_available_races()

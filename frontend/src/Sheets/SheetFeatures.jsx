@@ -21,7 +21,7 @@ function SubclassInfo({ draft, setDraft }) {
     const classFeatures = (draft?.class?.class_features || []).filter(f => parseInt(f.level_requirement) <= parseInt(draft?.stats?.level));
     const raceFeatures = (draft?.race?.race_features || []).filter(f => parseInt(f.level_requirement) <= parseInt(draft?.stats?.level));
     const subclassFeatures = (draft?.class.subclass?.features || []).filter(f => parseInt(f.level_requirement) <= parseInt(draft?.stats?.level));
-    console.log('Subclass features:', subclassFeatures);
+    // console.log('Subclass features:', subclassFeatures);
     const combined = [...classFeatures, ...raceFeatures, ...subclassFeatures].sort((a, b) => a.level_requirement - b.level_requirement);
     setSheetFeatures(combined);
     setLoading(false);

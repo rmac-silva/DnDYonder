@@ -1,3 +1,20 @@
+class Spell():
+    
+    def __init__(self, name: str = "", level: int = 0, school: str = "", casting_time: str = "",
+                 range_: str = "", components: str = "", duration: str = "", description: str = "",
+                 is_ritual: bool = False):
+        self.name = name
+        self.description = description
+        
+        self.level = level
+        self.casting_time = casting_time
+        self.range_ = range_
+        self.components = components
+        self.duration = duration
+        
+        self.school = school
+        self.is_ritual = is_ritual
+
 class Spellcasting:
     def __init__(self, level: int = -1):
         self.level = level

@@ -3,7 +3,7 @@ import { useSwipeable } from 'react-swipeable';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
@@ -14,7 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
  * - if swipe exceeds threshold it stays revealed
  * - tap Delete to confirm
  */
-const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
+const SwipeableSpellAccordion = ({ spell, onDelete }) => {
     const THRESHOLD = 80; // px to reveal delete
     const MAX_SLIDE = 120; // max translate
     const [translateX, setTranslateX] = useState(0);
@@ -53,8 +53,8 @@ const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
 
     const handleDelete = () => {
         // optional: confirm
-        if (window.confirm(`Delete feature "${feature.name}"?`)) {
-            onDelete?.(feature);
+        if (window.confirm(`Delete spell "${spell.name}"?`)) {
+            onDelete?.(spell);
         } else {
             handleHide();
         }
@@ -79,19 +79,18 @@ const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
                     top: 0,
                     bottom: 0,
                     width: THRESHOLD,
-                    background: '#ffffff',
                     display: revealed ? 'flex' : 'none',
                     alignItems: 'center',
                     justifyContent: 'center',
                     zIndex: 1,
                 }}
+                
             >
                 <Button
                     variant="contained"
                     color="error"
                     onClick={handleDelete}
                     size="small"
-                    
                 >
                     <DeleteIcon />
                 </Button>
@@ -106,35 +105,52 @@ const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
                 }}
             >
                 <Accordion
-                    key={`${feature.name}-${feature.level_requirement}`}
+                    key={`${spell.name}-${spell.level_requirement}`}
                     TransitionProps={{ unmountOnExit: true }}
                     sx={{
                         mb: 1,
                         boxShadow: 'none',
                         '&:before': { display: 'none' },
-                        borderRadius: 2,
-                        border: '1px solid rgba(0,0,0,0.04)',
+                        borderRadius: 25,
+                        border: '1px solid rgba(0,0,0,0.30)',
                         backgroundColor: '#fff',
                     }}
                 >
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         sx={{ px: 2, py: 1.25 }}
+                        className='!bg-amber-50'
                     >
                         <Slide direction="left" in={true} mountOnEnter unmountOnExit>
 
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', gap: 12 }}>
-                                <Typography sx={{ fontWeight: 800 }}>{feature.name}</Typography>
-                                <Typography sx={{ fontSize: '0.85rem', color: '#666' }}>Level {feature.level_requirement}</Typography>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'left', width: '100%', }}>
+                                <div className="px-2 bg-amber-50 rounded w-full">
 
-                            </div>
+                                    <div className="font-semibold text-xl">{spell.name}</div>
+
+                                    {/* Range / Casting Time */}
+                                    <div className="flex space-x-2">
+                                        <div className="text-md"><strong>Casting Time:</strong> {spell.casting_time}</div>
+                                        <div className="text-md"><strong>Range:</strong> {spell.range}</div>
+                                        <div className="text-md"><strong>Level:</strong> {spell.level}</div>
+                                    </div>
+
+                                    <div className="text-md"><strong className="!text-md">Duration:</strong> {spell.duration}</div>
+                                </div>
+
+
+                            </Box>
                         </Slide>
                     </AccordionSummary>
 
-                    <AccordionDetails sx={{ pt: 0, px: 2, pb: 2 }}>
-                        <Typography className='!text-lg' variant="body2" sx={{ whiteSpace: 'pre-wrap', color: '#333', lineHeight: 1.45 }}>
-                            {feature.description || 'No description provided.'}
-                        </Typography>
+                    <AccordionDetails sx={{ pt: 0, px: 2, pb: 2 }} className='!bg-amber-50'>
+                        <div className=" px-2 border-t-2 ">
+
+                            <div className="text-md mt-2"><strong >Components:</strong> {spell.components}</div>
+                            <div className="mt-2 text-md">{spell.description.split("\n\n").map((para, index) => (
+                                <p className="mt-2" key={index}>{para}</p>
+                            ))}</div>
+                        </div>
                     </AccordionDetails>
                 </Accordion>
             </div>
@@ -143,4 +159,4 @@ const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
     );
 };
 
-export default SwipeableFeatureAccordion;
+export default SwipeableSpellAccordion;

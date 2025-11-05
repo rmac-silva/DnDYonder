@@ -6,6 +6,7 @@ from sheet.attributes import CharacterAttributes
 from sheet.race import CharacterRace
 from sheet.background import CharacterBackground
 from sheet.miscellaneousInfo import MiscellaneousInfo
+from sheet.characterInfo import CharacterInfo
      
 # This class will be initialized to create a new sheet. Further changes to it (health, AC etc... will be saved afterwards)
 
@@ -26,6 +27,7 @@ class CharacterSheet():
         self.attributes = CharacterAttributes()
         self.stats = CharacterStats() # Variable stats like HP, AC, Speed, Level etc...
         self.misc = MiscellaneousInfo()
+        self.char_info = CharacterInfo()
         
     def jsonify(self):
         return {
@@ -36,7 +38,8 @@ class CharacterSheet():
             "background": self.background.jsonify(),
             "attributes": self.attributes.jsonify(),
             "stats": self.stats.jsonify(),
-            "misc": self.misc.jsonify()
+            "misc": self.misc.jsonify(),
+            "char_info": self.char_info.jsonify()
         }
         
     def load_from_dict(self, data: dict):
