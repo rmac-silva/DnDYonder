@@ -141,7 +141,7 @@ function Spellcasting({ draft, setDraft }) {
 
 
                 {/* Modifier, Spellcasting Ability, and Max Spell Slot Level */}
-                <div className="relative flex flex-col w-auto items-center justify-center ">
+                <div className="relative flex flex-col w-auto items-center justify-center top-10">
 
                     {/* Input that specifies the max level of the spell slot */}
                     <div className="flex space-x-2 mt-2 justify-center items-center w-full ml-6 mr-2">

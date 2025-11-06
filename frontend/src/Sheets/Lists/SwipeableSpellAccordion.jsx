@@ -98,6 +98,7 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
 
             {/* Sliding content */}
             <div
+            className='inset-shadow-xl'
                 style={{
                     transform: `translateX(${translateX}px)`,
                     transition: 'transform 160ms ease',
@@ -106,13 +107,14 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
             >
                 <Accordion
                     key={`${spell.name}-${spell.level_requirement}`}
-                    TransitionProps={{ unmountOnExit: true }}
+                    
+                    className='!shadow-sm  '
                     sx={{
                         mb: 1,
-                        boxShadow: 'none',
+                        
                         '&:before': { display: 'none' },
-                        borderRadius: 25,
-                        border: '1px solid rgba(0,0,0,0.30)',
+
+                        
                         backgroundColor: '#fff',
                     }}
                 >
@@ -129,8 +131,9 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
                                     <div className="font-semibold text-xl">{spell.name}</div>
 
                                     {/* Range / Casting Time */}
+                                    <div className="text-md"><strong>Casting Time:</strong> {spell.casting_time}</div>
                                     <div className="flex space-x-2">
-                                        <div className="text-md"><strong>Casting Time:</strong> {spell.casting_time}</div>
+                                        
                                         <div className="text-md"><strong>Range:</strong> {spell.range}</div>
                                         <div className="text-md"><strong>Level:</strong> {spell.level}</div>
                                     </div>
@@ -146,8 +149,8 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
                     <AccordionDetails sx={{ pt: 0, px: 2, pb: 2 }} className='!bg-amber-50'>
                         <div className=" px-2 border-t-2 ">
 
-                            <div className="text-md mt-2"><strong >Components:</strong> {spell.components}</div>
-                            <div className="mt-2 text-md">{spell.description.split("\n\n").map((para, index) => (
+                            <div className="text-sm mt-2"><strong >Components:</strong> {spell.components}</div>
+                            <div className="mt-2 text-sm">{spell.description.split("\n\n").map((para, index) => (
                                 <p className="mt-2" key={index}>{para}</p>
                             ))}</div>
                         </div>

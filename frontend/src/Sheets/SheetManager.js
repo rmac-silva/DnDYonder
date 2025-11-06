@@ -36,6 +36,12 @@ export function setDraftGlobal(draft) {
 }
 
 export function saveSheet() {
+    //Check if the sheet is a valid sheet
+    if(draftGlobal === null || draftGlobal.name === '') {
+        console.warn("Attempted to save sheet before it was initialized");
+        return;
+    }
+
     /// Saves the sheet in its current state to the backend
     if (saving) return; //Prevent multiple simultaneous saves
     saving = true;

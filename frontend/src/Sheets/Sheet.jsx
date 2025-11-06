@@ -29,6 +29,8 @@ import Spellcasting from './Spellcasting/Spellcasting.jsx';
 import SpellList from './Spellcasting/SpellList.jsx';
 
 import CharacterInfo from './CharacterInfo/CharacterInfo.jsx';
+import Backstory from './CharacterInfo/Backstory.jsx';
+import PersonalityTraits from './CharacterInfo/PersonalityTraits.jsx';
 
 function GetSheet() {
 
@@ -126,7 +128,7 @@ function GetSheet() {
         //This is a setup function, gets called when the depencies change
         const controller = new AbortController();
         let mounted = true;
-
+        setLoading(true);
         if (sheetid === undefined || hashedemail === undefined) {
             loadNewSheet(mounted); //Call the load function
             setCreatingNewSheet(true);
@@ -136,6 +138,7 @@ function GetSheet() {
             loadExistingSheet(mounted);
 
         }
+        setLoading(false);
         return () => { saveSheet(); mounted = false; controller.abort(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [email]); //Set the dependencies to [] so they never change, meaning the code will never be run again
@@ -251,7 +254,7 @@ function GetSheet() {
                                     </div>
 
                                     {/* Third Column - Traits and Features */}
-                                    <div className=" bg-white flex flex-col p-4 w-1/3 rounded shadow">
+                                    <div className=" bg-white flex flex-col p-4 w-38/100 rounded shadow">
                                         {/* placeholder for traits and features */}
                                         <SubclassInfo draft={draft} setDraft={updateDraft} />
                                         <SheetFeatures draft={draft} setDraft={updateDraft} />
@@ -266,26 +269,24 @@ function GetSheet() {
                             <div className="mt-4 p-4 bg-zinc-200 mx-5 justify-self-center flex flex-col rounded w-full  text-gray-700">
 
                                 {/* Header */}
-                                <div className='flex items-center justify-center gap-4'>
+                                <div className='flex items-center justify-center gap-4 '>
                                     <CharacterInfo draft={draft} setDraft={updateDraft}/>
                                 </div>
 
                                 {/* Character Traits etc... Spellcasting if applicable*/}
                                 <div className=' w-full flex space-x-2 flex-wrap' >
-                                    <div className= {`bg-white rounded shadow p-2 flex flex-col items-center space-y-2 ${draft.stats.level >= draft.class.spellcasting.level ? 'w-23/100' : 'w-49/100'}`}>
-                                        <div className='text-4xl font-semibold'>Backstory</div>
-                                        <div >TODO</div>
+                                    <div className= {`  flex flex-col items-center space-y-2  ${draft.stats.level >= draft.class.spellcasting.level ? 'w-23/100' : 'w-49/100'}`}>
+                                        <Backstory draft={draft} setDraft={updateDraft} />
                                     </div>
                                     {draft.stats.level >= draft.class.spellcasting.level &&
-                                        <div className=' bg-white rounded shadow p-2 flex flex-col items-center space-y-2 min-w-230 max-w-230'>
+                                        <div className=' bg-white rounded shadow p-2 flex flex-col items-center space-y-2 min-w-230 max-w-230 h-full'>
                                             <Spellcasting draft={draft} setDraft={updateDraft} />
                                             <SpellList draft={draft} setDraft={updateDraft} />
                                         </div>
                                     }
-                                    <div className= {`bg-white rounded shadow p-2 flex flex-col items-center space-y-2 ${draft.stats.level >= draft.class.spellcasting.level ? 'w-23/100' : 'w-49/100'}`}>
-
-                                        <div className='text-4xl font-semibold'>Backstory</div>
-                                        <div >TODO</div>
+                                    <div className= {` flex flex-col items-center space-y-2 ${draft.stats.level >= draft.class.spellcasting.level ? 'w-23/100' : 'w-49/100'}`}>
+                                        <PersonalityTraits draft={draft} setDraft={updateDraft} />
+                                        
                                     </div>
 
                                 </div>

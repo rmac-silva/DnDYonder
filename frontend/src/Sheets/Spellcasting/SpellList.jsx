@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 import AddNewSpell from "./AddNewSpell";
 import SwipeableSpellAccordion from "../Lists/SwipeableSpellAccordion";
@@ -19,7 +19,8 @@ function SpellList({ draft, setDraft }) {
             return a.name.localeCompare(b.name);
         });
         setSortedSpells(spellsCopy);
-    }, [draft.class.spellcasting,newSpells]);
+        setNewSpells(false);
+    }, [draft.class.spellcasting, newSpells]);
 
     function handleDelete(spell) {
         draft.class.spellcasting.spells_known = draft.class.spellcasting.spells_known.filter(s => s !== spell);
@@ -40,16 +41,16 @@ function SpellList({ draft, setDraft }) {
                 key={`${spell.name}-${spell.level}-${key}`}
                 spell={spell}
                 onDelete={handleDelete}
-                />
+            />
 
         );
     }
 
     return (
-        <div className="w-full bg-white rounded shadow p-2 flex flex-col items-center space-y-2">
+        <div className="w-full  mt-6 rounded shadow p-2 flex flex-col items-center space-y-2">
             <div className="text-3xl font-semibold">Spell List</div>
             {/* Spell list content goes here */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4 mt-2 bg-white  p-2 rounded ">
                 {/* Example spell entry */}
                 {sortedSpells.map((spell, index) => (
                     DrawSpell(spell, index)
