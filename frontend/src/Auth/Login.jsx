@@ -3,25 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar.jsx';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
 import Link from '@mui/material/Link';
 import { useAuth } from '../Auth/AuthContext';
 
 export default function Login() {
 
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { email, setEmail, checkAuth } = useAuth();
+    const { setAuthUsername, checkAuth } = useAuth();
 
 
     const navigate = useNavigate();
 
     const validateForm = () => {
-        if (!username || !password) {
+        if (!username) {
             setError('Please fill in the required fields.');
             return false;
         }
@@ -37,8 +34,7 @@ export default function Login() {
         setLoading(true);
 
         const formDetails = new URLSearchParams();
-        formDetails.append('email', username);
-        formDetails.append('password', password);
+        formDetails.append('username', username);
 
         try {
             const response = await fetch('http://127.0.0.1:8000/auth/token', {
@@ -53,9 +49,8 @@ export default function Login() {
 
             if (response.ok) {
                 const data = await response.json();
-                
                 localStorage.setItem('authToken', data.access_token);
-                setEmail(data.email);
+                setAuthUsername(data.username);
                 await checkAuth();
                 navigate('/');
             } else {
@@ -93,10 +88,10 @@ export default function Login() {
                             className='!w-full'
                             required
                             id="filled-email-input"
-                            label="Email"
-                            type="email"
+                            label="Username"
+                            type="text"
                             size="medium"
-                            autoComplete="current-email"
+                            autoComplete="current-username"
                             onChange={(e) => setUsername(e.target.value)}
                             variant="filled"
                             slotProps={{
@@ -106,27 +101,7 @@ export default function Login() {
                         />
                     </div>
 
-                    {/* Password row: wider so the total row (input + button) extends further right */}
-                    <div style={{ width: 838 }} className=" flex items-center">
-                        <TextField
-                            required
-                            className='!w-full'
-                            id="filled-password-input"
-                            label="Password"
-                            type={showPassword ? "text" : "password"}
-                            autoComplete="current-password"
-                            variant="filled"
-                            onChange={(e) => setPassword(e.target.value)}
-                            slotProps={{
-                                inputLabel: { style: { fontSize: '1.25rem' } },
-                                input: { style: { fontSize: '1.25rem' } }
-                            }}
-                            sx={{ mr: 1 }}
-                        />
-                        <IconButton aria-label="show password" edge="end" onClick={() => setShowPassword(!showPassword)}>
-                            <Visibility />
-                        </IconButton>
-                    </div>
+                    
 
                     {/* Not yet registered? Click here */}
                     <div className="text-sm mt-1 mb-6">

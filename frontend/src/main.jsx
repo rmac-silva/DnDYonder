@@ -27,8 +27,8 @@ createRoot(document.getElementById('root')).render(
     <AuthProvider>
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/sheets/:hashedemail" element={<SheetListings />} />
-        <Route path="/sheets/:hashedemail/:sheetid" element={<Sheet />} />
+        <Route path="/sheets/:username" element={<SheetListings />} />
+        <Route path="/sheets/:username/:sheetid" element={<Sheet />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/NewSheet" element={<Sheet />} />

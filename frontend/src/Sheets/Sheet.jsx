@@ -65,8 +65,8 @@ function GetSheet() {
     const [creatingNewSheet, setCreatingNewSheet] = useState(false);
 
     const navigate = useNavigate();
-    const { sheetid, hashedemail } = useParams();
-    const { email, checkAuth } = useAuth();
+    const { sheetid } = useParams();
+    const { authUsername, checkAuth } = useAuth();
 
     async function loadNewSheet(mounted) {
 
@@ -80,7 +80,7 @@ function GetSheet() {
             if (!mounted) return;
             console.log("New sheet data:", data);
             setDraft(data);
-            initSheetManager(data, undefined, email);
+            initSheetManager(data, undefined, authUsername);
             // console.log("Loaded new sheet:", data); //Enable this to see the json layout
         } catch (err) {
             if (err.name === 'AbortError') return;
@@ -94,7 +94,7 @@ function GetSheet() {
     async function loadExistingSheet(mounted) {
 
         //Check if we have the hashed email
-        if (email === null) {
+        if (authUsername === null) {
             await checkAuth();
             return;
         }
@@ -103,7 +103,7 @@ function GetSheet() {
         setError(null);
         try {
             // console.log(`Fetching sheet for ${hashedemail} with ID ${sheetid}`);
-            const res = await fetch(`http://127.0.0.1:8000/sheets/${hashedemail}/${sheetid}`);
+            const res = await fetch(`http://127.0.0.1:8000/sheets/${authUsername}/${sheetid}`);
             if (!res.ok) {
                 const data = await res.json();
                 throw new Error(`HTTP ${res.status} - ${data.detail}`);
@@ -112,7 +112,7 @@ function GetSheet() {
             if (!mounted) return;
 
             setDraft(data);
-            initSheetManager(data, sheetid, hashedemail);
+            initSheetManager(data, sheetid, authUsername);
 
         } catch (err) {
 
@@ -129,10 +129,10 @@ function GetSheet() {
         const controller = new AbortController();
         let mounted = true;
         setLoading(true);
-        if (sheetid === undefined || hashedemail === undefined) {
+        if (sheetid === undefined || authUsername === undefined) {
             loadNewSheet(mounted); //Call the load function
             setCreatingNewSheet(true);
-            initSheetManager(draft, undefined, hashedemail);
+            initSheetManager(draft, undefined, authUsername);
 
         } else {
             loadExistingSheet(mounted);
@@ -141,7 +141,7 @@ function GetSheet() {
         setLoading(false);
         return () => { saveSheet(); mounted = false; controller.abort(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [email]); //Set the dependencies to [] so they never change, meaning the code will never be run again
+    }, [authUsername]); //Set the dependencies to [] so they never change, meaning the code will never be run again
 
 
     function updateDraft(newDraft) {
@@ -170,7 +170,7 @@ function GetSheet() {
         }
 
         setCreatingNewSheet(false);
-        initSheetManager(getDraftGlobal(), undefined, email);
+        initSheetManager(getDraftGlobal(), undefined, authUsername);
 
 
         //Now save the sheet to the backend
@@ -181,7 +181,7 @@ function GetSheet() {
     }
 
     function cancelCharacterCreation() {
-        navigate(`/sheets/${email}/`);
+        navigate(`/sheets/${authUsername}/`);
     }
 
     // warn on page unload/refresh when sheet has unsaved changes

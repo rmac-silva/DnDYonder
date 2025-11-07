@@ -4,29 +4,29 @@
 import sqlite3
 import json
 
-def setup_database():
-    conn = sqlite3.connect("./src/db/yonder-db.db")
+def setup_database(db_path : str):
+    conn = sqlite3.connect(db_path)
     c = conn.cursor()
     
     # Create tables if they do not exist
     create_users_table(c)
     create_sheets_table(c)
     create_classes_table(c)
+    create_subclasses_table(c)
+    create_spells_table(c)
     create_races_table(c)
     create_weapons_table(c)
     create_tools_table(c)
     create_miscellaneous_table(c)
     create_armors_table(c)
+    
     conn.commit()
     conn.close()
 
 def create_users_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS users (
-        hashed_email TEXT PRIMARY KEY,
-        username TEXT NOT NULL,
-        password TEXT NOT NULL,
-        salt TEXT NOT NULL
+        username TEXT NOT NULL UNIQUE
         );'''
     )
     
@@ -34,9 +34,9 @@ def create_sheets_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS sheets (
         sheet_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        hashed_email TEXT NOT NULL,
+        username TEXT NOT NULL,
         content TEXT NOT NULL,
-        FOREIGN KEY(hashed_email) REFERENCES users(hashed_email)
+        FOREIGN KEY(username) REFERENCES users(username)
         );''')
     
 def create_classes_table(c):
@@ -311,9 +311,3 @@ json_to_update = {
   },
   "num_skill_proficiencies": "3"
 }
-
-conn = sqlite3.connect("./src/db/yonder-db.db")
-c = conn.cursor()
-
-c.execute("UPDATE classes SET content = ? WHERE name = ?", (json.dumps(json_to_update), "Ranger"))
-conn.commit()

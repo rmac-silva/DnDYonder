@@ -10,8 +10,6 @@ import Visibility from '@mui/icons-material/Visibility';
 export default function Register() {
 
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -21,7 +19,7 @@ export default function Register() {
     const navigate = useNavigate();
 
     function validateForm() {
-        if (!username || !password) {
+        if (!username) {
             setError('Please fill in the required fields.');
             return false;
         }
@@ -38,8 +36,8 @@ export default function Register() {
         setLoading(true);
 
         const formDetails = new URLSearchParams();
-        formDetails.append('email', username);
-        formDetails.append('password', password);
+        formDetails.append('username', username);
+        
         try {
             const response = await fetch('http://127.0.0.1:8000/auth/register', {
                 method: 'POST',
@@ -52,6 +50,7 @@ export default function Register() {
             if(response.ok) {
                 setLoading(false);
                 navigate('/login');
+                alert('Registration successful! Please log in.');
                 return;
             } else {
                 const data = await response.json();
@@ -92,10 +91,10 @@ export default function Register() {
                             className='!w-full'
                             required
                             id="filled-email-input"
-                            label="Email"
-                            type="email"
+                            label="Username"
+                            type="text"
                             size="medium"
-                            autoComplete="current-email"
+                            autoComplete="current-username"
                             onChange={(e) => setUsername(e.target.value)}
                             variant="filled"
                             slotProps={{
@@ -104,30 +103,6 @@ export default function Register() {
                             }}
                         />
                     </div>
-
-                    {/* Password row: wider so the total row (input + button) extends further right */}
-                    <div style={{ width: 838 }} className="mb-6 flex items-center">
-                        <TextField
-                            required
-                            className='!w-full'
-                            id="filled-password-input"
-                            label="Password"
-                            type={showPassword ? "text" : "password"}
-                            autoComplete="current-password"
-                            variant="filled"
-                            onChange={(e) => setPassword(e.target.value)}
-                            slotProps={{
-                                inputLabel: { style: { fontSize: '1.25rem' } },
-                                input: { style: { fontSize: '1.25rem' } }
-                            }}
-                            sx={{ mr: 1 }}
-                        />
-                        <IconButton aria-label="show password" edge="end" onClick={() => setShowPassword(!showPassword)}>
-                            <Visibility />
-                        </IconButton>
-                    </div>
-
-
 
                     {/* Login Button - centered */}
                     <div className="w-full flex justify-center">

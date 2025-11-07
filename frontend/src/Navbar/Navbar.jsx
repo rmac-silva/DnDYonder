@@ -12,8 +12,8 @@ import { isSheetSaved,saveSheet } from '../Sheets/SheetManager.js'; // <-- added
 function Navbar() {
     const location = useLocation();
     const pathname = location.pathname || '/';
-    const { isLoggedIn, logout, email } = useAuth();
-    const navigate = useNavigate(); // <-- added
+    const { isLoggedIn, logout, authUsername } = useAuth();
+    const navigate = useNavigate();
 
     const handleNavigate = (path) => {
         try {
@@ -27,6 +27,11 @@ function Navbar() {
         }
         navigate(path);
     };
+
+    function handleLogout() {
+        logout();
+        navigate('/');
+    }
 
     return (
         <AppBar position="static" color="inherit" className='!bg-slate-300'>
@@ -65,12 +70,12 @@ function Navbar() {
 
                     {isLoggedIn &&
                         <Button
-                            onClick={() => handleNavigate(`/Sheets/${email}`)} /* intercept navigation to warn about unsaved changes */
+                            onClick={() => handleNavigate(`/Sheets/${authUsername}`)} /* intercept navigation to warn about unsaved changes */
                             sx={{
                                 fontWeight: 600,
                                 fontSize: '1.125rem',
                                 textTransform: 'none',
-                                color: pathname === `/Sheets/${email}` ? 'primary.main' : 'text.primary',
+                                color: pathname === `/Sheets/${authUsername}` ? 'primary.main' : 'text.primary',
                             }}
                         >
                             Sheets
@@ -101,7 +106,7 @@ function Navbar() {
                 <Box className='!flex !ml-auto'>
                     <Button
                         component={RouterLink}
-                        onClick={() => {logout()}}
+                        onClick={() => {handleLogout()}}
                         sx={{
                             fontWeight: 600,
                             fontSize: '1.125rem',

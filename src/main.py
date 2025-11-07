@@ -1,24 +1,34 @@
 from fastapi import  Form, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
+from pydantic import BaseModel
+import os
+from dotenv import load_dotenv
+
+from auth.jwt import JWTManager
+from utils.infoManager import InfoManager
 from sheet.sheet import CharacterSheet
 from utils.db_manager import DatabaseManager
-from auth.jwt import JWTManager
-from pydantic import BaseModel
-from utils.infoManager import InfoManager
+from utils.WikidotScraper import WikidotScraper
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 origins = ["http://localhost:5173"]
 
-#JWT Secrets
-#TODO - Move to .cfg file
-SECRET_KEY = "your_secret_key"
-ALGORITHM = "HS256"
+#JWT Secrets - Fetched from .env file
+load_dotenv()  # Load environment variables from a .env file
+SECRET_KEY = os.getenv("SECRET_KEY", "default_secret_key")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
+DB_PATH = os.getenv("DB_PATH", "NO_VALID_DATABASE_PATH")
+
 ACCESS_TOKEN_EXPIRE_MINUTES = 3600
 
 #Database access
-db = DatabaseManager()
+db = DatabaseManager(DB_PATH)
+
+#Scraper
+wks = WikidotScraper()
 
 #JWT Manager
 jwt_manager = JWTManager(db, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -36,29 +46,21 @@ app.add_middleware(
 )
 
 class UserCredentials(BaseModel):
-    email: str
-    password: str
+    username: str
 
 #region - Auth
+
 @app.post("/auth/register")
-def register_user(email : str = Form(...), password : str = Form(...)):
-    result = db.create_user(email, password)
+def register_user(username : str = Form(...)):
+    result = db.create_user(username)
     if result[0]:
         return {"message": result[1]}
     else:
         raise HTTPException(status_code=400, detail=result[1])
-
-# @app.post("/auth/login")
-# def login_user(email: str = Form(...), password: str = Form(...)):
-#     result = db.authenticate_user(email, password)
-#     if result[0]:
-#         return {"message": result[1]}
-#     else:
-#         raise HTTPException(status_code=400, detail=result[1])
     
 @app.post("/auth/token")
-def login_for_access_token(email: str = Form(...), password: str = Form(...)):
-    res = jwt_manager.login_for_access_token(email, password)
+def login_for_access_token(username: str = Form(...)):
+    res = jwt_manager.login_for_access_token(username)
     if res[0]:
         return res[1]
     else:
@@ -68,7 +70,7 @@ def login_for_access_token(email: str = Form(...), password: str = Form(...)):
 def verify_token(token: str):
     res = jwt_manager.verify_token(token)
     if res[0]:
-        return {"message": "Token is valid", "email": res[1]}
+        return {"message": "Token is valid", "username": res[1]}
     else:
         raise HTTPException(status_code=403, detail=res[1])
 #region - Sheets
@@ -89,45 +91,44 @@ def save_sheet(sheet : dict):
     Raises:
         HTTPException: _description_
     """
-    email = jwt_manager.fetch_email_from_token(sheet.get('token', False))
+    username = jwt_manager.fetch_username_from_token(sheet.get('token', False))
     
-    if email[0] is False:
-        raise HTTPException(status_code=403, detail=email[1])
-    else:
-        email = email[1]
+    if username[0] is False:
+        raise HTTPException(status_code=403, detail=username[1])
     
-    res = db.save_character_sheet(email, sheet.get('sheet', {}))
+    res = db.save_character_sheet(sheet.get('username',""), sheet.get('sheet', {}))
     if res[0] is False:
         raise HTTPException(status_code=500, detail=res[1])
     else:
         return res[1]
 
-@app.get("/sheets/{email}/{sheet_id}")
-def fetch_sheet_specific(email: str, sheet_id: int):
-    res = db.retrieve_character_sheet(email, sheet_id)
+@app.get("/sheets/{username}/{sheet_id}")
+def fetch_sheet_specific(username: str, sheet_id: int):
+    res = db.retrieve_character_sheet(username, sheet_id)
     if res[0] is False:
         raise HTTPException(status_code=404, detail=res[1])
     else:
         return res[1]
     
-@app.post("/sheets/{email}/{sheet_id}")
-def save_sheet_specific(email: str, sheet_id: int, sheet: dict):
-    res = db.update_character_sheet(email, sheet_id, sheet.get('sheet', {}))
+@app.post("/sheets/{username}/{sheet_id}")
+def save_sheet_specific(username: str, sheet_id: int, sheet: dict):
+    res = db.update_character_sheet(username, sheet_id, sheet.get('sheet', {}))
     if res[0] is False:
         raise HTTPException(status_code=500, detail=res[1])
     else:
         return res[1]
 
-@app.get("/sheets/{email}")
-def fetch_all_sheets(email: str):
-    res = db.retrieve_all_sheets(email)
+@app.get("/sheets/{username}")
+def fetch_all_sheets(username: str):
+    print("Fetching all sheets for user:", username)
+    res = db.retrieve_all_sheets(username)
     if res[0] is False:
         raise HTTPException(status_code=404, detail=res[1])
     else:
         return res[1]
     
-@app.delete("/sheets/{email}/{sheet_id}")
-def delete_sheet(email: str, sheet_id: int, data : dict):
+@app.delete("/sheets/{username}/{sheet_id}")
+def delete_sheet(username: str, sheet_id: int, data : dict):
     token = data.get('token', False)
     if not token:
         raise HTTPException(status_code=403, detail="No token provided")
@@ -135,7 +136,7 @@ def delete_sheet(email: str, sheet_id: int, data : dict):
     if(jwt_manager.verify_token(token)[0] is False):
         raise HTTPException(status_code=403, detail="Invalid token")
     
-    res = db.delete_character_sheet(email, sheet_id)
+    res = db.delete_character_sheet(username, sheet_id)
     if res[0] is False:
         raise HTTPException(status_code=500, detail=res[1])
     else:
@@ -156,10 +157,10 @@ def get_available_classes( ):
 
 @app.post("/info/classes")
 def save_new_class(data: dict):
-    email = jwt_manager.fetch_email_from_token(data.get('token', False))
+    username = jwt_manager.fetch_username_from_token(data.get('token', False))
     
-    if email[0] is False:
-        raise HTTPException(status_code=403, detail=email[1])
+    if username[0] is False:
+        raise HTTPException(status_code=403, detail=username[1])
     
 
     res = info_manager.save_new_class(data.get('class', {}))
@@ -179,10 +180,10 @@ def get_available_subclasses( ):
 
 @app.post("/info/subclasses")
 def save_new_subclass(data: dict):
-    email = jwt_manager.fetch_email_from_token(data.get('token', False))
+    username = jwt_manager.fetch_username_from_token(data.get('token', False))
     
-    if email[0] is False:
-        raise HTTPException(status_code=403, detail=email[1])
+    if username[0] is False:
+        raise HTTPException(status_code=403, detail=username[1])
     
 
     res = info_manager.save_new_subclass(data.get('subclass', {}))
@@ -202,10 +203,10 @@ def get_available_spells( ):
 
 @app.post("/info/spells")
 def save_new_spell(data: dict):
-    email = jwt_manager.fetch_email_from_token(data.get('token', False))
+    username = jwt_manager.fetch_username_from_token(data.get('token', False))
     
-    if email[0] is False:
-        raise HTTPException(status_code=403, detail=email[1])
+    if username[0] is False:
+        raise HTTPException(status_code=403, detail=username[1])
     
 
     res = info_manager.save_new_spell(data.get('spell', {}))
@@ -225,10 +226,10 @@ def get_available_races( ):
 
 @app.post("/info/races")
 def save_new_race(data: dict):
-    email = jwt_manager.fetch_email_from_token(data.get('token', False))
+    username = jwt_manager.fetch_username_from_token(data.get('token', False))
     
-    if email[0] is False:
-        raise HTTPException(status_code=403, detail=email[1])
+    if username[0] is False:
+        raise HTTPException(status_code=403, detail=username[1])
     
 
     res = info_manager.save_new_race(data.get('race', {}))
@@ -276,14 +277,23 @@ def get_class_feats( playerClass : str):
 
 @app.post("/info/save_item")
 def save_new_item(item: dict):
-    email = jwt_manager.fetch_email_from_token(item.get('token', False))
+    username = jwt_manager.fetch_username_from_token(item.get('token', False))
     
-    if email[0] is False:
-        raise HTTPException(status_code=403, detail=email[1])
+    if username[0] is False:
+        raise HTTPException(status_code=403, detail=username[1])
     else:
         res = info_manager.save_new_item(item.get('item', {}),item.get('type', ''))
         if res[0] is False:
             raise HTTPException(status_code=500, detail=res[1])
         else:
             return res[1]
+#endregion
+
+#region - WikiDot WebScraping
+
+@app.get("/wikidot/class/{class_name}")
+def get_wikidot_class_info(class_name: str):
+    res = wks.fetch_class_features(class_name.lower()).fetch_results()
+    return res
+
 #endregion

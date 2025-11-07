@@ -10,7 +10,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [email, setEmail] = useState(null);
+  const [username, setUsername] = useState(null);
   const [mounted, setMounted] = useState(false); // Wait for auth before rendering
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
       // No token: update state and mark ready
       console.log("No auth token found");
       setIsLoggedIn(false);
-      setEmail(null);
+      setUsername(null);
       setMounted(true);
       return false;
     }
@@ -37,22 +37,22 @@ export const AuthProvider = ({ children }) => {
         // optionally read returned user info
         const data = await res.json();
         setIsLoggedIn(true);
-        setEmail(data.email);
-        console.log("Token valid for user:", email, "with data :", data);
+        setUsername(data.username);
+        console.log("Token valid for user:", username, "with data :", data);
         setMounted(true);
         return true;
       } else {
         console.log("Token invalid, logging out");
         localStorage.removeItem("authToken");
         setIsLoggedIn(false);
-        setEmail(null);
+        setUsername(null);
         setMounted(true);
         return false;
       }
     } catch (err) {
       console.error("Token verification error:", err);
       setIsLoggedIn(false);
-      setEmail(null);
+      setUsername(null);
       setMounted(true);
       return false;
     }
@@ -65,16 +65,16 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const logout = () => {
-    console.log("Logging out user:", email);
+    console.log("Logging out user:", username);
     localStorage.removeItem("authToken");
     setIsLoggedIn(false);
-    setEmail(null);
+    setUsername(null);
     navigate("/login", { replace: true });
   };
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, email, mounted, setEmail, logout, checkAuth }}
+      value={{ isLoggedIn, authUsername: username, mounted, setAuthUsername: setUsername, logout, checkAuth }}
     >
       {children}
     </AuthContext.Provider>

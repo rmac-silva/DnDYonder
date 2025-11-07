@@ -11,6 +11,7 @@ export function initSheetManager(draft,sheetid,hashedemail) {
     draftGlobal = draft;
     sheetidGlobal = sheetid;
     hashedemailGlobal = hashedemail;
+    console.log("SheetManager initialized:", {draftGlobal, sheetidGlobal, hashedemailGlobal});
 }
 
 export function getDraftGlobal() {
@@ -69,6 +70,7 @@ export const saveNewSheet = async () => {
             // If you have a class with jsonify(), call draft = draft.jsonify() instead
             const payload = {
                 'sheet': draftGlobal,
+                'username': hashedemailGlobal,
                 'token': localStorage.getItem('authToken')
             } // plain JS object
             const res = await fetch('http://127.0.0.1:8000/sheets/new', {

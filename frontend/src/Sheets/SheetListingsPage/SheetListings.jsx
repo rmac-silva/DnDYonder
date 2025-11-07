@@ -13,14 +13,14 @@ TODO: Add confirmation dialog before deleting a sheet
 function SheetListings() {
 
     const [sheets, setSheets] = useState([]);
-    const { email, checkAuth } = useAuth();
+    const { authUsername, checkAuth } = useAuth();
 
 
     const deleteSheet = async (sheetId) => {
         try {
             let payload = {"token" : localStorage.getItem("authToken")}
 
-            const res = await fetch(`http://127.0.0.1:8000/sheets/${email}/${sheetId}`, {
+            const res = await fetch(`http://127.0.0.1:8000/sheets/${authUsername}/${sheetId}`, {
                 method: 'DELETE', // or PUT depending on your API
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
@@ -78,14 +78,14 @@ function SheetListings() {
     useEffect(() => {
         // Fetch the sheets from the backend
         const fetchSheets = async () => {
-            if (email === null) {
+            if (authUsername === null) {
                 await checkAuth();
                 return;
             }
 
             try {
 
-                const response = await fetch(`http://127.0.0.1:8000/sheets/${email}`,
+                const response = await fetch(`http://127.0.0.1:8000/sheets/${authUsername}`,
                     { method: "GET" }
                 );
                 const data = await response.json();
@@ -102,7 +102,7 @@ function SheetListings() {
         };
 
         fetchSheets();
-    }, [checkAuth, email]);
+    }, [checkAuth, authUsername]);
 
     return (
         <>
@@ -124,7 +124,7 @@ function SheetListings() {
                                     >
                                         <Button
                                             component={RouterLink}
-                                            to={`/sheets/${email}/${sheet.id}`}
+                                            to={`/sheets/${authUsername}/${sheet.id}`}
                                             sx={{
                                                 width: '100%',
                                                 height: '100%',

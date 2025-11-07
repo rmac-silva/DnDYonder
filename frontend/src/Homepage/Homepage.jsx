@@ -16,7 +16,7 @@ import { useAuth } from '../Auth/AuthContext.jsx';
 /// The homepage component
 
 function Homepage() {
-     const { isLoggedIn,email } = useAuth();
+     const { isLoggedIn,authUsername } = useAuth();
 
     return (
     <>
@@ -75,7 +75,7 @@ function Homepage() {
                   {isLoggedIn && (
                     <Button
                       component={RouterLink}
-                      to={`/sheets/${email}`}
+                      to={`/sheets/${authUsername}`}
                       variant="outlined"
                       color="primary"
                       className="!px-6 !py-2 !text-lg"

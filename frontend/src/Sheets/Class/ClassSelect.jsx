@@ -4,7 +4,7 @@ TODO: Upon selection of a class, set that class information in the sheet (recevi
 TODO: Allow the user to create a class if needed
 */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -40,12 +40,16 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   const [hasSubclass, setHasSubclass] = useState(false);
   const [hasSpellcasting, setHasSpellcasting] = useState(false);
 
+  const [loadingWikidotData, setLoadingWikidotData] = useState(false);
+
+  const [localClassName, setLocalClassName] = useState('');
+
   const [newClass, setNewClass] = useState({
     class_name: '',
 
     hit_die: 'd6',
-    starting_hitpoints: '',
-    hitpoints_per_level: '',
+    starting_hitpoints: 0,
+    hitpoints_per_level: 0,
 
     armor_proficiencies: [],
     weapon_proficiencies: [],
@@ -169,8 +173,8 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
       hit_die: 'd6',
       used_hit_dice: 0,
-      starting_hitpoints: '',
-      hitpoints_per_level: '',
+      starting_hitpoints: 0,
+      hitpoints_per_level: 0,
 
       armor_proficiencies: [],
       weapon_proficiencies: [],
@@ -184,12 +188,12 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
 
       class_features: [],
-      spellcasting:{
-        level:-1,
-        spell_slots:{},
-        max_level_spellslots:9,
-        spells_known:[],
-        spellcasting_ability:'',
+      spellcasting: {
+        level: -1,
+        spell_slots: {},
+        max_level_spellslots: 9,
+        spells_known: [],
+        spellcasting_ability: '',
       },
       subclass: {
         name: '',
@@ -201,9 +205,37 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     });
   };
 
+  function ValidateForm() {
+    if (!newClass.class_name) {
+      alert('Please provide a class name.');
+      return false;
+    }
+
+    if (!newClass.starting_hitpoints === 0 || !newClass.hitpoints_per_level === 0) {
+      alert('Please provide valid hitpoint values.');
+      return false;
+    }
+
+    if (newClass.attribute_proficiencies.length === 0) {
+      alert('Please select at least one saving throw proficiency.');
+      return false;
+    }
+
+    if (newClass.skill_proficiencies.length === 0) {
+      alert('Please select the skill proficiencies for the class.');
+      return false;
+    }
+
+    if (newClass.num_skill_proficiencies === undefined || newClass.num_skill_proficiencies <= 0) {
+      alert('Please provide a valid number of skill proficiencies to choose from.');
+      return false;
+    }
+  }
+
   const handleCreateClass = async () => {
-    // For now just log; you can POST to backend here and refresh classes afterwards
-    console.log('Creating class:', newClass);
+    if(!ValidateForm()) {
+      return;
+    }
 
     // POST to backend
     const payload = {
@@ -231,6 +263,80 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     setSheet({ ...sheet });
 
   };
+
+  function handleWikidotData(data) {
+    const ignored_keys = ["Hit Points","Proficiencies","Class Features","Equipment"];
+
+    const features = [];
+    for (const [key, value] of Object.entries(data)) {
+      if (!ignored_keys.includes(key)) {
+        var combined_feature = ""
+
+        for(const content_part of value) {
+          var isTable = content_part.table;
+
+          if(isTable) {
+            //Handle table separately
+          } else {
+            combined_feature += content_part.content + "\n";
+          }
+        }
+
+        features.push({ name: key, description: combined_feature, level_requirement: 0 });
+      }
+    }
+
+    // immutably set the new features array so React re-renders
+    setNewClass(prev => ({ ...prev, class_features: features }));
+  }
+
+  async function handleWikidotFetch() {
+    setLoadingWikidotData(true);
+    if(newClass.class_name === '') {
+      alert('Please provide a class name to fetch from Wikidot.');
+      setLoadingWikidotData(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/wikidot/class/${newClass.class_name}`, {
+        method: 'GET',
+      });
+
+      if (!res.ok) {
+        throw new Error(`Wikidot fetch failed: ${res.status}`);
+      }
+
+      const data = await res.json();
+      handleWikidotData(data);
+
+      setLoadingWikidotData(false);
+    } catch (error) {
+      console.error("Error fetching from Wikidot:", error);
+      setLoadingWikidotData(false);
+    }
+    
+  }
+
+  const ClassNameInput = memo(function ClassNameInput({ initial = '', onCommit }) {
+    // local state lives inside this small component — typing won't re-render parent
+    const [value, setValue] = useState(initial);
+
+    // keep in sync if parent changes initial (e.g. when class selected programmatically)
+    useEffect(() => setValue(initial), [initial]);
+
+    return (
+      <TextField
+        fullWidth
+        label="Class Name"
+        variant="outlined"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={() => onCommit(value)}      // only commit to parent on blur
+        margin="normal"
+      />
+    );
+  });
 
   return (
     <>
@@ -265,13 +371,13 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
         <DialogContent dividers>
           {/* Large input for the class name */}
-          <TextField
-            fullWidth
-            label="Class Name"
-            variant="outlined"
-            value={newClass.class_name}
-            onChange={(e) => setNewClass((s) => ({ ...s, class_name: e.target.value }))}
-            margin="normal"
+          <ClassNameInput
+            initial={localClassName}
+            onCommit={(v) => {
+              // update both localClassName and newClass exactly once (on blur)
+              setLocalClassName(v);
+              setNewClass(prev => ({ ...prev, class_name: v }));
+            }}
           />
 
           {/* Row: Hit Dice select + two small text fields */}
@@ -334,7 +440,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
               label="Nr. Choices"
               variant="outlined"
-
+              value={newClass.num_skill_proficiencies}
               onChange={(e) => setNumSkillProficiencies(e.target.value)}
               size="medium"
             />
@@ -451,17 +557,20 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
 
           <Box mt={2}>
-            <GetClassFeats onChange={setClassFeats} label={"Class"} />
+            <GetClassFeats onChange={setClassFeats} label={"Class"} classFeatures={newClass.class_features} />
           </Box>
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button onClick={handleCreateClass} variant="contained" color="primary">
-            Create
-          </Button>
+          <Box display="flex" justifyContent="space-between" width="100%">
+            <Button onClick={handleWikidotFetch} loading={loadingWikidotData} variant="contained" color="success">Fetch from Wikidot</Button>
+            <Box gap={2} display="flex">
+              <Button onClick={handleDialogClose} variant="contained" color="error">Cancel</Button>
+              <Button onClick={handleCreateClass} variant="contained" color="primary">Create</Button>
+            </Box>
+          </Box>
         </DialogActions>
-      </Dialog>
+      </Dialog >
     </>
   );
 };
