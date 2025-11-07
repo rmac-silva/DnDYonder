@@ -115,7 +115,7 @@ function GetSheet() {
 
             setDraft(data);
             initSheetManager(data, sheetid, authUsername);
-
+            setNameVar(data.name);
         } catch (err) {
 
             if (err.name === 'AbortError') return;
