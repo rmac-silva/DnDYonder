@@ -194,11 +194,11 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
         // close dialog
         setCreatingNewRace(false);
 
-        // Optional: refresh classes list or inform parent
-        // For now we call onClassChange with the newClass object (no id)
-        setFetchedRaces([...fetchedRaces, [{ c_name: newRace.class_name, c_content: JSON.stringify(newRace) }]]);
+        // Optional: refresh races list or inform parent
+        // For now we call onRaceChange with the newRace object (no id)
+        setFetchedRaces([...fetchedRaces, [{ r_name: newRace.race, r_content: JSON.stringify(newRace) }]]);
         setForceRefresh(true);
-        sheet.class = newRace;
+        sheet.race = newRace;
         setSheet({ ...sheet });
 
     };
