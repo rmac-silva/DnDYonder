@@ -4,7 +4,7 @@ function SubclassInfo({ draft, setDraft }) {
 
     const [subclassSelected, setSubclassSelected] = useState(false);
 
-    if (draft.class.subclass.level === -1 || draft.class.subclass.level > draft.stats.level) {
+    if (!draft.class.subclass || draft.class.subclass.level === -1 || draft.class.subclass.level > draft.stats.level) {
         return null;
     }
 

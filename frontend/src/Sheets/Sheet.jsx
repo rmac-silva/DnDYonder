@@ -275,16 +275,16 @@ function GetSheet() {
 
                                 {/* Character Traits etc... Spellcasting if applicable*/}
                                 <div className=' w-full flex space-x-2 flex-wrap' >
-                                    <div className= {`  flex flex-col items-center space-y-2  ${draft.stats.level >= draft.class.spellcasting.level ? 'w-23/100' : 'w-49/100'}`}>
+                                    <div className= {`  flex flex-col items-center space-y-2  ${draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) ? 'w-23/100' : 'w-49/100'}`}>
                                         <Backstory draft={draft} setDraft={updateDraft} />
                                     </div>
-                                    {draft.stats.level >= draft.class.spellcasting.level &&
+                                    {draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) &&
                                         <div className=' bg-white rounded shadow p-2 flex flex-col items-center space-y-2 min-w-230 max-w-230 h-full'>
                                             <Spellcasting draft={draft} setDraft={updateDraft} />
                                             <SpellList draft={draft} setDraft={updateDraft} />
                                         </div>
                                     }
-                                    <div className= {` flex flex-col items-center space-y-2 ${draft.stats.level >= draft.class.spellcasting.level ? 'w-23/100' : 'w-49/100'}`}>
+                                    <div className= {` flex flex-col items-center space-y-2 ${draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) ? 'w-23/100' : 'w-49/100'}`}>
                                         <PersonalityTraits draft={draft} setDraft={updateDraft} />
                                         
                                     </div>

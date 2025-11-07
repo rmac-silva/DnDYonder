@@ -16,7 +16,7 @@ function Inventory({draft, setDraft}) {
         //Fetch the inventory items from the draft.class.starting_equipment array.
         var startingItems = draft.class?.starting_equipment;
         var localItemArray = [];
-        if(startingItems.length > 0) {
+        if(startingItems && startingItems.length > 0) {
             //There's still starting equipment to add, assuming this is the first time loading the inventory. Set them under misc.items
             draft.misc.inventory = startingItems;
             draft.class.starting_equipment = []; //Clear out starting equipment so we don't re-add them again
@@ -26,7 +26,7 @@ function Inventory({draft, setDraft}) {
         } else {
             //Simply load the items already present under misc.items
             // console.log("Loading existing inventory items...", draft.misc.inventory);
-            localItemArray = draft.misc.inventory;
+            localItemArray = draft.misc.inventory || [];
         } 
 
         //Join the array elements into a single string for easy editing.

@@ -230,6 +230,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
       alert('Please provide a valid number of skill proficiencies to choose from.');
       return false;
     }
+    return true;
   }
 
   const handleCreateClass = async () => {
