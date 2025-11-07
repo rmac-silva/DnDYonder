@@ -2,6 +2,15 @@ import {useState, useEffect} from 'react';
 import SubclassSelect from './SubclassSelect';
 function SubclassInfo({ draft, setDraft }) {
 
+    function GetSubclassDescription() {
+        const paragraphs = (draft.class.subclass?.description || '').split(/\.\s*/).filter(Boolean);
+        return (
+          <div className="text-xl mt-2 font-semibold">
+            {paragraphs.map((p,i) => <p key={i}>{p.trim()}{i < paragraphs.length-1 ? '.' : ''}</p>)}
+          </div>
+        );
+    }
+
     const [subclassSelected, setSubclassSelected] = useState(false);
 
     if (!draft.class.subclass || draft.class.subclass.level === -1 || draft.class.subclass.level > draft.stats.level) {
@@ -20,7 +29,7 @@ function SubclassInfo({ draft, setDraft }) {
 
             {!subclassSelected && 
                 <>
-                <div className="text-xl mt-2 font-semibold ">{draft.class.subclass.description}</div>
+                {GetSubclassDescription()}
 
                 <SubclassSelect draft={draft} setDraft={setDraft}></SubclassSelect>
                 </>

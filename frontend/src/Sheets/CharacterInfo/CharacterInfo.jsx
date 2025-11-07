@@ -1,7 +1,7 @@
 // This section will have misc. info, age, hair, height, weight etc...
+import {useState} from "react";
 
-
-function CharacterInfo({ draft, setDraft }) {
+function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
 
     return (
         <div className="flex bg-white w-full rounded mb-4 px-4 py-2 items-center">
@@ -15,9 +15,10 @@ function CharacterInfo({ draft, setDraft }) {
                 <input
                     type="text"
                     onBlur={(e) => { draft.name = e.target.value; setDraft({ ...draft }) }}
-                    defaultValue={draft.name}
+                    value={nameVar}
+                    onChange={(e) => { setNameVar(e.target.value) }}
                     placeholder="Grommisk"
-                    className={`mt-1 px-2 py-2 block w-full border-b-2 !text-gray-700 !text-4xl font-semibold focus-visible:outline-none`}
+                    className={`mt-1 px-2 py-2 block w-full border-b-2 !text-gray-700 !text-4xl font-semibold leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none`}
                 />
             </div>
             {/* Character Name End */}
@@ -36,7 +37,7 @@ function CharacterInfo({ draft, setDraft }) {
                         onBlur={(e) => { draft.char_info.age = e.target.value; setDraft({ ...draft }) }}
                         defaultValue={draft.char_info.age}
                         placeholder="0"
-                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg focus-visible:outline-none`}
+                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none`}
                     />
                 </div>
 
@@ -51,7 +52,7 @@ function CharacterInfo({ draft, setDraft }) {
                         onBlur={(e) => { draft.char_info.height = e.target.value; setDraft({ ...draft }) }}
                         defaultValue={draft.char_info.height}
                         placeholder="6ft"
-                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg focus-visible:outline-none`}
+                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none`}
                     />
                 </div>
 
@@ -66,7 +67,7 @@ function CharacterInfo({ draft, setDraft }) {
                         onBlur={(e) => { draft.char_info.weight = e.target.value; setDraft({ ...draft }) }}
                         defaultValue={draft.char_info.weight}
                         placeholder="60 lbs"
-                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg focus-visible:outline-none`}
+                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none`}
                     />
                 </div>
 
@@ -81,7 +82,7 @@ function CharacterInfo({ draft, setDraft }) {
                         onBlur={(e) => { draft.char_info.distinguishing_marks = e.target.value; setDraft({ ...draft }) }}
                         defaultValue={draft.char_info.weight}
                         placeholder="Mind Library"
-                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg focus-visible:outline-none`}
+                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none`}
                     />
                 </div>
 
@@ -96,7 +97,7 @@ function CharacterInfo({ draft, setDraft }) {
                         onBlur={(e) => { draft.char_info.eye_color = e.target.value; setDraft({ ...draft }) }}
                         defaultValue={draft.char_info.eye_color}
                         placeholder="Nebula Eyes"
-                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg focus-visible:outline-none`}
+                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none`}
                     />
                 </div>
 
@@ -111,7 +112,7 @@ function CharacterInfo({ draft, setDraft }) {
                         onBlur={(e) => { draft.char_info.skin_color = e.target.value; setDraft({ ...draft }) }}
                         defaultValue={draft.char_info.skin_color}
                         placeholder="Pale"
-                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg focus-visible:outline-none`}
+                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none`}
                     />
                 </div>
 
@@ -126,7 +127,7 @@ function CharacterInfo({ draft, setDraft }) {
                         onBlur={(e) => { draft.char_info.hair_color = e.target.value; setDraft({ ...draft }) }}
                         defaultValue={draft.char_info.hair_color}
                         placeholder="White with purple highlights"
-                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg focus-visible:outline-none`}
+                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none`}
                     />
                 </div>
 
@@ -141,7 +142,7 @@ function CharacterInfo({ draft, setDraft }) {
                         onBlur={(e) => { draft.char_info.scars = e.target.value; setDraft({ ...draft }) }}
                         defaultValue={draft.char_info.scars}
                         placeholder="Harry potter scar"
-                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg focus-visible:outline-none`}
+                        className={` px-2 py-2 block w-64 border-b-2 !text-gray-700 !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none`}
                     />
                 </div>
 

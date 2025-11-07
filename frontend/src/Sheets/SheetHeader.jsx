@@ -1,7 +1,6 @@
+function SheetHeader({draft,setDraft, nameVar, setNameVar}) {
 
-
-function SheetHeader({draft,setDraft}) {
-
+    
     const textClasses = 'focus-visible:outline-none';
 
     return (<div className="flex bg-white rounded shadow font-semibold p-4 justify-between">
@@ -13,9 +12,10 @@ function SheetHeader({draft,setDraft}) {
             <input
                 type="text"
                 onBlur={(e) => { draft.name = e.target.value; setDraft({ ...draft }) }}
-                defaultValue={draft.name}
+                onChange={(e) => setNameVar(e.target.value)}
+                value={nameVar}
                 placeholder="Grommisk"
-                className={`mt-1 px-2 py-2 block w-full border-b-2 !text-gray-700 !text-4xl font-semibold ${textClasses}`}
+                className={`mt-1 px-2 py-2 block w-full border-b-2 !text-gray-700 !text-4xl font-semibold leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
             />
         </div>
 
@@ -26,9 +26,8 @@ function SheetHeader({draft,setDraft}) {
                 disabled
                 defaultValue={draft.class.class_name}
                 onBlur={(e) => { draft.class.class_name = e.target.value; setDraft({ ...draft }) }}
-
                 placeholder="Race"
-                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md ${textClasses}`}
+                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
             />
 
             {/* Background */}
@@ -37,7 +36,7 @@ function SheetHeader({draft,setDraft}) {
                 placeholder="Background"
                 onBlur={(e) => { draft.background.background = e.target.value; setDraft({ ...draft }) }}
                 defaultValue={draft.background.background}
-                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md ${textClasses}`}
+                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
             />
 
             {/* Race */}
@@ -46,9 +45,8 @@ function SheetHeader({draft,setDraft}) {
                 disabled
                 defaultValue={draft.race.race}
                 onBlur={(e) => { draft.race.race = e.target.value; setDraft({ ...draft }) }}
-
                 placeholder="Race"
-                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md ${textClasses}`}
+                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
             />
 
             {/* Alignment */}
@@ -56,9 +54,8 @@ function SheetHeader({draft,setDraft}) {
                 type="text"
                 defaultValue={draft.race.alignment}
                 onBlur={(e) => { draft.race.alignment = e.target.value; setDraft({ ...draft }) }}
-
                 placeholder="Alignment"
-                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md ${textClasses}`}
+                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
             />
         </div>
     </div>)

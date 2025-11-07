@@ -40,7 +40,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   const [hasSubclass, setHasSubclass] = useState(false);
   const [hasSpellcasting, setHasSpellcasting] = useState(false);
 
-  const [loadingWikidotData, setLoadingWikidotData] = useState(false);
+
 
   const [localClassName, setLocalClassName] = useState('');
 
@@ -76,6 +76,44 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
       features: []
     },
   });
+
+  function WipeNewClassData() {
+    setNewClass({
+      class_name: '',
+
+      hit_die: 'd6',
+      used_hit_dice: 0,
+      starting_hitpoints: 0,
+      hitpoints_per_level: 0,
+
+      armor_proficiencies: [],
+      weapon_proficiencies: [],
+      tool_proficiencies: [],
+
+      attribute_proficiencies: [],
+      skill_proficiencies: [],
+      num_skill_proficiencies: 0,
+      starting_equipment: [],
+      starting_equipment_choices: [],
+
+
+      class_features: [],
+      spellcasting: {
+        level: -1,
+        spell_slots: {},
+        max_level_spellslots: 9,
+        spells_known: [],
+        spellcasting_ability: '',
+      },
+      subclass: {
+        name: '',
+        description: '',
+        level: -1,
+        features: [],
+        selected: false
+      },
+    });
+  }
 
   useEffect(() => {
     let mounted = true;
@@ -159,7 +197,6 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     // console.log("New tool proficiencies", newClass.tool_proficiencies);
     setNewClass({ ...newClass });
   }
-
   const setClassFeats = (value) => {
     newClass.class_features = value;
     setNewClass({ ...newClass });
@@ -167,42 +204,13 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
   const handleDialogClose = () => {
     setCreatingNewClass(false);
+
+
+
     // reset newClass state if desired
-    setNewClass({
-      class_name: '',
-
-      hit_die: 'd6',
-      used_hit_dice: 0,
-      starting_hitpoints: 0,
-      hitpoints_per_level: 0,
-
-      armor_proficiencies: [],
-      weapon_proficiencies: [],
-      tool_proficiencies: [],
-
-      attribute_proficiencies: [],
-      skill_proficiencies: [],
-      num_skill_proficiencies: 0,
-      starting_equipment: [],
-      starting_equipment_choices: [],
+    WipeNewClassData(setNewClass);
 
 
-      class_features: [],
-      spellcasting: {
-        level: -1,
-        spell_slots: {},
-        max_level_spellslots: 9,
-        spells_known: [],
-        spellcasting_ability: '',
-      },
-      subclass: {
-        name: '',
-        description: '',
-        level: -1,
-        features: [],
-        selected: false
-      },
-    });
   };
 
   function ValidateForm() {
@@ -234,7 +242,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   }
 
   const handleCreateClass = async () => {
-    if(!ValidateForm()) {
+    if (!ValidateForm()) {
       return;
     }
 
@@ -263,61 +271,12 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     sheet.class = newClass;
     setSheet({ ...sheet });
 
+    handleChangingClass({ target: { value: newClass.class_name } });
+    WipeNewClassData(setNewClass);
+
   };
 
-  function handleWikidotData(data) {
-    const ignored_keys = ["Hit Points","Proficiencies","Class Features","Equipment"];
 
-    const features = [];
-    for (const [key, value] of Object.entries(data)) {
-      if (!ignored_keys.includes(key)) {
-        var combined_feature = ""
-
-        for(const content_part of value) {
-          var isTable = content_part.table;
-
-          if(isTable) {
-            //Handle table separately
-          } else {
-            combined_feature += content_part.content + "\n";
-          }
-        }
-
-        features.push({ name: key, description: combined_feature, level_requirement: 0 });
-      }
-    }
-
-    // immutably set the new features array so React re-renders
-    setNewClass(prev => ({ ...prev, class_features: features }));
-  }
-
-  async function handleWikidotFetch() {
-    setLoadingWikidotData(true);
-    if(newClass.class_name === '') {
-      alert('Please provide a class name to fetch from Wikidot.');
-      setLoadingWikidotData(false);
-      return;
-    }
-
-    try {
-      const res = await fetch(`http://127.0.0.1:8000/wikidot/class/${newClass.class_name}`, {
-        method: 'GET',
-      });
-
-      if (!res.ok) {
-        throw new Error(`Wikidot fetch failed: ${res.status}`);
-      }
-
-      const data = await res.json();
-      handleWikidotData(data);
-
-      setLoadingWikidotData(false);
-    } catch (error) {
-      console.error("Error fetching from Wikidot:", error);
-      setLoadingWikidotData(false);
-    }
-    
-  }
 
   const ClassNameInput = memo(function ClassNameInput({ initial = '', onCommit }) {
     // local state lives inside this small component — typing won't re-render parent
@@ -558,18 +517,18 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
 
           <Box mt={2}>
-            <GetClassFeats onChange={setClassFeats} label={"Class"} classFeatures={newClass.class_features} />
+            <GetClassFeats onChange={setClassFeats} label={"Class"} classFeatures={newClass.class_features} newClass={newClass} />
           </Box>
         </DialogContent>
 
         <DialogActions>
-          <Box display="flex" justifyContent="space-between" width="100%">
-            <Button onClick={handleWikidotFetch} loading={loadingWikidotData} variant="contained" color="success">Fetch from Wikidot</Button>
-            <Box gap={2} display="flex">
-              <Button onClick={handleDialogClose} variant="contained" color="error">Cancel</Button>
-              <Button onClick={handleCreateClass} variant="contained" color="primary">Create</Button>
-            </Box>
+
+
+          <Box gap={2} display="flex">
+            <Button onClick={handleDialogClose} variant="contained" color="error">Cancel</Button>
+            <Button onClick={handleCreateClass} variant="contained" color="primary">Create</Button>
           </Box>
+
         </DialogActions>
       </Dialog >
     </>
@@ -577,3 +536,5 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 };
 
 export default ClassSelect;
+
+

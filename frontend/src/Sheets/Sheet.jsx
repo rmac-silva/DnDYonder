@@ -68,6 +68,8 @@ function GetSheet() {
     const { sheetid } = useParams();
     const { authUsername, checkAuth } = useAuth();
 
+    const [nameVar, setNameVar] = useState(draft ? draft.name : "");
+
     async function loadNewSheet(mounted) {
 
         setLoading(true);
@@ -138,6 +140,8 @@ function GetSheet() {
             loadExistingSheet(mounted);
 
         }
+
+        setNameVar(draft ? draft.name : "");
         setLoading(false);
         return () => { saveSheet(); mounted = false; controller.abort(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -169,14 +173,16 @@ function GetSheet() {
             skillObj.locked = true; // Lock it so the user can't unselect it (This isn't activated but still good to be set)
         }
 
+        // commit the mutated draft into React state and SheetManager
+        setDraft({ ...draft });           // create new reference so React updates everywhere
+        setDraftGlobal({ ...draft });     // keep SheetManager in sync
+
         setCreatingNewSheet(false);
-        initSheetManager(getDraftGlobal(), undefined, authUsername);
+        // initialize with the actual draft we just committed
+        initSheetManager(draft, undefined, authUsername);
 
-
-        //Now save the sheet to the backend
-        console.log("Saving new character... ", getDraftGlobal());
-        var newSheetUrl = await saveNewSheet();
-        console.log("Navigating to new sheet URL:", newSheetUrl);
+        // now save (saveNewSheet uses SheetManager or draftGlobal internally)
+        const newSheetUrl = await saveNewSheet();
         navigate(newSheetUrl);
     }
 
@@ -230,7 +236,7 @@ function GetSheet() {
                         <div className='flex w-full'>
                             <div className="mt-4 p-4 bg-zinc-200 mx-5 justify-self-center rounded w-full text-gray-700">
                                 {/* Header */}
-                                <SheetHeader draft={draft} setDraft={updateDraft} />
+                                <SheetHeader draft={draft} setDraft={updateDraft} nameVar={nameVar} setNameVar={setNameVar} />
 
                                 {/* Three Columns */}
                                 <div className="flex mt-6">
@@ -242,7 +248,7 @@ function GetSheet() {
                                     <div className="w-1/3 bg-white mx-4 p-4 rounded shadow">
                                         <div className=' p-4 flex flex-col'>
 
-                                            <PlayerStats draft={draft} setDraft={updateDraft} />
+                                            <PlayerStats draft={draft} setDraft={updateDraft}  />
                                             <div className='flex justify-center'>
                                                 <HitDice draft={draft} setDraft={updateDraft} />
                                                 <DeathSaves draft={draft} setDraft={updateDraft} />
@@ -270,7 +276,7 @@ function GetSheet() {
 
                                 {/* Header */}
                                 <div className='flex items-center justify-center gap-4 '>
-                                    <CharacterInfo draft={draft} setDraft={updateDraft}/>
+                                    <CharacterInfo draft={draft} setDraft={updateDraft} nameVar={nameVar} setNameVar={setNameVar}/>
                                 </div>
 
                                 {/* Character Traits etc... Spellcasting if applicable*/}

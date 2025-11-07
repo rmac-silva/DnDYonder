@@ -151,11 +151,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
         setNewRace({ ...newRace });
     }
 
-
-
-    const handleDialogClose = () => {
-        setCreatingNewRace(false);
-        // reset newClass state if desired
+    function WipeRaceData() {
         setNewRace({
             race: '',
             subrace: '',
@@ -170,6 +166,12 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
             languages: ["Common"],
             race_features: [],
         });
+    }
+
+    const handleDialogClose = () => {
+        setCreatingNewRace(false);
+        // reset newClass state if desired
+        WipeRaceData();
     };
 
     const handleCreateClass = async () => {
@@ -194,12 +196,18 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
         // close dialog
         setCreatingNewRace(false);
 
+        
+
         // Optional: refresh races list or inform parent
         // For now we call onRaceChange with the newRace object (no id)
         setFetchedRaces([...fetchedRaces, [{ r_name: newRace.race, r_content: JSON.stringify(newRace) }]]);
         setForceRefresh(true);
-        sheet.race = newRace;
-        setSheet({ ...sheet });
+        
+
+        handleChangingRace({ target: { value: newRace.race } });
+        
+        // reset newClass state
+        WipeRaceData();
 
     };
 
