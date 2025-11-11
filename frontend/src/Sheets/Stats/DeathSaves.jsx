@@ -7,7 +7,7 @@ function PlayerStats({draft,setDraft}) {
     const grey400 = grey[400]; // assuming you want to use MUI's grey[400]
     
     function handleDeathSaveChange(type, checked) {
-        console.log("Death save change:", type, checked);
+        // console.log("Death save change:", type, checked);
         if(type === "SUCCESS") {
             if(checked) { //Adding a success
                 draft.stats.death_saves_success += 1;
@@ -84,7 +84,7 @@ function PlayerStats({draft,setDraft}) {
                         <Checkbox
                             icon={<CircleOutlinedIcon style={{ fontSize: '1.5rem' }} />}
                             checkedIcon={<AdjustIcon style={{ fontSize: '1.5rem' }} />}
-                            checked={draft.stats.death_saves_failure >= 3}
+                            checked={draft.stats.death_saves_failure >= 1}
                             onChange={(e) => {handleDeathSaveChange("FAILURE", e.target.checked)}}
                             sx={{
                                 padding: 0,
@@ -98,7 +98,7 @@ function PlayerStats({draft,setDraft}) {
                         <Checkbox
                             icon={<CircleOutlinedIcon style={{ fontSize: '1.5rem' }} />}
                             checkedIcon={<AdjustIcon style={{ fontSize: '1.5rem' }} />}
-                            checked={draft.stats.death_saves_failure >= 3}
+                            checked={draft.stats.death_saves_failure >= 2}
                             onChange={(e) => {handleDeathSaveChange("FAILURE", e.target.checked)}}
                             sx={{
                                 padding: 0,

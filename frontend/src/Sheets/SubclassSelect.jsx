@@ -25,9 +25,10 @@ function SubclassSelect({ draft, setDraft }) {
 
   const [fetchedSubclasses, setFetchedSubclasses] = useState([]);
   const [creatingNewSubclass, setCreatingNewSubclass] = useState(false);
-
+  const [error, setError] = useState(null);
   const [newSubclass, setNewSubclass] = useState({
     name: "",
+    class_name: draft.class.class_name,
     description: "",
     selected: true,
     level: draft.class.subclass.level,
@@ -52,6 +53,7 @@ function SubclassSelect({ draft, setDraft }) {
         if (!mounted) return;
         // expecting data.classes or an array
         console.log('Fetched subclasses:', data.subclasses);
+        newSubclass.class_name = draft.class.class_name;
         setFetchedSubclasses(data.subclasses);
       } catch (err) {
         console.error('Error fetching subclasses:', err);
@@ -64,11 +66,11 @@ function SubclassSelect({ draft, setDraft }) {
     return () => {
       mounted = false;
     };
-  }, [forceRefresh]);
+  }, [ forceRefresh, newSubclass]);
 
 
 
-  const handleChangingClass = (e) => {
+  const handleChangingSubclass = (e) => {
     const val = e.target.value;
     if (val === 'new') {
       // open dialog for creating a class
@@ -84,11 +86,41 @@ function SubclassSelect({ draft, setDraft }) {
     // Set the draft.class.subclass.selected = true so it shows the new information
   };
 
+  function validateSubclass() {
+
+    // Ensure the subclass has a name
+    if (newSubclass.name.trim() === "") {
+      alert("Subclass must have a name.");
+      setError("name");
+      return false;
+    }
+    
+    //Check if it has features
+    if (newSubclass.features.length === 0) {
+      alert("Subclass must have at least one feature.");
+      setError("features");
+      return false;
+    }
+
+    //Check if all features have required_level
+    for (const feat of newSubclass.features) {
+      if (feat.level_requirement === undefined || feat.level_requirement === null || feat.level_requirement < 0) {
+        alert(`Feature "${feat.name}" must have a required level.`);
+        setError("features");
+        return false;
+      }
+    }
+
+    setError(null);
+    return true;
+  }
+
   const handleCreateSubclass = async () => {
     // Add the new subclass to the database
     
-      // For now just log; you can POST to backend here and refresh classes afterwards
-      console.log('Creating subclass:', newSubclass);
+      if(!validateSubclass()) {
+        return;
+      }
 
       // POST to backend
       const payload = {
@@ -116,6 +148,7 @@ function SubclassSelect({ draft, setDraft }) {
       // reset newSubclass state if desired
       setNewSubclass({
         name: "",
+        class_name: draft.class.class_name,
         description: "",
         selected: true,
         level: draft.class.subclass.level,
@@ -135,7 +168,7 @@ function SubclassSelect({ draft, setDraft }) {
             labelId="class-select-label"
             id="class-select"
             value={''}
-            onChange={handleChangingClass}
+            onChange={handleChangingSubclass}
             disabled={loading}
           >
             <MenuItem value="">— Select —</MenuItem>
@@ -165,6 +198,7 @@ function SubclassSelect({ draft, setDraft }) {
 
             <TextField
               sx={{ minWidth: 300, maxWidth: 300 }}
+              error={error === "name"}
               className="!-mb-2"
               label="Subclass Name"
               variant="outlined"
@@ -184,7 +218,7 @@ function SubclassSelect({ draft, setDraft }) {
             />
           </div>
           <Box mt={2}>
-            <GetClassFeats label={"Subclass"} onChange={SetSubclassFeatures} />
+            <GetClassFeats label={"Subclass"} onChange={SetSubclassFeatures} object={newSubclass} objectFeatures={newSubclass.features}/>
           </Box>
         </DialogContent>
 

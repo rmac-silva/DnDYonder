@@ -7,31 +7,46 @@ import Button from "@mui/material/Button";
 function Inventory({draft, setDraft}) {
 
     
-    const [itemLines, setItemLines] = useState([]);
+    const [itemLines, setItemLines] = useState(GetStartingItems());
     const [loading, setLoading] = useState(true);
 
 
-    useEffect( () => {
-        setLoading(true);
-        //Fetch the inventory items from the draft.class.starting_equipment array.
-        var startingItems = draft.class?.starting_equipment;
-        var localItemArray = [];
-        if(startingItems && startingItems.length > 0) {
-            //There's still starting equipment to add, assuming this is the first time loading the inventory. Set them under misc.items
-            draft.misc.inventory = startingItems;
-            draft.class.starting_equipment = []; //Clear out starting equipment so we don't re-add them again
-            setDraft({...draft});
-            
-            localItemArray = startingItems; //Since the startingItems will only be available next update
-        } else {
-            //Simply load the items already present under misc.items
-            // console.log("Loading existing inventory items...", draft.misc.inventory);
-            localItemArray = draft.misc.inventory || [];
-        } 
+    function GetStartingItems() {
+        var formattedItems = [];
 
-        //Join the array elements into a single string for easy editing.
+        if(draft.class.starting_equipment == null || draft.class.starting_equipment.length === 0) {
+            // console.log("No starting equipment found. Using previously stored inventory items: ", draft.misc.inventory);
+            return draft.misc.inventory;
+        } else {
+
+            draft.class.starting_equipment.forEach( (itemEntry) => {
+                // console.log("Processing starting equipment itemEntry: ", itemEntry);
+    
+                //Transforms entries like Any Martial Weapon, Shield into [Martial Weapon], [Shield]
+                itemEntry.name.split(",").forEach( (itemName) => {
+                    var trimmedName = itemName.trim();
+                    if(trimmedName.length > 0) {
+                        // console.log("Adding starting equipment item: ", trimmedName);
+                        formattedItems.push({name:trimmedName});
+                    }
+                }); 
+            });
+
+            draft.class.starting_equipment = []; //Clear starting equipment so it doesn't get re-added on next load
+            setDraft({...draft});
+
+        }
+
+        // console.log("Formatted starting equipment items: ", formattedItems);
+        draft.misc.inventory = formattedItems;
+        setDraft({...draft});
+        return formattedItems;
+    }
+
+    useEffect( () => {
+        setLoading(true);      
         
-        setItemLines(localItemArray);
+        setItemLines(GetStartingItems());
         
         setLoading(false);
     },[]);

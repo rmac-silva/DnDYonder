@@ -7,9 +7,10 @@ function SpellList({ draft, setDraft }) {
 
     const [sortedSpells, setSortedSpells] = useState([]);
     const [newSpells, setNewSpells] = useState(false);
+    const [forceRefresh, setForceRefresh] = useState(false);
 
     useEffect(() => {
-        console.log("Spellcasting spells known changed:", draft.class.spellcasting.spells_known);
+        // console.log("Spellcasting spells known changed:", draft.class.spellcasting.spells_known);
         // Sort spells by level and then by name
         const spellsCopy = [...draft.class.spellcasting.spells_known];
         spellsCopy.sort((a, b) => {
@@ -20,12 +21,17 @@ function SpellList({ draft, setDraft }) {
         });
         setSortedSpells(spellsCopy);
         setNewSpells(false);
-    }, [draft.class.spellcasting, newSpells]);
+        setForceRefresh(false);
+    }, [draft.class.spellcasting, newSpells, forceRefresh]);
 
     function handleDelete(spell) {
         draft.class.spellcasting.spells_known = draft.class.spellcasting.spells_known.filter(s => s !== spell);
         setDraft({ ...draft });
         setNewSpells(true);
+    }
+
+    function handleCreateNewSpell() {
+        setForceRefresh(true)
     }
 
     function DrawSpell(spell, key) {
@@ -57,7 +63,7 @@ function SpellList({ draft, setDraft }) {
                 ))}
             </div>
             {/* A button to add a new spell */}
-            <AddNewSpell draft={draft} setDraft={setDraft} onAdd={setNewSpells} />
+            <AddNewSpell draft={draft} setDraft={setDraft} onAdd={handleCreateNewSpell} />
         </div>
     );
 }

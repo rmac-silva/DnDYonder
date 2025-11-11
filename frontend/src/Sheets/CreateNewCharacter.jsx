@@ -93,9 +93,44 @@ function CreateNewCharacter({ isOpen, onClose, onSubmit, draft, setDraft }) {
 
         if (activeStep === steps.length - 1) {
             //Finish button clicked
-            console.log("Finished creating character:", draft);
+            // console.log("Finished creating character:", draft);
+            
             draft.class.skill_proficiencies = selectedSkills;
-            // draft.class.starting_equipment = selectedItems; Not needed as I already update it on selection.
+            
+            //Set the misc proficiencies
+            var miscProfs = [];
+            //1. Fetch the weapon profs that are not simple or martial weapons from class and race
+            draft.class.weapon_proficiencies.forEach(prof => {
+                if (prof.toLowerCase() !== "simple weapons" && prof.toLowerCase() !== "martial weapons") {
+                    if (!draft.misc.proficiencies.includes(prof)) {
+                        miscProfs.push(prof);
+                    }
+                }
+            });
+            draft.race.weapon_proficiencies.forEach(prof => {
+                if (prof.toLowerCase() !== "simple weapons" && prof.toLowerCase() !== "martial weapons") {
+                    if (!draft.misc.proficiencies.includes(prof)) {
+                        miscProfs.push(prof);
+                    }
+                }
+            });
+
+            //2. Fetch the tool profs from class and race
+            draft.class.tool_proficiencies.forEach(prof => {
+                if (!draft.misc.proficiencies.includes(prof)) {
+                    miscProfs.push(prof);
+                }
+            });
+            draft.race.tool_proficiencies.forEach(prof => {
+                if (!draft.misc.proficiencies.includes(prof)) {
+                    miscProfs.push(prof);
+                }
+            });
+
+            draft.misc.proficiencies = miscProfs;
+
+            setDraft({ ...draft });
+
             await onSubmit();
             return;
         }
@@ -215,7 +250,7 @@ function CreateNewCharacter({ isOpen, onClose, onSubmit, draft, setDraft }) {
                     </div>
                     {hasSelectedRace && <>
                         <div className='font-semibold text-2xl mt-4'>
-                            {draft.race.race}
+                            {draft.race.subrace + " " + draft.race.race}
                         </div>
                         <div className='font-medium text-xl mt-2 pl-2'>
 

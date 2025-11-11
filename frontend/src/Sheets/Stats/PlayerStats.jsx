@@ -2,6 +2,7 @@ import {React,useState} from 'react';
 
 function PlayerStats({draft, setDraft}) {
 
+    const [maxHP, setMaxHP] = useState(draft.stats.max_hp);
     const [currentHP, setCurrentHP] = useState(draft.stats.current_hp);
     const [tempHP, setTempHP] = useState(draft.stats.temporary_hp);
 
@@ -101,8 +102,10 @@ function PlayerStats({draft, setDraft}) {
                         id="hp-max"
                         type="text"
                         placeholder="Max HP"
-                        readOnly
-                        value={GetMaxHP()}
+                        
+                        defaultValue={GetMaxHP()}
+                        onChange={(e) => setMaxHP(parseInt(e.target.value))}
+                        onBlur={() => {draft.stats.max_hp = parseInt(maxHP); setDraft({...draft})}}
                         className="absolute -top-5 -left-7 w-20 h-22 text-center border-2 border-gray-400 bg-zinc-100 text-2xl font-semibold rounded z-10 focus-visible:outline-none"
                     />
                 </div>

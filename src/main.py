@@ -296,4 +296,23 @@ def get_wikidot_class_info(class_name: str):
     res = wks.fetch_class_features(class_name.lower()).fetch_results()
     return res
 
+@app.get("/wikidot/subclass/{class_name}/{subclass_name}")
+#Gets a JSON object with with subclass and class name as parameters
+def get_wikidot_subclass_info(subclass_name: str, class_name: str):
+    
+    res = wks.fetch_subclass_features(subclass_name.lower(), class_name.lower()).fetch_results()
+    return res
+
+
+@app.get("/wikidot/item/{item_name}")
+def get_wikidot_item_info(item_name: str):
+    print("Fetching Wikidot info for item:", item_name)
+    res = wks.fetch_item_info(item_name.lower()).format_results_dndroll_items()
+    return res
+
+@app.get("/wikidot/spell/{spell_name}")
+def get_wikidot_spell_info(spell_name: str):
+    print("Fetching Wikidot info for item:", spell_name)
+    res = wks.fetch_spell_info(spell_name.lower()).format_results_dndroll_spells()
+    return res
 #endregion

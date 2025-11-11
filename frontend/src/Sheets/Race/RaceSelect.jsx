@@ -52,6 +52,8 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
         race_features: [],
     });
 
+    const [errorField, setErrorField] = useState('');
+
     const languages = [
         "Common",
         "Dwarvish",
@@ -106,14 +108,14 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
             return;
         }
         // find race and pass to parent if provided
-        console.log("Trying to find race:", val, "in", fetchedRaces);
+        // console.log("Trying to find race:", val, "in", fetchedRaces);
         const race = fetchedRaces.find((c) => String(c.r_name) === String(val));
 
         if (!race) {
             sheet.race = null;
         } else {
             sheet.race = race.r_content;
-            console.log("Found race, applied to sheet:", sheet)
+            // console.log("Found race, applied to sheet:", sheet)
         }
         setSheet({ ...sheet });
         selectRace();
@@ -152,6 +154,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
     }
 
     function WipeRaceData() {
+        setErrorField('');
         setNewRace({
             race: '',
             subrace: '',
@@ -174,7 +177,45 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
         WipeRaceData();
     };
 
+    function validateNewRace() {
+        if(newRace.race.trim() === '') {
+            alert("Race name is required.");
+            setErrorField('race');
+            return false;
+        }
+        if(newRace.creature_type.trim() === '') {
+            alert("Creature type is required.");
+            setErrorField('creature_type');
+            return false;
+        }
+        if(newRace.size.trim() === '') {
+            alert("Size is required.");
+            setErrorField('size');
+            return false;
+        }
+        if(isNaN(parseInt(newRace.speed)) || parseInt(newRace.speed) <= 0) {
+            alert("Speed must be a positive number.");
+            setErrorField('speed');
+            return false;
+        }
+
+        //Check if the race has no features, warn the user but allow it
+        if(newRace.race_features.length === 0) {
+            if(!window.confirm("The race has no features. Are you sure you want to create it?")) {
+                return false;
+            }
+        }
+
+        setErrorField('');
+        return true;
+    }
+
     const handleCreateClass = async () => {
+
+        if(!validateNewRace()) {
+            return;
+        }
+
         // For now just log; you can POST to backend here and refresh classes afterwards
         console.log('Creating race:', newRace);
 
@@ -218,7 +259,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                 <Select
                     labelId="race-select-label"
                     id="race-select"
-                    value={sheet.race?.race || ''}
+                    value={sheet.race.subrace !== '' ? sheet.race.subrace + " " + sheet.race.race : sheet.race.race || ''}
                     onChange={handleChangingRace}
                     disabled={loading || disabled}
                 >
@@ -249,6 +290,8 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                         fullWidth
                         label="Race Name"
                         variant="outlined"
+                        placeholder='Dwarf'
+                        error={errorField === 'race'}
                         value={newRace.race}
                         onChange={(e) => setNewRace((s) => ({ ...s, race: e.target.value }))}
                         margin="normal"
@@ -257,7 +300,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                         fullWidth
                         label="Subrace Name"
                         variant="outlined"
-                        placeholder='(Dwarf) Mountain'
+                        placeholder='Mountain'
                         value={newRace.subrace}
                         onChange={(e) => setNewRace((s) => ({ ...s, subrace: e.target.value }))}
                         margin="normal"
@@ -269,6 +312,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                             <InputLabel id="creature_type-label">Creature Type</InputLabel>
                             <Select
                                 required
+                                error={errorField === 'creature_type'}
                                 labelId="creature_type-label"
                                 id="creature_type"
                                 value={newRace.creature_type}
@@ -298,6 +342,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                                 required
                                 labelId="size-label"
                                 id="size"
+                                error={errorField === 'size'}
                                 value={newRace.size}
                                 label="Creature Type"
                                 onChange={(e) => setNewRace((s) => ({ ...s, size: e.target.value }))}

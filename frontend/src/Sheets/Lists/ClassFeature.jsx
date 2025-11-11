@@ -71,17 +71,22 @@ const FeatureItem = memo(function FeatureItem({ feature, index, onChange, onBlur
          prevProps.onDelete === nextProps.onDelete;
 });
 
-const GetClassFeats = ({ onChange, label, classFeatures, newClass }) => {
+const GetClassFeats = ({ onChange, label, objectFeatures, object }) => {
 
   const [loadingWikidotData, setLoadingWikidotData] = useState(false);
 
-  const [localClassFeats, setLocalClassFeats] = useState(classFeatures || []);
+  const [localClassFeats, setLocalClassFeats] = useState(objectFeatures || []);
   // This listing is used in a new class, where no class features are defined yet.
   // Since classes do not share feats, we don't need to fetch them from the database.
 
   function handleWikidotData(data) {
-      // console.log("Wikidot data received:", data);
-  
+      console.log("Wikidot data received:", data);
+
+      if(data === null || Object.keys(data).length === 0) {
+        alert("No data found on Wikidot for this " + label.toLowerCase() + ". If it is an Unearthed Arcana, try adding 'UA' to the name: {YOUR NAME} UA");
+        return;
+      }
+
       var ignored_keys = ['Class Features']
   
       var new_class_features = [];
@@ -89,12 +94,18 @@ const GetClassFeats = ({ onChange, label, classFeatures, newClass }) => {
         if(ignored_keys.includes(key)) {
           continue;
         }
-  
+        
+        var content = value.content || "";
+        if(value.table) {
+          //Append some text informing there's a table that will be shown later
+          content += "\n\n[Table data available, it will be shown in the sheet.]";
+        }
+
         var new_feature = {
           name: key,
-          description: value.content,
-          table: value.table || {},
-          level_requirement: value.level_required || 1,
+          description: content,
+          tables: value.tables || [],
+          level_requirement: value.level_required || object.level,
           benefits: []
         };
         new_class_features.push(new_feature);
@@ -104,12 +115,23 @@ const GetClassFeats = ({ onChange, label, classFeatures, newClass }) => {
     }
   
     async function handleWikidotFetch() {
-      setLoadingWikidotData(true);
-      
-      if(label === "Class") {
-        await fetchWikidotClassData(newClass.class_name);
+      try {
+        
+        setLoadingWikidotData(true);
+        
+        if(label === "Class") {
+          await fetchWikidotClassData(object.class_name);
+        }
+  
+        if(label === "Subclass") {
+          await fetchWikidotSubclassData(object.name);
+        }
+      } catch (error) {
+        console.error("Error during Wikidot fetch:", error);
+        setLoadingWikidotData(false);
       }
     }
+
 
     async function fetchWikidotClassData(className) {
 
@@ -120,7 +142,7 @@ const GetClassFeats = ({ onChange, label, classFeatures, newClass }) => {
       }
   
       try {
-        const res = await fetch(`http://127.0.0.1:8000/wikidot/class/${newClass.class_name}`, {
+        const res = await fetch(`http://127.0.0.1:8000/wikidot/class/${object.class_name}`, {
           method: 'GET',
         });
   
@@ -139,10 +161,39 @@ const GetClassFeats = ({ onChange, label, classFeatures, newClass }) => {
 
     }
 
+    async function fetchWikidotSubclassData(subclassName) {
+      if(subclassName === '') {
+        alert('Please provide a subclass name to fetch from Wikidot.');
+        setLoadingWikidotData(false);
+        return;
+      }
+  
+      try {
+        
+
+        const res = await fetch(`http://127.0.0.1:8000/wikidot/subclass/${object.class_name}/${subclassName}`, {
+          method: 'GET',
+          
+        });
+  
+        if (!res.ok) {
+          throw new Error(`Wikidot fetch failed: ${res.status}`);
+        }
+  
+        const data = await res.json();
+        handleWikidotData(data);
+  
+        setLoadingWikidotData(false);
+      } catch (error) {
+        console.error("Error fetching from Wikidot:", error);
+        setLoadingWikidotData(false);
+      }
+    }
+
   // sync when parent provides new features
   useEffect(() => {
-    setLocalClassFeats(classFeatures || []);
-  }, [classFeatures]);
+    setLocalClassFeats(objectFeatures || []);
+  }, [objectFeatures]);
 
 
   // stable helper: update one feature immutably
@@ -191,7 +242,10 @@ const GetClassFeats = ({ onChange, label, classFeatures, newClass }) => {
       ))}
 
       <Box display="flex" justifyContent="center" mt={2}>
-        <Button onClick={handleWikidotFetch} loading={loadingWikidotData} variant="contained" color="success">Fetch from Wikidot</Button>
+        {(label === "Class" || label === "Subclass") && (
+<Button onClick={handleWikidotFetch} loading={loadingWikidotData} variant="contained" color="success">Fetch from Wikidot</Button>
+        )}
+        
         <button
           onClick={() => {
             const updatedFeatures = [

@@ -68,7 +68,7 @@ function GetSheet() {
     const { sheetid } = useParams();
     const { authUsername, checkAuth } = useAuth();
 
-    const [nameVar, setNameVar] = useState(draft ? draft.name : "");
+    const [nameVar, setNameVar] = useState("");
 
     async function loadNewSheet(mounted) {
 
@@ -83,6 +83,8 @@ function GetSheet() {
             console.log("New sheet data:", data);
             setDraft(data);
             initSheetManager(data, undefined, authUsername);
+            // ensure the local name input is updated for a freshly created sheet
+            setNameVar(data?.name ?? "");
             // console.log("Loaded new sheet:", data); //Enable this to see the json layout
         } catch (err) {
             if (err.name === 'AbortError') return;
@@ -141,7 +143,6 @@ function GetSheet() {
 
         }
 
-        setNameVar(draft ? draft.name : "");
         setLoading(false);
         return () => { saveSheet(); mounted = false; controller.abort(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -173,17 +174,26 @@ function GetSheet() {
             skillObj.locked = true; // Lock it so the user can't unselect it (This isn't activated but still good to be set)
         }
 
-        // commit the mutated draft into React state and SheetManager
-        setDraft({ ...draft });           // create new reference so React updates everywhere
-        setDraftGlobal({ ...draft });     // keep SheetManager in sync
+        // Build a single canonical object to avoid race/immutability issues
+        const finalDraft = { ...draft };
+
+        // Ensure nameVar (UI input) is applied if present
+        if (nameVar && nameVar !== finalDraft.name) {
+            finalDraft.name = nameVar;
+        }
+
+        // commit the finalized draft into React state and SheetManager synchronously
+        setDraft(finalDraft);
+        setDraftGlobal(finalDraft);
 
         setCreatingNewSheet(false);
-        // initialize with the actual draft we just committed
-        initSheetManager(draft, undefined, authUsername);
+        // initialize with the finalized draft object
+        initSheetManager(finalDraft, undefined, authUsername);
 
-        // now save (saveNewSheet uses SheetManager or draftGlobal internally)
+        // Save using the (now-synced) global draft — setDraftGlobal already updated it.
         const newSheetUrl = await saveNewSheet();
         navigate(newSheetUrl);
+        setNameVar(finalDraft.name);
     }
 
     function cancelCharacterCreation() {

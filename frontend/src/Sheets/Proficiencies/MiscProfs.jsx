@@ -44,18 +44,11 @@ export default function MiscProfs({ draft = {}, setDraft }) {
       mergedProfs += prof + "\n";
     });
     
-    draft.class.tool_proficiencies.forEach(toolProf => {
-      mergedProfs += toolProf + "\n";
-    })
-    draft.race.tool_proficiencies.forEach(toolProf => {
-      mergedProfs += toolProf + "\n";
-    })
-
-    draft.class.tool_proficiencies = []; //Clear these out to avoid duplication on future loads
-    draft.race.tool_proficiencies = []; //Clear these out to avoid duplication on future loads
 
     setProficiencies(mergedProfs.trim());
   }, []);
+
+  
   
 
   return (

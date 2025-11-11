@@ -24,14 +24,14 @@ class InfoManager():
                 formatted_array.append({'c_name': cclass[0], 'c_content': json.loads(cclass[1])})
             return (True, formatted_array)
         
-    def get_available_subclasses(self):
+    def get_available_subclasses(self, classname: str = ""):
         conn = self.dbm.c().connection
         
         com = """
-        SELECT name,content FROM subclasses;
+        SELECT name,content FROM subclasses where class_name = ?;
         """
         
-        res = conn.execute(com).fetchall()
+        res = conn.execute(com, (classname,)).fetchall()
         
         if res is None:
             return (True, [])
@@ -194,19 +194,47 @@ class InfoManager():
         
         if(type == 'Weapon'):
             com = """
+            SELECT COUNT(*) FROM weapons WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (item.get('name','') ,) ).fetchone()[0]
+            if count > 0:
+                return (False, "Weapon with this name already exists")
+            
+            com = """
             INSERT INTO weapons (name, content) VALUES (?, ?);
             """
             conn.execute(com, (item.get('name',''), json.dumps(item)))
             conn.commit()
             return (True, "Weapon added successfully")
+        
         if(type == 'Armor'):
+            
+            com = """
+            SELECT COUNT(*) FROM armors WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (item.get('name','') ,) ).fetchone()[0]
+            if count > 0:
+                return (False, "Armor with this name already exists")
+            
             com = """
             INSERT INTO armors (name, content) VALUES (?, ?);
             """
             conn.execute(com, (item.get('name',''), json.dumps(item)))
             conn.commit()
             return (True, "Armor added successfully")
+        
         if(type == 'Tool'):
+            
+            com = """
+            SELECT COUNT(*) FROM tools WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (item.get('name','') ,) ).fetchone()[0]
+            if count > 0:
+                return (False, "Tool with this name already exists")
+            
             com = """
             INSERT INTO tools (name, content) VALUES (?, ?);
             """
@@ -215,6 +243,15 @@ class InfoManager():
             return (True, "Tool added successfully")
         
         if(type == 'Misc.'):
+            
+            com = """
+            SELECT COUNT(*) FROM miscellaneous WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (item.get('name','') ,) ).fetchone()[0]
+            if count > 0:
+                return (False, "Miscellaneous item with this name already exists")
+            
             com = """
             INSERT INTO miscellaneous (name, content) VALUES (?, ?);
             """
@@ -228,6 +265,15 @@ class InfoManager():
         try:
             
             conn = self.dbm.c().connection
+            
+            com = """
+                SELECT COUNT(*) FROM classes WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (playerClass.get('class_name','') ,) ).fetchone()[0]
+            
+            if count > 0:
+                return (False, "Class with this name already exists")
             
             com = """
                 INSERT INTO classes (name, content) VALUES (?, ?);
@@ -246,10 +292,10 @@ class InfoManager():
             conn = self.dbm.c().connection
             
             com = """
-                INSERT INTO subclasses (name, content) VALUES (?, ?);
+                INSERT INTO subclasses (name, class_name, content) VALUES (?, ?, ?);
                 """
 
-            conn.execute(com, (playerClass.get('name',''), json.dumps(playerClass)))
+            conn.execute(com, (playerClass.get('name',''), playerClass.get('class_name',''), json.dumps(playerClass)))
             conn.commit()
 
             return (True, "Subclass added successfully")
@@ -272,30 +318,25 @@ class InfoManager():
         except Exception as e:
             return (False, str(e))
 
-            com = """
-                INSERT INTO subclasses (name, content) VALUES (?, ?);
-                """
-
-            conn.execute(com, (playerClass.get('name',''), json.dumps(playerClass)))
-            conn.commit()
-
-            return (True, "Subclass added successfully")
-        except Exception as e:
-            return (False, str(e))
-    
-            
-
-
     def save_new_race(self, playerRace: dict) -> tuple[bool, str]:
         try:
+            race_name = playerRace.get('subrace','') + " " + playerRace.get('race','')
+            com = """
+                SELECT COUNT(*) FROM races WHERE name = ?;
+            """
+            
+            count = self.dbm.c().connection.execute(com, (race_name ,) ).fetchone()[0]
+            
+            if count > 0:
+                return (False, f"Race with the name {race_name} already exists")
             
             conn = self.dbm.c().connection
             
             com = """
                 INSERT INTO races (name, content) VALUES (?, ?);
                 """
-                
-            conn.execute(com, (playerRace.get('race',''), json.dumps(playerRace)))
+
+            conn.execute(com, (race_name, json.dumps(playerRace)))
             conn.commit()
             
             return (True, "Race added successfully")

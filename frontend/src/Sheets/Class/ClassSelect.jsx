@@ -40,14 +40,12 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   const [hasSubclass, setHasSubclass] = useState(false);
   const [hasSpellcasting, setHasSpellcasting] = useState(false);
 
-
-
   const [localClassName, setLocalClassName] = useState('');
 
   const [newClass, setNewClass] = useState({
     class_name: '',
 
-    hit_die: 'd6',
+    hit_die: 'none',
     starting_hitpoints: 0,
     hitpoints_per_level: 0,
 
@@ -77,11 +75,16 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     },
   });
 
+  //Error setters
+  const [errorField, setErrorField] = useState('');
+
   function WipeNewClassData() {
+    setErrorField('');
+    setLocalClassName('');
     setNewClass({
       class_name: '',
 
-      hit_die: 'd6',
+      hit_die: 'none',
       used_hit_dice: 0,
       starting_hitpoints: 0,
       hitpoints_per_level: 0,
@@ -202,6 +205,38 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     setNewClass({ ...newClass });
   }
 
+  function setHitDice(value) {
+    newClass.hit_die = value;
+
+    //Based on the hit dice, set the starting hitpoints and hitpoints per level to default values
+    switch (value) {
+      case 'none':
+        newClass.starting_hitpoints = 0;
+        newClass.hitpoints_per_level = 0;
+        break;
+      case 'd6':
+        newClass.starting_hitpoints = 6;
+        newClass.hitpoints_per_level = 4;
+        break;
+      case 'd8':
+        newClass.starting_hitpoints = 8;
+        newClass.hitpoints_per_level = 5;
+        break;
+      case 'd10':
+        newClass.starting_hitpoints = 10;
+        newClass.hitpoints_per_level = 6;
+        break;
+      case 'd12':
+        newClass.starting_hitpoints = 12;
+        newClass.hitpoints_per_level = 7;
+        break;
+      default:
+        break;
+    }
+
+    setNewClass({ ...newClass });
+  }
+
   const handleDialogClose = () => {
     setCreatingNewClass(false);
 
@@ -215,29 +250,63 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
   function ValidateForm() {
     if (!newClass.class_name) {
+      setErrorField('class_name');
       alert('Please provide a class name.');
       return false;
     }
 
-    if (!newClass.starting_hitpoints === 0 || !newClass.hitpoints_per_level === 0) {
-      alert('Please provide valid hitpoint values.');
+    if (newClass.starting_hitpoints === 0 || newClass.hitpoints_per_level === 0) {
+      setErrorField('hit_die');
+      alert('Please select a valid hit die for the class.');
       return false;
     }
 
     if (newClass.attribute_proficiencies.length === 0) {
+      setErrorField('attribute_proficiencies');
       alert('Please select at least one saving throw proficiency.');
       return false;
     }
 
     if (newClass.skill_proficiencies.length === 0) {
+      setErrorField('skill_proficiencies');
       alert('Please select the skill proficiencies for the class.');
       return false;
     }
 
     if (newClass.num_skill_proficiencies === undefined || newClass.num_skill_proficiencies <= 0) {
+      setErrorField('num_skill_proficiencies');
       alert('Please provide a valid number of skill proficiencies to choose from.');
       return false;
     }
+
+    // Check if there's starting items. If not warn the user but accept it as valid if they confirm.
+    if (newClass.starting_equipment.length === 0 && newClass.starting_equipment_choices.length === 0) {
+      const confirmNoStartingItems = window.confirm('NO STARTING EQUIPMENT has been added for this class. Are you sure you want to proceed?');
+      if (!confirmNoStartingItems) {
+        return false;
+      }
+    }
+
+    //Check the same for class features
+    if (newClass.class_features.length === 0) {
+      const confirmNoClassFeatures = window.confirm('NO CLASS FEATURES have been added for this class. Are you sure you want to proceed?');
+      if (!confirmNoClassFeatures) {
+        return false;
+      }
+    } else if(newClass.class_features.length > 0) {
+      //Check that all class features have a required level
+      for (let feat of newClass.class_features) {
+        if (feat.level_requirement === undefined || feat.level_requirement < 1) {
+          setErrorField('class_features');
+          alert(`Please provide a valid level for the class feature: ${feat.name}`);
+          return false;
+        }
+      }
+
+    }
+
+    setErrorField('');
+
     return true;
   }
 
@@ -258,6 +327,9 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     });
 
     if (!res.ok) {
+      //Alert with error message
+      const err = await res.json().catch(() => ({ detail: 'Unknown' }));
+      alert(`Error creating class: HTTP ${res.status} - ${err.detail}`);
       throw new Error(`Save failed: ${res.status}`);
     }
 
@@ -278,7 +350,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
 
 
-  const ClassNameInput = memo(function ClassNameInput({ initial = '', onCommit }) {
+  const ClassNameInput = memo(function ClassNameInput({ initial = '', onCommit,error }) {
     // local state lives inside this small component — typing won't re-render parent
     const [value, setValue] = useState(initial);
 
@@ -288,6 +360,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     return (
       <TextField
         fullWidth
+        error={error}
         label="Class Name"
         variant="outlined"
         value={value}
@@ -333,6 +406,8 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
           {/* Large input for the class name */}
           <ClassNameInput
             initial={localClassName}
+            //Red outline when error in class name
+            error={errorField === 'class_name'}
             onCommit={(v) => {
               // update both localClassName and newClass exactly once (on blur)
               setLocalClassName(v);
@@ -345,12 +420,14 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
             <FormControl sx={{ minWidth: 140 }}>
               <InputLabel id="hit-die-label">Hit Dice</InputLabel>
               <Select
+                error={errorField === 'hit_die'}
                 labelId="hit-die-label"
                 id="hit-die"
                 value={newClass.hit_die}
                 label="Hit Dice"
-                onChange={(e) => setNewClass((s) => ({ ...s, hit_die: e.target.value }))}
+                onChange={(e) => {setHitDice(e.target.value);}}
               >
+                <MenuItem value="none">—</MenuItem>
                 <MenuItem value="d6">D6</MenuItem>
                 <MenuItem value="d8">D8</MenuItem>
                 <MenuItem value="d10">D10</MenuItem>
@@ -362,8 +439,11 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
               type='number'
               label="Starting HP"
               variant="outlined"
+              //Make this field read-only, as it is calculated based on hit die
+              InputProps={{
+                readOnly: true,
+              }}
               value={newClass.starting_hitpoints}
-              onChange={(e) => setNewClass((s) => ({ ...s, starting_hitpoints: e.target.value }))}
               size="small"
             />
 
@@ -371,8 +451,10 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
               type='number'
               label="HP / Level"
               variant="outlined"
+              InputProps={{
+                readOnly: true,
+              }}
               value={newClass.hitpoints_per_level}
-              onChange={(e) => setNewClass((s) => ({ ...s, hitpoints_per_level: e.target.value }))}
               size="small"
             />
           </Box>
@@ -390,14 +472,14 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
 
           <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
-            <GetAttributeProficiencies value={newClass.attribute_proficiencies} onChange={setAttributeProficiencies} />
-            <GetSkillProficiencies value={newClass.skill_proficiencies} onChange={setSkillProficiencies} />
+            <GetAttributeProficiencies value={newClass.attribute_proficiencies} onChange={setAttributeProficiencies} error={errorField === 'attribute_proficiencies'} />
+            <GetSkillProficiencies value={newClass.skill_proficiencies} onChange={setSkillProficiencies} error={errorField === 'skill_proficiencies'} />
 
             {/* A text field for number of skill proficiencies to choose from: */}
             <TextField
               className='w-30'
               type='number'
-
+              error={errorField === 'num_skill_proficiencies'}
               label="Nr. Choices"
               variant="outlined"
               value={newClass.num_skill_proficiencies}
@@ -517,7 +599,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
 
           <Box mt={2}>
-            <GetClassFeats onChange={setClassFeats} label={"Class"} classFeatures={newClass.class_features} newClass={newClass} />
+            <GetClassFeats onChange={setClassFeats} label={"Class"} objectFeatures={newClass.class_features} object={newClass} />
           </Box>
         </DialogContent>
 

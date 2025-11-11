@@ -21,7 +21,8 @@ function CreateNewSheet() {
 
     return (
     <Box
-      className="!bg-slate-400/50 !w-48 !h-62 !mx-4 !rounded !flex !flex-col !items-center !justify-center"
+      className=" !w-48 !h-62 !mx-4 !rounded-xl !flex !flex-col !items-center !justify-center"
+      style={{ backgroundColor: '#1b1b1b' }}
     >
       <Button
         component={RouterLink}

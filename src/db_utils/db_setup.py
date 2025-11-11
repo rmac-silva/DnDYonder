@@ -50,6 +50,7 @@ def create_subclasses_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS subclasses (
         name TEXT NOT NULL,
+        class_name TEXT NOT NULL,
         content TEXT
         );''')
     

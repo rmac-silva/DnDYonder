@@ -1,11 +1,11 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import SubclassSelect from './SubclassSelect';
 function SubclassInfo({ draft, setDraft }) {
 
     function GetSubclassDescription() {
         const paragraphs = (draft.class.subclass?.description || '').split(/\.\s*/).filter(Boolean);
         return (
-          <div className="text-xl mt-2 font-semibold">
+          <div className="text-md mt-2 font-semibold">
             {paragraphs.map((p,i) => <p key={i}>{p.trim()}{i < paragraphs.length-1 ? '.' : ''}</p>)}
           </div>
         );

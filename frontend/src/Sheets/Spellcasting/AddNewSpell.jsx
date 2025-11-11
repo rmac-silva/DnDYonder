@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -15,8 +14,9 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Autocomplete from '@mui/material/Autocomplete';
+import Tooltip from '@mui/material/Tooltip';
+import CachedIcon from '@mui/icons-material/Cached';
 
 function AddNewSpell({ draft, setDraft, onAdd }) {
 
@@ -24,8 +24,10 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
     const [loading, setLoading] = useState(true);
     const [fetchedSpells, setFetchedSpells] = useState([]);
     const [selectValue, setSelectValue] = useState('');
-      const [forceRefresh, setForceRefresh] = useState(true);
+    const [forceRefresh, setForceRefresh] = useState(true);
     const [creatingNewSpell, setCreatingNewSpell] = useState(false);
+
+    const [loadingWikidotData, setLoadingWikidotData] = useState(false);
 
     function handleDialogClose() {
         setCreatingNewSpell(false);
@@ -70,7 +72,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                 const data = await res.json();
                 if (!mounted) return;
                 // expecting data.spells or an array
-                console.log('Fetched spells:', data.spells);
+                // console.log('Fetched spells:', data.spells);
                 setFetchedSpells(data.spells);
             } catch (err) {
                 console.error('Error fetching spells:', err);
@@ -101,6 +103,51 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
             return false;
         }
         return true;
+    }
+
+    async function handleWikidotFetch() {
+        setLoadingWikidotData(true);
+        
+
+        if(newSpell.name.trim() === "") {
+            alert("Please enter a spell name to fetch from Wikidot.");
+            setLoadingWikidotData(false);
+            return;
+        }
+
+        try {
+            // Sanitize the string for URL (replace spaces with underscores)
+            var spell_name = newSpell.name.trim().replace(/\s+/g, '_');
+            const res = await fetch(`http://127.0.0.1:8000/wikidot/spell/${spell_name}`, {
+                method: 'GET',
+            });
+
+            if (!res.ok) {
+                throw new Error(`Wikidot fetch failed: ${res.status}`);
+            }
+
+            const data = await res.json();
+            handleWikidotData(data);
+
+            setLoadingWikidotData(false);
+        } catch (error) {
+            console.error("Error fetching from Wikidot:", error);
+            setLoadingWikidotData(false);
+        }
+    }
+
+    async function handleWikidotData(data) {
+        console.log("Wikidot data received:", data);
+
+        newSpell.description = data.description || newSpell.description;
+        newSpell.casting_time = data.casting_time || newSpell.casting_time;
+        newSpell.range = data.range || newSpell.range;
+        newSpell.components = data.components || newSpell.components;
+        newSpell.duration = data.duration || newSpell.duration;
+        newSpell.level = data.level !== undefined ? data.level : newSpell.level;
+        newSpell.school = data.school ? data.school.charAt(0).toUpperCase() + data.school.slice(1) : newSpell.school;
+        newSpell.is_ritual = data.is_ritual !== undefined ? data.is_ritual : newSpell.is_ritual;
+        
     }
 
     const handleCreateSpell = async () => {
@@ -144,7 +191,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
 
     function handleSelectingSpell(event) {
         const selectedSpellName = event.target.value;
-        console.log('Selected spell:', selectedSpellName);
+        // console.log('Selected spell:', selectedSpellName);
 
         if (selectedSpellName === "new") {
             // Logic to add a new spell
@@ -272,6 +319,14 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                 <MenuItem value={"Transmutation"}>Transmutation</MenuItem>
                             </Select>
 
+                            <Tooltip title="Fetches item information from Wikidot" arrow>
+                                                                        <CachedIcon 
+                                                                            onClick={handleWikidotFetch} 
+                                                                            className={`cursor-pointer ${loadingWikidotData ? 'animate-spin text-gray-400' : 'text-black hover:text-gray-600'}`} 
+                                                                            
+                                                                        />
+                                                                    </Tooltip>
+
                         </Box>
 
                         <Box display={"flex"} flexDirection={"row"} alignItems={"center"} gap={2}>
@@ -320,7 +375,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                             onChange={(e) => setNewSpell((s) => ({ ...s, description: e.target.value }))}
                             margin="normal"
                             multiline
-                            rows={3}
+                            rows={Math.min(10, Math.max(3, Math.floor(newSpell.description.length / 100)))} //Number of rows depending on description length
                         />
                     </Box>
                 </DialogContent>

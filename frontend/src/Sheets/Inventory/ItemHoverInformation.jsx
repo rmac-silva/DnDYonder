@@ -57,7 +57,7 @@ function ItemHoverInformation({ itemName, content }) {
         {content.attacks &&
             content.attacks.map((attack, index) => (
                 <div className="flex flex-col">
-                    <div key={index} className="mt-2 flex space-x-2">
+                    <div key={index} className=" flex space-x-2">
 
 
                         <div className="font-semibold underline mr-0.5">Damage: </div>

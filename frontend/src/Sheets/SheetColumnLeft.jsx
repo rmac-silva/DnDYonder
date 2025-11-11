@@ -19,6 +19,8 @@ function SheetLeftColumn({draft,setDraft}) {
                                     <label className="text-2xl font-semibold text-gray-700 ">Level</label>
                                     <input className={`mt-2 px-2 py-1 text-center border-b-2 font-semibold text-gray-700 border-zinc-500  text-3xl w-1/2 ${textClasses}`}
                                         placeholder='1'
+                                        min={1}
+                                        max={20}
                                         type='number'
                                         defaultValue={draft.stats.level}
                                         onBlur={(e) => { draft.stats.level = e.target.value; setDraft({ ...draft }) }} />

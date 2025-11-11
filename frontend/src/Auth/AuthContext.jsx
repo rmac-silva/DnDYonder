@@ -69,7 +69,18 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("authToken");
     setIsLoggedIn(false);
     setUsername(null);
-    navigate("/login", { replace: true });
+
+    // Prefer react-router navigation, but fall back to a hard redirect if that's not available
+    try {
+      if (typeof navigate === 'function') {
+        navigate('/login', { replace: true });
+      } else {
+        window.location.href = '/login';
+      }
+    } catch (err) {
+      console.error('Navigation failed during logout, forcing location change', err);
+      window.location.href = '/login';
+    }
   };
 
   return (

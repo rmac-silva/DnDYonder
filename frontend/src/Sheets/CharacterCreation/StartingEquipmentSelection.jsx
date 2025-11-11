@@ -8,6 +8,11 @@ function StartingEquipmentSelection({ sheet, setSheet, onValid, selectedItems, s
         // Initialize item choices from sheet, to help manage which items are selected
         const options = sheet.class.starting_equipment_choices;
 
+        if(!options || options.length === 0) {
+            onValid(true); //No choices to be made, so it's valid
+            return;
+        }
+
         // Map over the options to create the initial state
         const initialSelectedItems = options.map(itemSet =>
             itemSet.map(itemOption => {

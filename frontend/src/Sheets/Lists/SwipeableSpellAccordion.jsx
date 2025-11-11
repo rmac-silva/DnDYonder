@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -8,36 +8,42 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 /**
- * SwipeableFeatureAccordion
- * - swipe left to reveal a Delete button
- * - if swipe exceeds threshold it stays revealed
- * - tap Delete to confirm
+ * SwipeableSpellAccordion -> Long-press to delete variant
+ * - remains an accordion
+ * - long-press (hold pointer/touch) shows a progress animation
+ * - if held long enough, plays a quick delete animation and calls onDelete(spell)
  */
 const SwipeableSpellAccordion = ({ spell, onDelete }) => {
-    const THRESHOLD = 80; // px to reveal delete
-    const MAX_SLIDE = 120; // max translate
+    const LONG_PRESS_MS = 1000; // hold time required to trigger delete
     const [translateX, setTranslateX] = useState(0);
     const [revealed, setRevealed] = useState(false);
     const containerRef = useRef(null);
 
+    // long-press state
+    const pressStartRef = useRef(0);
+    const rafRef = useRef(null);
+    const [pressProgress, setPressProgress] = useState(0); // 0..1
+    const [isPressing, setIsPressing] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    // swipe handlers (preserve original swipe behavior)
+    const THRESHOLD = 80; // px to reveal delete
+    const MAX_SLIDE = 120; // max translate
     const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
     const handlers = useSwipeable({
         onSwiping: (eventData) => {
-            // eventData.deltaX: positive = right, negative = left
             const x = clamp(eventData.deltaX, -MAX_SLIDE, MAX_SLIDE);
-            // only allow left motion (negative) to reveal delete
             setTranslateX(x < 0 ? x : (revealed ? -THRESHOLD : 0));
         },
         onSwiped: (eventData) => {
             const delta = eventData.deltaX;
             if (delta < -THRESHOLD) {
-                // reveal delete area
                 setTranslateX(-THRESHOLD);
                 setRevealed(true);
             } else {
-                // hide
                 setTranslateX(0);
                 setRevealed(false);
             }
@@ -46,32 +52,112 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
         preventDefaultTouchmoveEvent: true,
     });
 
-    const handleHide = () => {
-        setTranslateX(0);
-        setRevealed(false);
+    // long-press animation loop
+    const tickPress = useCallback(() => {
+        const start = pressStartRef.current;
+        if (!start) return;
+        const elapsed = Date.now() - start;
+        const progress = Math.min(1, elapsed / LONG_PRESS_MS);
+        setPressProgress(progress);
+        if (progress >= 1) {
+            // completed
+            cancelAnimationFrame(rafRef.current);
+            rafRef.current = null;
+            setIsPressing(false);
+            setPressProgress(1);
+            // play deletion animation then call onDelete
+            setIsDeleting(true);
+            // small delay to allow CSS delete animation to show
+            setTimeout(() => {
+                onDelete?.(spell);
+            }, 220);
+            return;
+        }
+        rafRef.current = requestAnimationFrame(tickPress);
+    }, [onDelete, spell]);
+
+    // pointer down/up handlers (works for mouse and touch)
+    const handlePointerDown = (e) => {
+        // avoid starting long-press when interacting with form controls inside
+        if (isDeleting) return;
+        // left mouse only or touch
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+        pressStartRef.current = Date.now();
+        setIsPressing(true);
+        setPressProgress(0);
+        // start RAF loop
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        rafRef.current = requestAnimationFrame(tickPress);
+        // capture pointer so we still get up events
+        e.target.setPointerCapture?.(e.pointerId);
     };
 
-    const handleDelete = () => {
-        // optional: confirm
-        if (window.confirm(`Delete spell "${spell.name}"?`)) {
-            onDelete?.(spell);
-        } else {
-            handleHide();
+    const handlePointerUp = (e) => {
+        if (rafRef.current) {
+            cancelAnimationFrame(rafRef.current);
+            rafRef.current = null;
         }
+        pressStartRef.current = 0;
+        setIsPressing(false);
+        setPressProgress(0);
+        // release pointer capture
+        try { e.target.releasePointerCapture?.(e.pointerId); } catch {}
+    };
+
+    useEffect(() => {
+        return () => {
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        };
+    }, []);
+
+    // styles for progress indicator and delete animation
+    const progressStyle = {
+        position: 'absolute',
+        inset: 0,
+        display: isPressing || isDeleting ? 'flex' : 'none',
+        alignItems: 'center',
+        justifyContent: 'center',
+        pointerEvents: 'none',
+        zIndex: 3,
+    };
+
+    const progressCircleSize = 48;
+    const circleInner = {
+        width: progressCircleSize,
+        height: progressCircleSize,
+        borderRadius: '50%',
+        background: `conic-gradient(rgba(220,38,38,0.95) ${pressProgress * 360}deg, rgba(0,0,0,0.08) 0deg)`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
+        transition: isDeleting ? 'transform 180ms ease, opacity 180ms ease' : 'none',
+        transform: isDeleting ? 'scale(0.85)' : 'scale(1)',
+        opacity: isDeleting ? 0.75 : 1,
+    };
+
+    // deleted animation applied to sliding content
+    const slidingStyle = {
+        transform: `translateX(${translateX}px)`,
+        transition: isDeleting ? 'transform 220ms ease, opacity 220ms ease' : 'transform 160ms ease',
+        opacity: isDeleting ? 0.0 : 1,
+        zIndex: 2,
     };
 
     return (
         <div
             ref={containerRef}
             {...handlers}
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
+            onPointerLeave={(e) => { if (isPressing) handlePointerUp(e); }}
             style={{
                 position: 'relative',
                 overflow: 'hidden',
-                // give a little space between items
-
             }}
         >
-            {/* Delete action revealed on the right */}
+            {/* visual delete hint on right when revealed via swipe */}
             <div
                 style={{
                     position: 'absolute',
@@ -84,38 +170,40 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
                     justifyContent: 'center',
                     zIndex: 1,
                 }}
-                
             >
                 <Button
                     variant="contained"
                     color="error"
-                    onClick={handleDelete}
+                    onClick={() => {
+                        if (window.confirm(`Delete spell "${spell.name}"?`)) onDelete?.(spell);
+                    }}
                     size="small"
                 >
                     <DeleteIcon />
                 </Button>
             </div>
 
+            {/* progress indicator / long-press feedback */}
+            <div style={progressStyle} aria-hidden>
+                <div style={circleInner}>
+                    {/* optional inner icon */}
+                    <DeleteIcon style={{ color: 'white', fontSize: 20 }} />
+                </div>
+            </div>
+
             {/* Sliding content */}
             <div
-            className='inset-shadow-xl'
-                style={{
-                    transform: `translateX(${translateX}px)`,
-                    transition: 'transform 160ms ease',
-                    zIndex: 2,
-                }}
+                className='inset-shadow-xl'
+                style={slidingStyle}
             >
                 <Accordion
                     key={`${spell.name}-${spell.level_requirement}`}
-                    
-                    className='!shadow-sm  '
+                    className='!shadow-sm'
                     sx={{
                         mb: 1,
-                        
                         '&:before': { display: 'none' },
-
-                        
                         backgroundColor: '#fff',
+                        transformOrigin: 'center left',
                     }}
                 >
                     <AccordionSummary
@@ -124,40 +212,30 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
                         className='!bg-amber-50'
                     >
                         <Slide direction="left" in={true} mountOnEnter unmountOnExit>
-
-                            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'left', width: '100%', }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'left', width: '100%' }}>
                                 <div className="px-2 bg-amber-50 rounded w-full">
-
                                     <div className="font-semibold text-xl">{spell.name}</div>
-
-                                    {/* Range / Casting Time */}
                                     <div className="text-md"><strong>Casting Time:</strong> {spell.casting_time}</div>
                                     <div className="flex space-x-2">
-                                        
                                         <div className="text-md"><strong>Range:</strong> {spell.range}</div>
                                         <div className="text-md"><strong>Level:</strong> {spell.level}</div>
                                     </div>
-
                                     <div className="text-md"><strong className="!text-md">Duration:</strong> {spell.duration}</div>
                                 </div>
-
-
                             </Box>
                         </Slide>
                     </AccordionSummary>
 
                     <AccordionDetails sx={{ pt: 0, px: 2, pb: 2 }} className='!bg-amber-50'>
                         <div className=" px-2 border-t-2 ">
-
                             <div className="text-sm mt-2"><strong >Components:</strong> {spell.components}</div>
-                            <div className="mt-2 text-sm">{spell.description.split("\n\n").map((para, index) => (
+                            <div className="mt-2 text-sm">{String(spell.description || '').split("\n\n").map((para, index) => (
                                 <p className="mt-2" key={index}>{para}</p>
                             ))}</div>
                         </div>
                     </AccordionDetails>
                 </Accordion>
             </div>
-
         </div>
     );
 };

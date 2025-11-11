@@ -43,7 +43,7 @@ function SheetHeader({draft,setDraft, nameVar, setNameVar}) {
             <input
                 type="text"
                 disabled
-                defaultValue={draft.race.race}
+                defaultValue={draft.race.subrace !== '' ? draft.race.subrace + " " + draft.race.race : draft.race.race}
                 onBlur={(e) => { draft.race.race = e.target.value; setDraft({ ...draft }) }}
                 placeholder="Race"
                 className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
