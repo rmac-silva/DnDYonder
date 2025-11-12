@@ -3,6 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import { grey } from "@mui/material/colors";
+import COLORS from '../../constants/colors.js';
 function PlayerStats({draft,setDraft}) {
     const grey400 = grey[400]; // assuming you want to use MUI's grey[400]
     
@@ -28,11 +29,11 @@ function PlayerStats({draft,setDraft}) {
     return (
         <>
             <div className="flex flex-col mr-8 items-center">
-                <label className="text-3xl font-semibold" style={{color: '#1a1a1a'}}>Death Saves</label>
-                <div className='w-45 h-26 mt-2 text-center md:text-6xl place-content-center rounded-xl flex flex-col shadow-sm' style={{backgroundColor: '#edeae8', borderColor: '#db7f3d', borderWidth: '2px', borderStyle: 'solid'}}>
+                <label className="text-3xl font-semibold" style={{color: COLORS.secondary}}>Death Saves</label>
+                <div className='w-45 h-26 mt-2 text-center md:text-6xl place-content-center rounded-xl flex flex-col shadow-sm' style={{backgroundColor: COLORS.primary, borderColor: COLORS.accent, borderWidth: '2px', borderStyle: 'solid'}}>
 
                     <div className='flex  justify-items-end items-center '>
-                        <label className="text-lg font-medium ml-2 mr-2" style={{color: '#1a1a1a'}}>Successes</label>
+                        <label className="text-lg font-medium ml-2 mr-2" style={{color: COLORS.secondary}}>Successes</label>
 
                         <Checkbox
                             icon={<CircleOutlinedIcon style={{ fontSize: '1.5rem' }} />}
@@ -45,7 +46,7 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#1a1a1a",
+                                    color: COLORS.secondary,
                                 },
                             }} />
                         <Checkbox
@@ -59,7 +60,7 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#1a1a1a",
+                                    color: COLORS.secondary,
                                 },
                             }} />
                         <Checkbox
@@ -74,12 +75,12 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#1a1a1a",
+                                    color: COLORS.secondary,
                                 },
                             }} />
                     </div>
                     <div className='flex justify-items-end items-center mt-2'>
-                        <label className=" text-lg font-medium ml-2 mr-2" style={{color: '#1a1a1a'}}>Failures</label>
+                        <label className=" text-lg font-medium ml-2 mr-2" style={{color: COLORS.secondary}}>Failures</label>
 
                         <Checkbox
                             icon={<CircleOutlinedIcon style={{ fontSize: '1.5rem' }} />}
@@ -92,7 +93,7 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#1a1a1a",
+                                    color: COLORS.secondary,
                                 },
                             }} />
                         <Checkbox
@@ -106,7 +107,7 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#1a1a1a",
+                                    color: COLORS.secondary,
                                 },
                             }} />
                         <Checkbox
@@ -120,7 +121,7 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#1a1a1a",
+                                    color: COLORS.secondary,
                                 },
                             }} />
                     </div>

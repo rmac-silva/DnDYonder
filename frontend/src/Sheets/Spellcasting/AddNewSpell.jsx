@@ -18,6 +18,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Tooltip from '@mui/material/Tooltip';
 import CachedIcon from '@mui/icons-material/Cached';
 import Paper from '@mui/material/Paper';
+import COLORS from '../../constants/colors.js';
 
 function AddNewSpell({ draft, setDraft, onAdd }) {
 
@@ -230,10 +231,10 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                         return String(opt);
                     }}
                     PaperComponent={(props) => (
-                        <Paper {...props} sx={{ backgroundColor: '#edeae8', border: '2px solid #db7f3d' }} />
+                        <Paper {...props} sx={{ backgroundColor: COLORS.primary, border: `2px solid ${COLORS.accent}` }} />
                     )}
                     renderOption={(props, option) => (
-                        <li {...props} style={{ color: '#1a1a1a' }}>
+                        <li {...props} style={{ color: COLORS.secondary }}>
                             {option === "" ? "— Select —" : option === "new" ? "Create New Spell…" : String(option)}
                         </li>
                     )}
@@ -244,16 +245,16 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                             placeholder=""
                             sx={{
                                 '& .MuiOutlinedInput-root': {
-                                    backgroundColor: '#edeae8',
+                                    backgroundColor: COLORS.primary,
                                     '& fieldset': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                         borderWidth: 2,
                                     },
                                     '&:hover fieldset': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                     '&.Mui-focused fieldset': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                 },
                             }}
@@ -284,16 +285,16 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                     ml: 2, 
                                     maxWidth: 400,
                                     '& .MuiOutlinedInput-root': {
-                                        backgroundColor: '#edeae8',
+                                        backgroundColor: COLORS.primary,
                                         '& fieldset': {
-                                            borderColor: '#db7f3d',
+                                            borderColor: COLORS.accent,
                                             borderWidth: 2,
                                         },
                                         '&:hover fieldset': {
-                                            borderColor: '#c46d2f',
+                                            borderColor: COLORS.accentHover,
                                         },
                                         '&.Mui-focused fieldset': {
-                                            borderColor: '#c46d2f',
+                                            borderColor: COLORS.accentHover,
                                         },
                                     },
                                 }}
@@ -310,16 +311,16 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                 sx={{ 
                                     maxWidth: 200,
                                     '& .MuiOutlinedInput-root': {
-                                        backgroundColor: '#edeae8',
+                                        backgroundColor: COLORS.primary,
                                         '& fieldset': {
-                                            borderColor: '#db7f3d',
+                                            borderColor: COLORS.accent,
                                             borderWidth: 2,
                                         },
                                         '&:hover fieldset': {
-                                            borderColor: '#c46d2f',
+                                            borderColor: COLORS.accentHover,
                                         },
                                         '&.Mui-focused fieldset': {
-                                            borderColor: '#c46d2f',
+                                            borderColor: COLORS.accentHover,
                                         },
                                     },
                                 }}
@@ -340,27 +341,27 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                 sx={{ 
                                     minWidth: 200, 
                                     maxHeight: 50,
-                                    color: '#1a1a1a',
+                                    color: COLORS.secondary,
                                     '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '& .MuiSvgIcon-root': {
-                                        color: '#db7f3d',
+                                        color: COLORS.accent,
                                     },
                                     '&:before': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:after': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:hover:not(.Mui-disabled):before': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                 }}
                                 value={newSpell.level}
@@ -368,17 +369,17 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                 MenuProps={{
                                     PaperProps: {
                                         sx: {
-                                            backgroundColor: '#edeae8',
-                                            border: '2px solid #db7f3d',
+                                            backgroundColor: COLORS.primary,
+                                            border: `2px solid ${COLORS.accent}`,
                                             '& .MuiMenuItem-root': {
-                                                color: '#1a1a1a',
+                                                color: COLORS.secondary,
                                                 '&:hover': {
-                                                    backgroundColor: '#edeae8',
+                                                    backgroundColor: COLORS.primary,
                                                 },
                                                 '&.Mui-selected': {
-                                                    backgroundColor: '#edeae8',
+                                                    backgroundColor: COLORS.primary,
                                                     '&:hover': {
-                                                        backgroundColor: '#edeae8',
+                                                        backgroundColor: COLORS.primary,
                                                     },
                                                 },
                                             },
@@ -406,27 +407,27 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                 sx={{ 
                                     minWidth: 200, 
                                     maxHeight: 50,
-                                    color: '#1a1a1a',
+                                    color: COLORS.secondary,
                                     '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '& .MuiSvgIcon-root': {
-                                        color: '#db7f3d',
+                                        color: COLORS.accent,
                                     },
                                     '&:before': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:after': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:hover:not(.Mui-disabled):before': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                 }}
                                 value={newSpell.school || ""}
@@ -434,17 +435,17 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                 MenuProps={{
                                     PaperProps: {
                                         sx: {
-                                            backgroundColor: '#edeae8',
-                                            border: '2px solid #db7f3d',
+                                            backgroundColor: COLORS.primary,
+                                            border: `2px solid ${COLORS.accent}`,
                                             '& .MuiMenuItem-root': {
-                                                color: '#1a1a1a',
+                                                color: COLORS.secondary,
                                                 '&:hover': {
-                                                    backgroundColor: '#edeae8',
+                                                    backgroundColor: COLORS.primary,
                                                 },
                                                 '&.Mui-selected': {
-                                                    backgroundColor: '#edeae8',
+                                                    backgroundColor: COLORS.primary,
                                                     '&:hover': {
-                                                        backgroundColor: '#edeae8',
+                                                        backgroundColor: COLORS.primary,
                                                     },
                                                 },
                                             },
@@ -481,16 +482,16 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                     ml: 2, 
                                     maxWidth: 350,
                                     '& .MuiOutlinedInput-root': {
-                                        backgroundColor: '#edeae8',
+                                        backgroundColor: COLORS.primary,
                                         '& fieldset': {
-                                            borderColor: '#db7f3d',
+                                            borderColor: COLORS.accent,
                                             borderWidth: 2,
                                         },
                                         '&:hover fieldset': {
-                                            borderColor: '#c46d2f',
+                                            borderColor: COLORS.accentHover,
                                         },
                                         '&.Mui-focused fieldset': {
-                                            borderColor: '#c46d2f',
+                                            borderColor: COLORS.accentHover,
                                         },
                                     },
                                 }}
@@ -506,16 +507,16 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                 sx={{ 
                                     maxWidth: 150,
                                     '& .MuiOutlinedInput-root': {
-                                        backgroundColor: '#edeae8',
+                                        backgroundColor: COLORS.primary,
                                         '& fieldset': {
-                                            borderColor: '#db7f3d',
+                                            borderColor: COLORS.accent,
                                             borderWidth: 2,
                                         },
                                         '&:hover fieldset': {
-                                            borderColor: '#c46d2f',
+                                            borderColor: COLORS.accentHover,
                                         },
                                         '&.Mui-focused fieldset': {
-                                            borderColor: '#c46d2f',
+                                            borderColor: COLORS.accentHover,
                                         },
                                     },
                                 }}
@@ -531,16 +532,16 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                 sx={{ 
                                     maxWidth: 250,
                                     '& .MuiOutlinedInput-root': {
-                                        backgroundColor: '#edeae8',
+                                        backgroundColor: COLORS.primary,
                                         '& fieldset': {
-                                            borderColor: '#db7f3d',
+                                            borderColor: COLORS.accent,
                                             borderWidth: 2,
                                         },
                                         '&:hover fieldset': {
-                                            borderColor: '#c46d2f',
+                                            borderColor: COLORS.accentHover,
                                         },
                                         '&.Mui-focused fieldset': {
-                                            borderColor: '#c46d2f',
+                                            borderColor: COLORS.accentHover,
                                         },
                                     },
                                 }}
@@ -562,16 +563,16 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                 ml: 2, 
                                 maxWidth: 1000,
                                 '& .MuiOutlinedInput-root': {
-                                    backgroundColor: '#edeae8',
+                                    backgroundColor: COLORS.primary,
                                     '& fieldset': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                         borderWidth: 2,
                                     },
                                     '&:hover fieldset': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                     '&.Mui-focused fieldset': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                 },
                             }}

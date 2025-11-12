@@ -31,6 +31,7 @@ import GetAttributeProficiencies from '../Lists/AttributeProficiencies';
 import GetSkillProficiencies from '../Lists/SkillProficiencies';
 import GetStartingEquipment from '../Lists/StartingEquipment';
 import GetClassFeats from '../Lists/ClassFeature';
+import COLORS from '../../constants/colors.js';
 
 const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
     const [loading, setLoading] = useState(true);
@@ -255,7 +256,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
     return (
         <>
             <FormControl fullWidth variant="standard" margin="normal">
-                <InputLabel id="race-select-label" sx={{ color: '#1a1a1a', '&.Mui-focused': { color: '#db7f3d' } }}>Race</InputLabel>
+                <InputLabel id="race-select-label" sx={{ color: COLORS.secondary, '&.Mui-focused': { color: COLORS.accent } }}>Race</InputLabel>
                 <Select
                     labelId="race-select-label"
                     id="race-select"
@@ -263,43 +264,43 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                     onChange={handleChangingRace}
                     disabled={loading || disabled}
                     sx={{
-                        color: '#1a1a1a',
+                        color: COLORS.secondary,
                         '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: '#db7f3d',
+                            borderColor: COLORS.accent,
                         },
                         '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: '#c46d2f',
+                            borderColor: COLORS.accentHover,
                         },
                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: '#db7f3d',
+                            borderColor: COLORS.accent,
                         },
                         '& .MuiSvgIcon-root': {
-                            color: '#db7f3d',
+                            color: COLORS.accent,
                         },
                         '&:before': {
-                            borderColor: '#db7f3d',
+                            borderColor: COLORS.accent,
                         },
                         '&:after': {
-                            borderColor: '#db7f3d',
+                            borderColor: COLORS.accent,
                         },
                         '&:hover:not(.Mui-disabled):before': {
-                            borderColor: '#c46d2f',
+                            borderColor: COLORS.accentHover,
                         },
                     }}
                     MenuProps={{
                         PaperProps: {
                             sx: {
-                                backgroundColor: '#edeae8',
-                                border: '2px solid #db7f3d',
+                                backgroundColor: COLORS.primary,
+                                border: `2px solid ${COLORS.accent}`,
                                 '& .MuiMenuItem-root': {
-                                    color: '#1a1a1a',
+                                    color: COLORS.secondary,
                                     '&:hover': {
-                                        backgroundColor: '#e0ddd9',
+                                        backgroundColor: COLORS.primary,
                                     },
                                     '&.Mui-selected': {
-                                        backgroundColor: '#e0ddd9',
+                                        backgroundColor: COLORS.primary,
                                         '&:hover': {
-                                            backgroundColor: '#e0ddd9',
+                                            backgroundColor: COLORS.primary,
                                         },
                                     },
                                 },
@@ -353,7 +354,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                     {/* Row: Hit Dice select + two small text fields */}
                     <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
                         <FormControl sx={{ minWidth: 160 }}>
-                            <InputLabel id="creature_type-label" sx={{ color: '#1a1a1a', '&.Mui-focused': { color: '#db7f3d' } }}>Creature Type</InputLabel>
+                            <InputLabel id="creature_type-label" sx={{ color: COLORS.secondary, '&.Mui-focused': { color: COLORS.accent } }}>Creature Type</InputLabel>
                             <Select
                                 required
                                 error={errorField === 'creature_type'}
@@ -363,43 +364,43 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                                 label="Creature Type"
                                 onChange={(e) => setNewRace((s) => ({ ...s, creature_type: e.target.value }))}
                                 sx={{
-                                    color: '#1a1a1a',
+                                    color: COLORS.secondary,
                                     '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '& .MuiSvgIcon-root': {
-                                        color: '#db7f3d',
+                                        color: COLORS.accent,
                                     },
                                     '&:before': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:after': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:hover:not(.Mui-disabled):before': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                 }}
                                 MenuProps={{
                                     PaperProps: {
                                         sx: {
-                                            backgroundColor: '#edeae8',
-                                            border: '2px solid #db7f3d',
+                                            backgroundColor: COLORS.primary,
+                                            border: `2px solid ${COLORS.accent}`,
                                             '& .MuiMenuItem-root': {
-                                                color: '#1a1a1a',
+                                                color: COLORS.secondary,
                                                 '&:hover': {
-                                                    backgroundColor: '#e0ddd9',
+                                                    backgroundColor: COLORS.primary,
                                                 },
                                                 '&.Mui-selected': {
-                                                    backgroundColor: '#e0ddd9',
+                                                    backgroundColor: COLORS.primary,
                                                     '&:hover': {
-                                                        backgroundColor: '#e0ddd9',
+                                                        backgroundColor: COLORS.primary,
                                                     },
                                                 },
                                             },
@@ -425,7 +426,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                         </FormControl>
 
                         <FormControl sx={{ minWidth: 160 }}>
-                            <InputLabel id="size-label" sx={{ color: '#1a1a1a', '&.Mui-focused': { color: '#db7f3d' } }}>Size</InputLabel>
+                            <InputLabel id="size-label" sx={{ color: COLORS.secondary, '&.Mui-focused': { color: COLORS.accent } }}>Size</InputLabel>
                             <Select
                                 required
                                 labelId="size-label"
@@ -435,43 +436,43 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                                 label="Creature Type"
                                 onChange={(e) => setNewRace((s) => ({ ...s, size: e.target.value }))}
                                 sx={{
-                                    color: '#1a1a1a',
+                                    color: COLORS.secondary,
                                     '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '& .MuiSvgIcon-root': {
-                                        color: '#db7f3d',
+                                        color: COLORS.accent,
                                     },
                                     '&:before': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:after': {
-                                        borderColor: '#db7f3d',
+                                        borderColor: COLORS.accent,
                                     },
                                     '&:hover:not(.Mui-disabled):before': {
-                                        borderColor: '#c46d2f',
+                                        borderColor: COLORS.accentHover,
                                     },
                                 }}
                                 MenuProps={{
                                     PaperProps: {
                                         sx: {
-                                            backgroundColor: '#edeae8',
-                                            border: '2px solid #db7f3d',
+                                            backgroundColor: COLORS.primary,
+                                            border: `2px solid ${COLORS.accent}`,
                                             '& .MuiMenuItem-root': {
-                                                color: '#1a1a1a',
+                                                color: COLORS.secondary,
                                                 '&:hover': {
-                                                    backgroundColor: '#e0ddd9',
+                                                    backgroundColor: COLORS.primary,
                                                 },
                                                 '&.Mui-selected': {
-                                                    backgroundColor: '#e0ddd9',
+                                                    backgroundColor: COLORS.primary,
                                                     '&:hover': {
-                                                        backgroundColor: '#e0ddd9',
+                                                        backgroundColor: COLORS.primary,
                                                     },
                                                 },
                                             },

@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import CancelIcon from '@mui/icons-material/Cancel';
 import AddIcon from '@mui/icons-material/Add';
+import COLORS from '../../constants/colors.js';
 function Trackers({ draft, setDraft }) {
 
 
@@ -36,9 +37,9 @@ function Trackers({ draft, setDraft }) {
     };
 
     return (
-        <div className="flex flex-col p-4 mt-6 justify-center border-2 rounded-xl items-center w-full shadow-sm transition-shadow duration-200" style={{borderColor: '#db7f3d', backgroundColor: '#edeae8'}}>
+        <div className="flex flex-col p-4 mt-6 justify-center border-2 rounded-xl items-center w-full shadow-sm transition-shadow duration-200" style={{borderColor: COLORS.accent, backgroundColor: COLORS.primary}}>
             <div className="w-full flex items-center text-center mb-4 place-content-center">
-                <h2 className="text-4xl font-bold" style={{color: '#1a1a1a'}}>Trackers</h2>
+                <h2 className="text-4xl font-bold" style={{color: COLORS.secondary}}>Trackers</h2>
 
             </div>
 
@@ -49,7 +50,7 @@ function Trackers({ draft, setDraft }) {
                     key={index}
                     className="w-full md:w-3/4 p-4 mb-4 flex flex-col items-center border-2 rounded-xl"
                 >
-                        <CancelIcon className=" relative basis-full  bottom-2 -mb-8 -right-45 cursor-pointer" fontSize="medium" style={{color: '#db7f3d'}} onClick={() => handleRemove(index)}></CancelIcon>
+                        <CancelIcon className=" relative basis-full  bottom-2 -mb-8 -right-45 cursor-pointer" fontSize="medium" style={{color: COLORS.accent}} onClick={() => handleRemove(index)}></CancelIcon>
 
                     <div className="w-full flex  flex-wrap items-center ml-2 mb-4 align-middle place-content-center">
                         <div className="relative inline-block  text-center">
@@ -62,9 +63,9 @@ function Trackers({ draft, setDraft }) {
 
                                 placeholder="Tracker Name"
                                 className="w-3/4 text-center border-2 text-2xl font-semibold rounded-xl -mb-12 focus-visible:outline-none transition-colors duration-200"
-                                style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
-                                onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                                onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                                style={{borderColor: COLORS.accent, backgroundColor: COLORS.primary, color: COLORS.secondary}}
+                                onFocus={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                                onBlur={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                             />
                         </div>
 
@@ -72,7 +73,7 @@ function Trackers({ draft, setDraft }) {
 
                     <div className="flex space-x-6 items-center">
                         <div className="relative inline-block">
-                            <label className="absolute left-10 text-2xl font-semibold" style={{color: '#1a1a1a'}}>Used</label>
+                            <label className="absolute left-10 text-2xl font-semibold" style={{color: COLORS.secondary}}>Used</label>
                             <input
                                 type="text"
                                 value={tracker.value}
@@ -81,14 +82,14 @@ function Trackers({ draft, setDraft }) {
 
                                 placeholder="Used"
                                 className="w-34 h-28 -mt-2 text-center border-2 text-4xl font-semibold rounded-xl focus-visible:outline-none hover:shadow-md transition-all duration-200"
-                                style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
-                                onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                                onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                                style={{borderColor: COLORS.accent, backgroundColor: COLORS.primary, color: COLORS.secondary}}
+                                onMouseEnter={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                                onMouseLeave={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                             />
                         </div>
 
                         <div className="relative inline-block">
-                            <label className="absolute left-10 text-2xl font-semibold" style={{color: '#1a1a1a'}}>Total</label>
+                            <label className="absolute left-10 text-2xl font-semibold" style={{color: COLORS.secondary}}>Total</label>
                             <input
                                 type="text"
                                 value={tracker.max_value}
@@ -96,9 +97,9 @@ function Trackers({ draft, setDraft }) {
                                 onBlur={() => {syncToDraft(trackers)}}
                                 placeholder="Total"
                                 className="w-34 h-28 -mt-2 text-center border-2 text-4xl font-semibold rounded-xl focus-visible:outline-none hover:shadow-md transition-all duration-200"
-                                style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
-                                onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                                onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                                style={{borderColor: COLORS.accent, backgroundColor: COLORS.primary, color: COLORS.secondary}}
+                                onMouseEnter={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                                onMouseLeave={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                             />
                         </div>
                     </div>
@@ -109,10 +110,10 @@ function Trackers({ draft, setDraft }) {
                 variant="contained" 
                 onClick={handleAdd}
                 sx={{
-                    backgroundColor: '#db7f3d',
-                    color: '#edeae8',
+                    backgroundColor: COLORS.accent,
+                    color: COLORS.primary,
                     '&:hover': {
-                        backgroundColor: '#c46d2f',
+                        backgroundColor: COLORS.accentHover,
                     },
                 }}
             >

@@ -7,6 +7,7 @@ import Checkbox from '@mui/material/Checkbox';
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import { grey } from "@mui/material/colors";
+import COLORS from '../../constants/colors.js';
 
 
 export default function MainProfs({ draft, setDraft }) {
@@ -56,7 +57,7 @@ export default function MainProfs({ draft, setDraft }) {
         Proficiencies
       </Typography>
 
-      <Paper variant="outlined" className='w-full' sx={{ p: 3, border: '2px solid #db7f3d', borderRadius: 2, backgroundColor: '#edeae8', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
+      <Paper variant="outlined" className='w-full' sx={{ p: 3, border: `2px solid ${COLORS.accent}`, borderRadius: 2, backgroundColor: COLORS.primary, boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
         <Box
           component="section"
           display="grid"
@@ -83,7 +84,7 @@ export default function MainProfs({ draft, setDraft }) {
                   color: grey[400],
 
                   "&.Mui-checked": {
-                    color: "#1f1f1f",
+                    color: COLORS.secondary,
                   },
                 }}
               />
@@ -102,7 +103,7 @@ export default function MainProfs({ draft, setDraft }) {
                   color: grey[400],
 
                   "&.Mui-checked": {
-                    color: "#1f1f1f",
+                    color: COLORS.secondary,
                   },
                 }}
               />
@@ -120,7 +121,7 @@ export default function MainProfs({ draft, setDraft }) {
                   color: grey[400],
 
                   "&.Mui-checked": {
-                    color: "#1f1f1f",
+                    color: COLORS.secondary,
                   },
                 }}
               />
@@ -142,7 +143,7 @@ export default function MainProfs({ draft, setDraft }) {
                   color: grey[400],
 
                   "&.Mui-checked": {
-                    color: "#1f1f1f",
+                    color: COLORS.secondary,
                   },
                 }}
               />
@@ -161,7 +162,7 @@ export default function MainProfs({ draft, setDraft }) {
                   color: grey[400],
 
                   "&.Mui-checked": {
-                    color: "#1f1f1f",
+                    color: COLORS.secondary,
                   },
                 }}
               />
@@ -180,7 +181,7 @@ export default function MainProfs({ draft, setDraft }) {
                   color: grey[400],
 
                   "&.Mui-checked": {
-                    color: "#1f1f1f",
+                    color: COLORS.secondary,
                   },
                 }}
               />

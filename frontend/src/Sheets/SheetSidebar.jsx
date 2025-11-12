@@ -1,10 +1,11 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import { saveSheet,isSheetSaving,getDraftGlobal } from './SheetManager';
+import COLORS from '../constants/colors.js';
 function SheetSidebar() {
     return (
         //Sidebar
-                <div className='p-4 h-auto mx-5 justify-self-center rounded w-full flex flex-col space-y-3' style={{backgroundColor: '#edeae8', color: '#1a1a1a'}}>
+                <div className='p-4 h-auto mx-5 justify-self-center rounded w-full flex flex-col space-y-3' style={{backgroundColor: COLORS.primary, color: COLORS.secondary}}>
 
                     {/* Save button */}
                     <div className="relative inline-block w-full shadow ">
@@ -14,10 +15,10 @@ function SheetSidebar() {
                             variant="contained" 
                             className='h-15 w-full text-6xl'
                             sx={{
-                                backgroundColor: '#db7f3d',
-                                color: '#edeae8',
+                                backgroundColor: COLORS.accent,
+                                color: COLORS.primary,
                                 '&:hover': {
-                                    backgroundColor: '#c46d2f',
+                                    backgroundColor: COLORS.accentHover,
                                 },
                             }}
                         >
@@ -31,10 +32,10 @@ function SheetSidebar() {
                             variant="contained" 
                             className='h-15 w-full text-6xl'
                             sx={{
-                                backgroundColor: '#db7f3d',
-                                color: '#edeae8',
+                                backgroundColor: COLORS.accent,
+                                color: COLORS.primary,
                                 '&:hover': {
-                                    backgroundColor: '#c46d2f',
+                                    backgroundColor: COLORS.accentHover,
                                 },
                             }}
                         >

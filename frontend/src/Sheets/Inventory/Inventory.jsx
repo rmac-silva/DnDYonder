@@ -3,6 +3,7 @@ import InventoryItem from "./InventoryItem.jsx";
 import CancelIcon from '@mui/icons-material/Cancel';
 import AddIcon from '@mui/icons-material/Add';
 import Button from "@mui/material/Button";
+import COLORS from '../../constants/colors.js';
 
 function Inventory({draft, setDraft}) {
 
@@ -76,13 +77,13 @@ function Inventory({draft, setDraft}) {
     }
 
     if(loading) {
-        return <div className="text-2xl font-bold p-2 mt-6 flex flex-col justify-center border-2 rounded-xl items-center shadow-sm" style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}>Loading Inventory...</div>;
+        return <div className="text-2xl font-bold p-2 mt-6 flex flex-col justify-center border-2 rounded-xl items-center shadow-sm" style={{borderColor: COLORS.accent, backgroundColor: COLORS.primary, color: COLORS.secondary}}>Loading Inventory...</div>;
     }
 
     return (
-        <div className="p-4 mt-6 flex flex-col justify-center border-2 rounded-xl items-center shadow-sm transition-shadow duration-200" style={{borderColor: '#db7f3d', backgroundColor: '#edeae8'}}>
-            <h2 className="text-4xl font-bold mb-2" style={{color: '#1a1a1a'}}>Inventory</h2>
-            <h1 className="text-md font-medium" style={{color: '#1a1a1a'}}>Double click to edit</h1>
+        <div className="p-4 mt-6 flex flex-col justify-center border-2 rounded-xl items-center shadow-sm transition-shadow duration-200" style={{borderColor: COLORS.accent, backgroundColor: COLORS.primary}}>
+            <h2 className="text-4xl font-bold mb-2" style={{color: COLORS.secondary}}>Inventory</h2>
+            <h1 className="text-md font-medium" style={{color: COLORS.secondary}}>Double click to edit</h1>
             {/* Button to add a new blank item */}
             <div className="grid  w-full  text-lg grid-cols-2 gap-y-2 mt-4">
             
@@ -90,7 +91,7 @@ function Inventory({draft, setDraft}) {
                 <div key={index} className="flex w-full items-center ">
 
                 <InventoryItem index={index}  itemName={item.name} onItemNameChange={handleInventoryChange} />
-                        <CancelIcon className=" mr-6 -ml-1 cursor-pointer" fontSize="medium" style={{color: '#db7f3d'}} onClick={() => handleRemoveItem(index)}></CancelIcon>
+                        <CancelIcon className=" mr-6 -ml-1 cursor-pointer" fontSize="medium" style={{color: COLORS.accent}} onClick={() => handleRemoveItem(index)}></CancelIcon>
                 </div>
             ))} 
                 
@@ -101,10 +102,10 @@ function Inventory({draft, setDraft}) {
                 onClick={handleAddItem} 
                 sx={{
                     maxHeight: 35,
-                    backgroundColor: '#db7f3d',
-                    color: '#edeae8',
+                    backgroundColor: COLORS.accent,
+                    color: COLORS.primary,
                     '&:hover': {
-                        backgroundColor: '#c46d2f',
+                        backgroundColor: COLORS.accentHover,
                     },
                 }}
             >

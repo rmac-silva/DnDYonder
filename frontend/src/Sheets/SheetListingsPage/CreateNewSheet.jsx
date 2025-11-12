@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
+import COLORS from '../../constants/colors.js';
 
 function CreateNewSheet() {
     // return (
@@ -22,7 +23,7 @@ function CreateNewSheet() {
     return (
     <Box
       className=" !w-48 !h-62 !mx-4 !rounded-xl !flex !flex-col !items-center !justify-center"
-      style={{ backgroundColor: '#edeae8', border: '2px solid #db7f3d', borderStyle: 'solid' }}
+      style={{ backgroundColor: COLORS.primary, border: `2px solid ${COLORS.accent}`, borderStyle: 'solid' }}
     >
       <Button
         component={RouterLink}
@@ -37,9 +38,9 @@ function CreateNewSheet() {
           textTransform: 'none',
           p: 0,
           gap: 1,
-          color: '#1a1a1a',
+          color: COLORS.secondary,
           '&:hover': {
-            backgroundColor: '#e0ddd9',
+            backgroundColor: COLORS.primary,
           },
         }}
       >
@@ -56,10 +57,10 @@ function CreateNewSheet() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
 
-        <Typography variant="h5" component="div" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
+        <Typography variant="h5" component="div" sx={{ fontWeight: 600, color: COLORS.secondary }}>
           New
         </Typography>
-        <Typography variant="h5" component="div" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
+        <Typography variant="h5" component="div" sx={{ fontWeight: 600, color: COLORS.secondary }}>
           Sheet
         </Typography>
       </Button>

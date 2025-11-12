@@ -3,6 +3,7 @@ import Drawer from "@mui/material/Drawer";
 import MenuIcon from '@mui/icons-material/Menu';
 import SheetSidebar from "../Sheets/SheetSidebar";
 import { useState} from "react";
+import COLORS from '../constants/colors.js';
 function SheetDrawer() {
 
     const [open, setOpen] = useState(false);
@@ -16,8 +17,8 @@ function SheetDrawer() {
     };
 
     return ( <div className="-ml-8">
-        <Button onClick={toggleDrawer(true)} sx={{ color: '#1a1a1a' }}><MenuIcon sx={{ color: '#1a1a1a' }}/></Button>
-        <Drawer anchor="left" open={open} onClose={toggleDrawer(false)} PaperProps={{ sx: { backgroundColor: '#edeae8' } }}>
+        <Button onClick={toggleDrawer(true)} sx={{ color: COLORS.secondary }}><MenuIcon sx={{ color: COLORS.secondary }}/></Button>
+        <Drawer anchor="left" open={open} onClose={toggleDrawer(false)} PaperProps={{ sx: { backgroundColor: COLORS.primary } }}>
             <div
             className="w-full"
                 role="presentation"

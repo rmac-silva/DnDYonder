@@ -12,6 +12,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ShareIcon from '@mui/icons-material/Share';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../Auth/AuthContext.jsx';
+import COLORS from '../constants/colors.js';
 
 /// The homepage component
 
@@ -40,11 +41,11 @@ function Homepage() {
                   variant="h2"
                   component="h1"
                   className="font-extrabold text-3xl md:text-5xl mb-4"
-                  style={{color: '#1a1a1a'}}
+                  style={{color: COLORS.secondary}}
                 >
                   Build and manage your DnD characters
                 </Typography>
-                <Typography variant="body1" className="!mb-6 font-bold !text-xl" style={{color: '#1a1a1a'}}>
+                <Typography variant="body1" className="!mb-6 font-bold !text-xl" style={{color: COLORS.secondary}}>
                   Create, track, and share character sheets with intuitive controls and focused tools.
                   Lightweight, fast, and tailored for tabletop play.
                 </Typography>
@@ -58,10 +59,10 @@ function Homepage() {
                         variant="contained"
                         className="!px-6 !py-2 !text-lg"
                         sx={{
-                            backgroundColor: '#db7f3d',
-                            color: '#edeae8',
+                            backgroundColor: COLORS.accent,
+                            color: COLORS.primary,
                             '&:hover': {
-                                backgroundColor: '#c46d2f',
+                                backgroundColor: COLORS.accentHover,
                             },
                         }}
                       >
@@ -73,11 +74,11 @@ function Homepage() {
                         variant="outlined"
                         className="!px-6 !ml-4 !py-2 !text-lg"
                         sx={{
-                            borderColor: '#db7f3d',
-                            color: '#db7f3d',
+                            borderColor: COLORS.accent,
+                            color: COLORS.accent,
                             '&:hover': {
-                                borderColor: '#c46d2f',
-                                backgroundColor: '#edeae8',
+                                borderColor: COLORS.accentHover,
+                                backgroundColor: COLORS.primary,
                             },
                         }}
                       >
@@ -93,11 +94,11 @@ function Homepage() {
                       variant="outlined"
                       className="!px-6 !py-2 !text-lg"
                       sx={{
-                          borderColor: '#db7f3d',
-                          color: '#db7f3d',
+                          borderColor: COLORS.accent,
+                          color: COLORS.accent,
                           '&:hover': {
-                              borderColor: '#c46d2f',
-                              backgroundColor: '#edeae8',
+                              borderColor: COLORS.accentHover,
+                              backgroundColor: COLORS.primary,
                           },
                       }}
                     >

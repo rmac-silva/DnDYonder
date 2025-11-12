@@ -3,6 +3,7 @@ import { getItem, getAll } from './ItemCache.js';
 import Popover from '@mui/material/Popover';
 import ItemHoverInformation from './ItemHoverInformation.jsx';
 import TextField from '@mui/material/TextField';
+import COLORS from '../../constants/colors.js';
 function InventoryItem({ itemName, index, onItemNameChange }) {
     const [name, setName] = useState(itemName || "");
     const [itemData, setItemData] = useState(null);
@@ -61,16 +62,16 @@ function InventoryItem({ itemName, index, onItemNameChange }) {
                 onMouseLeave={handlePopoverClose}
                 sx={{
                             '& .MuiOutlinedInput-root': {
-                                backgroundColor: '#edeae8',
+                                backgroundColor: COLORS.primary,
                                 '& fieldset': {
-                                    borderColor: '#db7f3d',
+                                    borderColor: COLORS.accent,
                                     borderWidth: 2,
                                 },
                                 '&:hover fieldset': {
-                                    borderColor: '#c46d2f',
+                                    borderColor: COLORS.accentHover,
                                 },
                                 '&.Mui-focused fieldset': {
-                                    borderColor: '#c46d2f',
+                                    borderColor: COLORS.accentHover,
                                 },
                             },
                 }}

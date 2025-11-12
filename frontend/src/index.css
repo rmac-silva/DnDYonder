@@ -4,8 +4,8 @@
  * Color scheme - these should match frontend/src/constants/colors.js
  * Primary: #edeae8 - Main background color
  * Secondary: #1a1a1a - Main text color
- * Accent: #db7f3d - Border and accent color
- * Accent Hover: #c46d2f - Hover state for accent color
+ * Accent: #ff8787 - Border and accent color (pastel red)
+ * Accent Hover: #ff6b6b - Hover state for accent color (slightly darker pastel red)
  */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -24,8 +24,8 @@
   /* Custom color scheme */
   --color-primary: #edeae8;
   --color-secondary: #1a1a1a;
-  --color-accent: #db7f3d;
-  --color-accent-hover: #c46d2f;
+  --color-accent: #ff8787;
+  --color-accent-hover: #ff6b6b;
   --color-primary-dark: #e0ddd9;
 }
 

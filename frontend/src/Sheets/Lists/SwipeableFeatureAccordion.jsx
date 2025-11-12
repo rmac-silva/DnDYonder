@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
 import DeleteIcon from '@mui/icons-material/Delete';
+import COLORS from '../../constants/colors.js';
 /**
  * SwipeableFeatureAccordion
  * - swipe left to reveal a Delete button
@@ -176,10 +177,10 @@ const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
                     onClick={handleDelete}
                     size="small"
                     sx={{
-                        backgroundColor: '#db7f3d',
-                        color: '#edeae8',
+                        backgroundColor: COLORS.accent,
+                        color: COLORS.primary,
                         '&:hover': {
-                            backgroundColor: '#c46d2f',
+                            backgroundColor: COLORS.accentHover,
                         },
                     }}
                 >
@@ -203,11 +204,11 @@ const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
                         boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
                         '&:before': { display: 'none' },
                         borderRadius: 2,
-                        border: '2px solid #db7f3d',
-                        backgroundColor: '#edeae8',
+                        border: `2px solid ${COLORS.accent}`,
+                        backgroundColor: COLORS.primary,
                         '&:hover': {
                             boxShadow: '0 4px 8px rgba(0,0,0,0.12)',
-                            borderColor: '#c46d2f',
+                            borderColor: COLORS.accentHover,
                         },
                         transition: 'all 0.2s ease',
                     }}

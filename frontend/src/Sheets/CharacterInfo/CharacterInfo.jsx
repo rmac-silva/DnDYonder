@@ -42,9 +42,9 @@ function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
                         defaultValue={draft.char_info.age}
                         placeholder="0"
                         className={` px-3 py-2 block w-64 border-b-2 bg-transparent !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none transition-colors duration-200`}
-                        style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
-                        onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                        onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                        style={{borderColor: COLORS.accent, color: COLORS.secondary}}
+                        onFocus={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                        onBlur={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                     />
                 </div>
 
@@ -60,9 +60,9 @@ function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
                         defaultValue={draft.char_info.height}
                         placeholder="6ft"
                         className={` px-3 py-2 block w-64 border-b-2 bg-transparent !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none transition-colors duration-200`}
-                        style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
-                        onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                        onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                        style={{borderColor: COLORS.accent, color: COLORS.secondary}}
+                        onFocus={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                        onBlur={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                     />
                 </div>
 
@@ -78,9 +78,9 @@ function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
                         defaultValue={draft.char_info.weight}
                         placeholder="60 lbs"
                         className={` px-3 py-2 block w-64 border-b-2 bg-transparent !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none transition-colors duration-200`}
-                        style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
-                        onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                        onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                        style={{borderColor: COLORS.accent, color: COLORS.secondary}}
+                        onFocus={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                        onBlur={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                     />
                 </div>
 
@@ -96,9 +96,9 @@ function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
                         defaultValue={draft.char_info.weight}
                         placeholder="Mind Library"
                         className={` px-3 py-2 block w-64 border-b-2 bg-transparent !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none transition-colors duration-200`}
-                        style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
-                        onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                        onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                        style={{borderColor: COLORS.accent, color: COLORS.secondary}}
+                        onFocus={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                        onBlur={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                     />
                 </div>
 
@@ -114,9 +114,9 @@ function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
                         defaultValue={draft.char_info.eye_color}
                         placeholder="Nebula Eyes"
                         className={` px-3 py-2 block w-64 border-b-2 bg-transparent !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none transition-colors duration-200`}
-                        style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
-                        onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                        onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                        style={{borderColor: COLORS.accent, color: COLORS.secondary}}
+                        onFocus={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                        onBlur={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                     />
                 </div>
 
@@ -132,9 +132,9 @@ function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
                         defaultValue={draft.char_info.skin_color}
                         placeholder="Pale"
                         className={` px-3 py-2 block w-64 border-b-2 bg-transparent !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none transition-colors duration-200`}
-                        style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
-                        onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                        onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                        style={{borderColor: COLORS.accent, color: COLORS.secondary}}
+                        onFocus={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                        onBlur={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                     />
                 </div>
 
@@ -150,9 +150,9 @@ function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
                         defaultValue={draft.char_info.hair_color}
                         placeholder="White with purple highlights"
                         className={` px-3 py-2 block w-64 border-b-2 bg-transparent !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none transition-colors duration-200`}
-                        style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
-                        onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                        onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                        style={{borderColor: COLORS.accent, color: COLORS.secondary}}
+                        onFocus={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                        onBlur={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                     />
                 </div>
 
@@ -168,9 +168,9 @@ function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
                         defaultValue={draft.char_info.scars}
                         placeholder="Harry potter scar"
                         className={` px-3 py-2 block w-64 border-b-2 bg-transparent !text-lg leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none transition-colors duration-200`}
-                        style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
-                        onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                        onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                        style={{borderColor: COLORS.accent, color: COLORS.secondary}}
+                        onFocus={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                        onBlur={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                     />
                 </div>
 

@@ -16,6 +16,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 import GetClassFeats from "./Lists/ClassFeature";
+import COLORS from '../constants/colors.js';
 
 
 function SubclassSelect({ draft, setDraft }) {
@@ -163,7 +164,7 @@ function SubclassSelect({ draft, setDraft }) {
       {/* //Button for selecting a subclass if none selected */}
       {draft.class.subclass.selected === false &&
         <FormControl fullWidth variant="standard" margin="normal">
-          <InputLabel id="class-select-label" sx={{ color: '#1a1a1a', '&.Mui-focused': { color: '#db7f3d' } }}>Subclass</InputLabel>
+          <InputLabel id="class-select-label" sx={{ color: COLORS.secondary, '&.Mui-focused': { color: COLORS.accent } }}>Subclass</InputLabel>
           <Select
             labelId="class-select-label"
             id="class-select"
@@ -171,43 +172,43 @@ function SubclassSelect({ draft, setDraft }) {
             onChange={handleChangingSubclass}
             disabled={loading}
             sx={{
-                color: '#1a1a1a',
+                color: COLORS.secondary,
                 '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#db7f3d',
+                    borderColor: COLORS.accent,
                 },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#c46d2f',
+                    borderColor: COLORS.accentHover,
                 },
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#db7f3d',
+                    borderColor: COLORS.accent,
                 },
                 '& .MuiSvgIcon-root': {
-                    color: '#db7f3d',
+                    color: COLORS.accent,
                 },
                 '&:before': {
-                    borderColor: '#db7f3d',
+                    borderColor: COLORS.accent,
                 },
                 '&:after': {
-                    borderColor: '#db7f3d',
+                    borderColor: COLORS.accent,
                 },
                 '&:hover:not(.Mui-disabled):before': {
-                    borderColor: '#c46d2f',
+                    borderColor: COLORS.accentHover,
                 },
             }}
             MenuProps={{
                 PaperProps: {
                     sx: {
-                        backgroundColor: '#edeae8',
-                        border: '2px solid #db7f3d',
+                        backgroundColor: COLORS.primary,
+                        border: `2px solid ${COLORS.accent}`,
                         '& .MuiMenuItem-root': {
-                            color: '#1a1a1a',
+                            color: COLORS.secondary,
                             '&:hover': {
-                                backgroundColor: '#e0ddd9',
+                                backgroundColor: COLORS.primary,
                             },
                             '&.Mui-selected': {
-                                backgroundColor: '#e0ddd9',
+                                backgroundColor: COLORS.primary,
                                 '&:hover': {
-                                    backgroundColor: '#e0ddd9',
+                                    backgroundColor: COLORS.primary,
                                 },
                             },
                         },

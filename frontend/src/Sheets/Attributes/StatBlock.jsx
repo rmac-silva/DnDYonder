@@ -14,6 +14,8 @@ function StatBlock({ label, attribute, proficiencyBonus, updateDraftFun }) {
         return attribute.skills;
     }
  
+    const modifier = GetModOfStat();
+    const formattedModifier = modifier >= 0 ? `+${modifier}` : modifier;
 
     return (
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4">
@@ -31,14 +33,14 @@ function StatBlock({ label, attribute, proficiencyBonus, updateDraftFun }) {
                 />
                 
                 <div className="w-12 md:w-16 h-8 text-center border-2 font-semibold text-lg md:text-xl rounded-lg mt-1" style={{borderColor: COLORS.accent, backgroundColor: COLORS.primary, color: COLORS.secondary}}>
-                    {GetModOfStat()}
+                    {formattedModifier}
                 </div>
             </div>
 
             {/* Attributes column (children) — allow shrinking and wrapping */}
             <div className="flex flex-col w-full flex-1 min-w-0">
                 {GetSkillsOfStat().map(skill => {
-                    return <AttributeRow key={skill.name} skill={skill} attributeModifier={GetModOfStat()} proficiencyBonus={proficiencyBonus} updateDraftFun={updateDraftFun} locked={skill.locked} />;
+                    return <AttributeRow key={skill.name} skill={skill} attributeModifier={modifier} proficiencyBonus={proficiencyBonus} updateDraftFun={updateDraftFun} locked={skill.locked} />;
                 })}
             </div>
         </div>

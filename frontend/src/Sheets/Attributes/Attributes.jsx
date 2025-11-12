@@ -98,7 +98,7 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
                     color : grey400,
                     
                     "&.Mui-checked": {
-                            color:  "#1a1a1a",
+                            color: COLORS.secondary,
                     },
                 }}
             />

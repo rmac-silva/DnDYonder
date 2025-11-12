@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import COLORS from '../../constants/colors.js';
 
 export default function MiscProfs({ draft = {}, setDraft }) {
   // Instead of "Loading" the proficiencies, when selecting the class these will just be added to the variable draft.misc.proficiencies.
@@ -57,7 +58,7 @@ export default function MiscProfs({ draft = {}, setDraft }) {
         Other Proficiencies
       </Typography>
 
-      <Paper variant="" className="!w-full" sx={{ border: '2px solid #db7f3d', borderRadius: 2, backgroundColor: '#edeae8', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
+      <Paper variant="" className="!w-full" sx={{ border: `2px solid ${COLORS.accent}`, borderRadius: 2, backgroundColor: COLORS.primary, boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
         <TextField
           fullWidth
           multiline
@@ -69,16 +70,16 @@ export default function MiscProfs({ draft = {}, setDraft }) {
           variant="outlined"
           sx={{
             '& .MuiOutlinedInput-root': {
-              backgroundColor: '#edeae8',
+              backgroundColor: COLORS.primary,
               '& fieldset': {
-                borderColor: '#db7f3d',
+                borderColor: COLORS.accent,
                 borderWidth: 2,
               },
               '&:hover fieldset': {
-                borderColor: '#c46d2f',
+                borderColor: COLORS.accentHover,
               },
               '&.Mui-focused fieldset': {
-                borderColor: '#c46d2f',
+                borderColor: COLORS.accentHover,
               },
             },
           }}

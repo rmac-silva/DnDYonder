@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
 import DeleteIcon from '@mui/icons-material/Delete';
+import COLORS from '../../constants/colors.js';
 
 /**
  * SwipeableSpellAccordion -> Long-press to delete variant
@@ -86,12 +87,12 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
 
         // Wait 300ms before starting the delete progress
         delayTimeoutRef.current = setTimeout(() => {
-            pressStartRef.current = Date.now();
-            setIsPressing(true);
-            setPressProgress(0);
-            // start RAF loop
-            if (rafRef.current) cancelAnimationFrame(rafRef.current);
-            rafRef.current = requestAnimationFrame(tickPress);
+        pressStartRef.current = Date.now();
+        setIsPressing(true);
+        setPressProgress(0);
+        // start RAF loop
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        rafRef.current = requestAnimationFrame(tickPress);
         }, 300);
         
         // capture pointer so we still get up events
@@ -190,10 +191,10 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
                     }}
                     size="small"
                     sx={{
-                        backgroundColor: '#db7f3d',
-                        color: '#edeae8',
+                        backgroundColor: COLORS.accent,
+                        color: COLORS.primary,
                         '&:hover': {
-                            backgroundColor: '#c46d2f',
+                            backgroundColor: COLORS.accentHover,
                         },
                     }}
                 >
@@ -220,42 +221,42 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
                     sx={{
                         mb: 1,
                         '&:before': { display: 'none' },
-                        backgroundColor: '#edeae8',
+                        backgroundColor: COLORS.primary,
                         transformOrigin: 'center left',
-                        border: '2px solid #db7f3d',
+                        border: `2px solid ${COLORS.accent}`,
                         borderRadius: 2,
                         boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
                         '&:hover': {
                             boxShadow: '0 4px 8px rgba(0,0,0,0.12)',
-                            borderColor: '#c46d2f',
+                            borderColor: COLORS.accentHover,
                         },
                         transition: 'all 0.2s ease',
                     }}
                 >
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
-                        sx={{ px: 2, py: 1.25, backgroundColor: '#edeae8' }}
+                        sx={{ px: 2, py: 1.25, backgroundColor: COLORS.primary }}
                         className='!bg-edeae8'
                     >
                         <Slide direction="left" in={true} mountOnEnter unmountOnExit>
                             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'left', width: '100%' }}>
-                                <div className="px-2 rounded w-full" style={{backgroundColor: '#edeae8', color: '#1a1a1a'}}>
-                                    <div className="font-semibold text-xl" style={{color: '#1a1a1a'}}>{spell.name}</div>
-                                    <div className="text-md" style={{color: '#1a1a1a'}}><strong>Casting Time:</strong> {spell.casting_time}</div>
+                                <div className="px-2 rounded w-full" style={{backgroundColor: COLORS.primary, color: COLORS.secondary}}>
+                                    <div className="font-semibold text-xl" style={{color: COLORS.secondary}}>{spell.name}</div>
+                                    <div className="text-md" style={{color: COLORS.secondary}}><strong>Casting Time:</strong> {spell.casting_time}</div>
                                     <div className="flex space-x-2">
-                                        <div className="text-md" style={{color: '#1a1a1a'}}><strong>Range:</strong> {spell.range}</div>
-                                        <div className="text-md" style={{color: '#1a1a1a'}}><strong>Level:</strong> {spell.level}</div>
+                                        <div className="text-md" style={{color: COLORS.secondary}}><strong>Range:</strong> {spell.range}</div>
+                                        <div className="text-md" style={{color: COLORS.secondary}}><strong>Level:</strong> {spell.level}</div>
                                     </div>
-                                    <div className="text-md" style={{color: '#1a1a1a'}}><strong className="!text-md">Duration:</strong> {spell.duration}</div>
+                                    <div className="text-md" style={{color: COLORS.secondary}}><strong className="!text-md">Duration:</strong> {spell.duration}</div>
                                 </div>
                             </Box>
                         </Slide>
                     </AccordionSummary>
 
-                    <AccordionDetails sx={{ pt: 0, px: 2, pb: 2, backgroundColor: '#edeae8' }} className='!bg-edeae8'>
-                        <div className=" px-2 border-t-2" style={{borderColor: '#db7f3d'}}>
-                            <div className="text-sm mt-2" style={{color: '#1a1a1a'}}><strong >Components:</strong> {spell.components}</div>
-                            <div className="mt-2 text-sm" style={{color: '#1a1a1a'}}>{String(spell.description || '').split("\n\n").map((para, index) => (
+                    <AccordionDetails sx={{ pt: 0, px: 2, pb: 2, backgroundColor: COLORS.primary }} className='!bg-edeae8'>
+                        <div className=" px-2 border-t-2" style={{borderColor: COLORS.accent}}>
+                            <div className="text-sm mt-2" style={{color: COLORS.secondary}}><strong >Components:</strong> {spell.components}</div>
+                            <div className="mt-2 text-sm" style={{color: COLORS.secondary}}>{String(spell.description || '').split("\n\n").map((para, index) => (
                                 <p className="mt-2" key={index}>{para}</p>
                             ))}</div>
                         </div>

@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
+import COLORS from '../../constants/colors.js';
 function PlayerAttacks({ draft, setDraft }) {
 
 
@@ -29,7 +30,7 @@ function PlayerAttacks({ draft, setDraft }) {
     }
 
     return (
-        <div className="mt-6  flex flex-col w-full justify-center items-center border-2 rounded-xl  p-4 shadow-sm hover:shadow-md transition-shadow duration-200" style={{borderColor: '#db7f3d'}}>
+        <div className="mt-6  flex flex-col w-full justify-center items-center border-2 rounded-xl  p-4 shadow-sm transition-shadow duration-200" style={{borderColor: COLORS.accent}}>
             
             
             <div className="flex space-x-1 w-full text-center ">
@@ -51,16 +52,16 @@ function PlayerAttacks({ draft, setDraft }) {
                         onBlur={(e) => UpdateAttack(index, "name", e.target.value)}
                         sx={{
                             '& .MuiOutlinedInput-root': {
-                                backgroundColor: '#edeae8',
+                                backgroundColor: COLORS.primary,
                                 '& fieldset': {
-                                    borderColor: '#db7f3d',
+                                    borderColor: COLORS.accent,
                                     borderWidth: 2,
                                 },
                                 '&:hover fieldset': {
-                                    borderColor: '#c46d2f',
+                                    borderColor: COLORS.accentHover,
                                 },
                                 '&.Mui-focused fieldset': {
-                                    borderColor: '#c46d2f',
+                                    borderColor: COLORS.accentHover,
                                 },
                             },
                         }}
@@ -76,16 +77,16 @@ function PlayerAttacks({ draft, setDraft }) {
                         onBlur={(e) => UpdateAttack(index,"atkBonus",e.target.value)}
                         sx={{
                             '& .MuiOutlinedInput-root': {
-                                backgroundColor: '#edeae8',
+                                backgroundColor: COLORS.primary,
                                 '& fieldset': {
-                                    borderColor: '#db7f3d',
+                                    borderColor: COLORS.accent,
                                     borderWidth: 2,
                                 },
                                 '&:hover fieldset': {
-                                    borderColor: '#c46d2f',
+                                    borderColor: COLORS.accentHover,
                                 },
                                 '&.Mui-focused fieldset': {
-                                    borderColor: '#c46d2f',
+                                    borderColor: COLORS.accentHover,
                                 },
                             },
                         }}
@@ -101,21 +102,21 @@ function PlayerAttacks({ draft, setDraft }) {
                         onBlur={(e) => UpdateAttack(index,"damageType",e.target.value)}
                         sx={{
                             '& .MuiOutlinedInput-root': {
-                                backgroundColor: '#edeae8',
+                                backgroundColor: COLORS.primary,
                                 '& fieldset': {
-                                    borderColor: '#db7f3d',
+                                    borderColor: COLORS.accent,
                                     borderWidth: 2,
                                 },
                                 '&:hover fieldset': {
-                                    borderColor: '#c46d2f',
+                                    borderColor: COLORS.accentHover,
                                 },
                                 '&.Mui-focused fieldset': {
-                                    borderColor: '#c46d2f',
+                                    borderColor: COLORS.accentHover,
                                 },
                             },
                         }}
                     />
-                    <CancelIcon className="!mt-3 !ml-2 cursor-pointer" style={{color: '#db7f3d'}} onClick={() => RemoveAttack(index)}></CancelIcon>
+                    <CancelIcon className="!mt-3 !ml-2 cursor-pointer" style={{color: COLORS.accent}} onClick={() => RemoveAttack(index)}></CancelIcon>
                 </div>
             ))}
             
@@ -124,10 +125,10 @@ function PlayerAttacks({ draft, setDraft }) {
                 variant="contained" 
                 onClick={AddAttack}
                 sx={{
-                    backgroundColor: '#db7f3d',
-                    color: '#edeae8',
+                    backgroundColor: COLORS.accent,
+                    color: COLORS.primary,
                     '&:hover': {
-                        backgroundColor: '#c46d2f',
+                        backgroundColor: COLORS.accentHover,
                     },
                 }}
             >

@@ -10,6 +10,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 import AddFeatureDialog from './Lists/AddFeatureDialog.jsx';
 import SwipeableFeatureAccordion from './Lists/SwipeableFeatureAccordion.jsx';
+import COLORS from '../constants/colors.js';
 
 function SubclassInfo({ draft, setDraft }) {
   const [sheetFeatures, setSheetFeatures] = useState([]);
@@ -70,10 +71,10 @@ function SubclassInfo({ draft, setDraft }) {
     >
       <div
         style={{
-          border: '2px solid #db7f3d',
+          border: `2px solid ${COLORS.accent}`,
           borderRadius: 12,
           padding: 16,
-          background: '#edeae8',
+          background: COLORS.primary,
           boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           display: 'flex',
           flexDirection: 'column',
@@ -83,8 +84,8 @@ function SubclassInfo({ draft, setDraft }) {
           overflow: 'hidden',
           transition: 'box-shadow 0.2s ease',
         }}
-        onMouseEnter={(e) => {e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = '#c46d2f'}}
-        onMouseLeave={(e) => {e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)'; e.currentTarget.style.borderColor = '#db7f3d'}}
+        onMouseEnter={(e) => {e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = COLORS.accentHover}}
+        onMouseLeave={(e) => {e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)'; e.currentTarget.style.borderColor = COLORS.accent}}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ flex: 0 }}>
@@ -106,10 +107,10 @@ function SubclassInfo({ draft, setDraft }) {
                 size="small" 
                 onClick={() => setAddDialogOpen(true)}
                 sx={{
-                    backgroundColor: '#db7f3d',
-                    color: '#edeae8',
+                    backgroundColor: COLORS.accent,
+                    color: COLORS.primary,
                     '&:hover': {
-                        backgroundColor: '#c46d2f',
+                        backgroundColor: COLORS.accentHover,
                     },
                 }}
             >
