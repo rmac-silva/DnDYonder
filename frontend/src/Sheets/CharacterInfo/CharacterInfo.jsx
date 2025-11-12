@@ -1,14 +1,15 @@
 // This section will have misc. info, age, hair, height, weight etc...
 import {useState} from "react";
+import COLORS from '../../constants/colors.js';
 
 function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
 
     return (
-        <div className="flex w-full rounded-xl mb-4 px-5 py-4 items-center border-2 shadow-md transition-shadow duration-200" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'} onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}>
+        <div className="flex w-full rounded-xl mb-4 px-5 py-4 items-center border-2 shadow-md transition-shadow duration-200" style={{backgroundColor: COLORS.primary, borderColor: COLORS.accent}} onMouseEnter={(e) => e.currentTarget.style.borderColor = COLORS.accentHover} onMouseLeave={(e) => e.currentTarget.style.borderColor = COLORS.accent}>
 
             {/* Character name */}
             <div className="flex-1 mr-4 w-1/2">
-                <label htmlFor="characterName" className="block text-xl" style={{color: '#1a1a1a'}}>
+                <label htmlFor="characterName" className="block text-xl" style={{color: COLORS.secondary}}>
                     Character Name:
                 </label>
                 {/* Character Name */}
@@ -19,9 +20,9 @@ function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
                     onChange={(e) => { setNameVar(e.target.value) }}
                     placeholder="Grommisk"
                     className={`mt-1 px-3 py-2 block w-full border-b-2 bg-transparent !text-4xl font-semibold leading-tight whitespace-nowrap overflow-y-hidden focus-visible:outline-none transition-colors duration-200`}
-                    style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
-                    onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                    onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                    style={{borderColor: COLORS.accent, color: COLORS.secondary}}
+                    onFocus={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                    onBlur={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                 />
             </div>
             {/* Character Name End */}
@@ -31,7 +32,7 @@ function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
 
                 {/* Age */}
                 <div className="flex-col flex  ">
-                    <label htmlFor="characterName" className="block text-xl" style={{color: '#1a1a1a'}}>
+                    <label htmlFor="characterName" className="block text-xl" style={{color: COLORS.secondary}}>
                         Age:
                     </label>
                     {/* Character Name */}

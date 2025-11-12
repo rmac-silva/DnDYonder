@@ -2,6 +2,7 @@ import React from 'react';
 import MainProfs from './Proficiencies/MainProfs.jsx';
 import MiscProfs from './Proficiencies/MiscProfs.jsx';
 import StatBlock from './Attributes/StatBlock.jsx';
+import COLORS from '../constants/colors.js';
 function SheetLeftColumn({draft,setDraft}) {
     const textClasses = 'focus-visible:outline-none';
 
@@ -12,17 +13,17 @@ function SheetLeftColumn({draft,setDraft}) {
         return val;
     }
 
-    return (<div className="w-2/7 p-5 rounded-xl shadow-md border-2 transition-shadow duration-200" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'} onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}>
+    return (<div className="w-2/7 p-5 rounded-xl shadow-md border-2 transition-shadow duration-200" style={{backgroundColor: COLORS.primary, borderColor: COLORS.accent}} onMouseEnter={(e) => e.currentTarget.style.borderColor = COLORS.accentHover} onMouseLeave={(e) => e.currentTarget.style.borderColor = COLORS.accent}>
                             {/*Proficiency Bonus + Passive Perception*/}
                             <div className="flex justify-between mb-4">
-                                <div className="flex flex-col items-center p-4 rounded-lg shadow-sm w-1/2 mr-2 border-2 transition-colors duration-200" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => {e.currentTarget.style.borderColor = '#c46d2f'}} onMouseLeave={(e) => {e.currentTarget.style.borderColor = '#db7f3d'}}>
-                                    <label className="text-2xl font-semibold mb-2" style={{color: '#1a1a1a'}}>Level</label>
+                                <div className="flex flex-col items-center p-4 rounded-lg shadow-sm w-1/2 mr-2 border-2 transition-colors duration-200" style={{backgroundColor: COLORS.primary, borderColor: COLORS.accent}} onMouseEnter={(e) => {e.currentTarget.style.borderColor = COLORS.accentHover}} onMouseLeave={(e) => {e.currentTarget.style.borderColor = COLORS.accent}}>
+                                    <label className="text-2xl font-semibold mb-2" style={{color: COLORS.secondary}}>Level</label>
                                     <input className={`mt-2 px-2 py-1 text-center border-2 font-semibold bg-transparent text-3xl w-1/2 rounded-lg transition-colors duration-200 ${textClasses}`}
-                                        style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
-                                        onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                                        onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
-                                        onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
-                                        onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
+                                        style={{borderColor: COLORS.accent, backgroundColor: COLORS.primary, color: COLORS.secondary}}
+                                        onFocus={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                                        onBlur={(e) => e.currentTarget.style.borderColor = COLORS.accent}
+                                        onMouseEnter={(e) => e.currentTarget.style.borderColor = COLORS.accentHover}
+                                        onMouseLeave={(e) => e.currentTarget.style.borderColor = COLORS.accent}
                                         placeholder='1'
                                         min={1}
                                         max={20}
@@ -30,9 +31,9 @@ function SheetLeftColumn({draft,setDraft}) {
                                         defaultValue={draft.stats.level}
                                         onBlur={(e) => { draft.stats.level = e.target.value; setDraft({ ...draft }) }} />
                                 </div>
-                                <div className="flex flex-col items-center p-4 rounded-lg shadow-sm w-1/2 mr-2 border-2 transition-colors duration-200" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => {e.currentTarget.style.borderColor = '#c46d2f'}} onMouseLeave={(e) => {e.currentTarget.style.borderColor = '#db7f3d'}}>
-                                    <label className="text-2xl font-semibold text-center mb-2" style={{color: '#1a1a1a'}}>Proficiency Bonus</label>
-                                    <div className={`mt-2 px-2 py-1 text-center border-2 rounded-lg text-2xl font-bold ${textClasses}`} style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}>{GetProficiencyBonus(draft.stats.level)}</div>
+                                <div className="flex flex-col items-center p-4 rounded-lg shadow-sm w-1/2 mr-2 border-2 transition-colors duration-200" style={{backgroundColor: COLORS.primary, borderColor: COLORS.accent}} onMouseEnter={(e) => {e.currentTarget.style.borderColor = COLORS.accentHover}} onMouseLeave={(e) => {e.currentTarget.style.borderColor = COLORS.accent}}>
+                                    <label className="text-2xl font-semibold text-center mb-2" style={{color: COLORS.secondary}}>Proficiency Bonus</label>
+                                    <div className={`mt-2 px-2 py-1 text-center border-2 rounded-lg text-2xl font-bold ${textClasses}`} style={{borderColor: COLORS.accent, backgroundColor: COLORS.primary, color: COLORS.secondary}}>{GetProficiencyBonus(draft.stats.level)}</div>
 
                                 </div>
                             </div>

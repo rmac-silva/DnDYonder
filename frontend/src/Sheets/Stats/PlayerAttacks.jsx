@@ -46,7 +46,7 @@ function PlayerAttacks({ draft, setDraft }) {
                         size="small" 
                         value={attacks[index].name} 
                         onChange={(e) => {
-                            const updatedAttacks = [...attacks]; updatedAttacks[index].name = e.target.value; setAttacks(updatedAttacks);
+                        const updatedAttacks = [...attacks]; updatedAttacks[index].name = e.target.value; setAttacks(updatedAttacks);
                         }} 
                         onBlur={(e) => UpdateAttack(index, "name", e.target.value)}
                         sx={{
@@ -71,7 +71,7 @@ function PlayerAttacks({ draft, setDraft }) {
                         size="small" 
                         value={attacks[index].atkBonus} 
                         onChange={(e) => {
-                            const updatedAttacks = [...attacks]; updatedAttacks[index].atkBonus = e.target.value; setAttacks(updatedAttacks);
+                        const updatedAttacks = [...attacks]; updatedAttacks[index].atkBonus = e.target.value; setAttacks(updatedAttacks);
                         }} 
                         onBlur={(e) => UpdateAttack(index,"atkBonus",e.target.value)}
                         sx={{
@@ -96,7 +96,7 @@ function PlayerAttacks({ draft, setDraft }) {
                         size="small" 
                         value={attacks[index].damageType} 
                         onChange={(e) => {
-                            const updatedAttacks = [...attacks]; updatedAttacks[index].damageType = e.target.value; setAttacks(updatedAttacks);
+                        const updatedAttacks = [...attacks]; updatedAttacks[index].damageType = e.target.value; setAttacks(updatedAttacks);
                         }} 
                         onBlur={(e) => UpdateAttack(index,"damageType",e.target.value)}
                         sx={{

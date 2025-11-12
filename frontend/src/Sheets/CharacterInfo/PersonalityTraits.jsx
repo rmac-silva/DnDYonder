@@ -1,6 +1,7 @@
 import {useState} from 'react';
 
 import TextField from '@mui/material/TextField';
+import COLORS from '../../constants/colors.js';
 
 function PersonalityTraits({ draft, setDraft }) {
 
@@ -10,7 +11,7 @@ function PersonalityTraits({ draft, setDraft }) {
     const [flaws, setFlaws] = useState(draft.char_info.flaws);
     
     return (
-        <div className="flex flex-col space-y-2 items-center w-full rounded-xl shadow-md p-5 border-2 transition-shadow duration-200" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'} onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}>
+        <div className="flex flex-col space-y-2 items-center w-full rounded-xl shadow-md p-5 border-2 transition-shadow duration-200" style={{backgroundColor: COLORS.primary, borderColor: COLORS.accent}} onMouseEnter={(e) => e.currentTarget.style.borderColor = COLORS.accentHover} onMouseLeave={(e) => e.currentTarget.style.borderColor = COLORS.accent}>
             <div className="text-3xl font-semibold mt-2">
                 Personality Traits
             </div>
@@ -22,16 +23,16 @@ function PersonalityTraits({ draft, setDraft }) {
                         minWidth: 400, 
                         maxWidth: 800,
                         '& .MuiOutlinedInput-root': {
-                            backgroundColor: '#edeae8',
+                            backgroundColor: COLORS.primary,
                             '& fieldset': {
-                                borderColor: '#db7f3d',
+                                borderColor: COLORS.accent,
                                 borderWidth: 2,
                             },
                             '&:hover fieldset': {
-                                borderColor: '#c46d2f',
+                                borderColor: COLORS.accentHover,
                             },
                             '&.Mui-focused fieldset': {
-                                borderColor: '#c46d2f',
+                                borderColor: COLORS.accentHover,
                             },
                         },
                     }} 
@@ -53,16 +54,16 @@ function PersonalityTraits({ draft, setDraft }) {
                         minWidth: 400, 
                         maxWidth: 800,
                         '& .MuiOutlinedInput-root': {
-                            backgroundColor: '#edeae8',
+                            backgroundColor: COLORS.primary,
                             '& fieldset': {
-                                borderColor: '#db7f3d',
+                                borderColor: COLORS.accent,
                                 borderWidth: 2,
                             },
                             '&:hover fieldset': {
-                                borderColor: '#c46d2f',
+                                borderColor: COLORS.accentHover,
                             },
                             '&.Mui-focused fieldset': {
-                                borderColor: '#c46d2f',
+                                borderColor: COLORS.accentHover,
                             },
                         },
                     }} 
@@ -84,16 +85,16 @@ function PersonalityTraits({ draft, setDraft }) {
                         minWidth: 400, 
                         maxWidth: 800,
                         '& .MuiOutlinedInput-root': {
-                            backgroundColor: '#edeae8',
+                            backgroundColor: COLORS.primary,
                             '& fieldset': {
-                                borderColor: '#db7f3d',
+                                borderColor: COLORS.accent,
                                 borderWidth: 2,
                             },
                             '&:hover fieldset': {
-                                borderColor: '#c46d2f',
+                                borderColor: COLORS.accentHover,
                             },
                             '&.Mui-focused fieldset': {
-                                borderColor: '#c46d2f',
+                                borderColor: COLORS.accentHover,
                             },
                         },
                     }} 
@@ -115,16 +116,16 @@ function PersonalityTraits({ draft, setDraft }) {
                         minWidth: 400, 
                         maxWidth: 800,
                         '& .MuiOutlinedInput-root': {
-                            backgroundColor: '#edeae8',
+                            backgroundColor: COLORS.primary,
                             '& fieldset': {
-                                borderColor: '#db7f3d',
+                                borderColor: COLORS.accent,
                                 borderWidth: 2,
                             },
                             '&:hover fieldset': {
-                                borderColor: '#c46d2f',
+                                borderColor: COLORS.accentHover,
                             },
                             '&.Mui-focused fieldset': {
-                                borderColor: '#c46d2f',
+                                borderColor: COLORS.accentHover,
                             },
                         },
                     }} 

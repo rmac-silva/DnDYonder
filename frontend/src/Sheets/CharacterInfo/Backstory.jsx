@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
+import COLORS from '../../constants/colors.js';
 function Backstory({ draft, setDraft }) {
 
     const [backstory, setBackstory] = useState(draft.char_info.backstory);
 
     return (
-        <div className="flex flex-col items-center w-full rounded-xl shadow-md p-5 h-full border-2 transition-shadow duration-200" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'} onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}>
+        <div className="flex flex-col items-center w-full rounded-xl shadow-md p-5 h-full border-2 transition-shadow duration-200" style={{backgroundColor: COLORS.primary, borderColor: COLORS.accent}} onMouseEnter={(e) => e.currentTarget.style.borderColor = COLORS.accentHover} onMouseLeave={(e) => e.currentTarget.style.borderColor = COLORS.accent}>
             <div className="text-4xl font-semibold">
                 Backstory
             </div>
@@ -18,16 +19,16 @@ function Backstory({ draft, setDraft }) {
                         minWidth: 400, 
                         maxWidth: 800,
                         '& .MuiOutlinedInput-root': {
-                            backgroundColor: '#edeae8',
+                            backgroundColor: COLORS.primary,
                             '& fieldset': {
-                                borderColor: '#db7f3d',
+                                borderColor: COLORS.accent,
                                 borderWidth: 2,
                             },
                             '&:hover fieldset': {
-                                borderColor: '#c46d2f',
+                                borderColor: COLORS.accentHover,
                             },
                             '&.Mui-focused fieldset': {
-                                borderColor: '#c46d2f',
+                                borderColor: COLORS.accentHover,
                             },
                         },
                     }} 

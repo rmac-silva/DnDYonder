@@ -4,6 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import { grey } from "@mui/material/colors";
+import COLORS from '../../constants/colors.js';
 
 const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftFun,locked}) => {
     const grey400 = grey[400];
@@ -79,7 +80,7 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
                         visibility: skill.has_expertise ? "visible" : "hidden",
                         pointerEvents: skill.has_expertise ? "auto" : "none",
                         "&.Mui-checked": {
-                            color: "#1a1a1a",
+                            color: COLORS.secondary,
                         },
                     }}
                 />
@@ -96,17 +97,17 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
                     padding: 0,
                     color : grey400,
                     
-                        "&.Mui-checked": {
+                    "&.Mui-checked": {
                             color:  "#1a1a1a",
-                        },
+                    },
                 }}
             />
 
             {/* Modifier */}
-            <div className="mx-1 w-2/12 text-center border-2 rounded-lg focus-visible:outline-none py-1 font-semibold" style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}>{GetValue()}</div>
+            <div className="mx-1 w-2/12 text-center border-2 rounded-lg focus-visible:outline-none py-1 font-semibold" style={{borderColor: COLORS.accent, backgroundColor: COLORS.primary, color: COLORS.secondary}}>{GetValue()}</div>
 
             {/* Label/Name */}
-            <div className="mx-1 w-7/10 text-center border-2 rounded-lg focus-visible:outline-none py-1 transition-colors duration-200" style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}>
+            <div className="mx-1 w-7/10 text-center border-2 rounded-lg focus-visible:outline-none py-1 transition-colors duration-200" style={{borderColor: COLORS.accent, backgroundColor: COLORS.primary, color: COLORS.secondary}}>
                 {skill.name}
             </div>
         </div>

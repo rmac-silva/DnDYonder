@@ -3,6 +3,7 @@ import { getDraftGlobal, saveNewSheet } from './SheetManager.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../Auth/AuthContext.jsx';
 import { initSheetManager, setDraftGlobal, isSheetSaved, saveSheet } from './SheetManager.js';
+import COLORS from '../constants/colors.js';
 
 import Navbar from '../Navbar/Navbar.jsx';
 
@@ -244,7 +245,7 @@ function GetSheet() {
 
                         {/* Sheet Page 1 */}
                         <div className='flex w-full'>
-                            <div className="mt-4 p-6 mx-5 justify-self-center rounded-xl w-full shadow-lg border-2" style={{backgroundColor: '#edeae8', color: '#1a1a1a', borderColor: '#db7f3d'}}>
+                            <div className="mt-4 p-6 mx-5 justify-self-center rounded-xl w-full shadow-lg border-2" style={{backgroundColor: COLORS.primary, color: COLORS.secondary, borderColor: COLORS.accent}}>
                                 {/* Header */}
                                 <SheetHeader draft={draft} setDraft={updateDraft} nameVar={nameVar} setNameVar={setNameVar} />
 
@@ -255,7 +256,7 @@ function GetSheet() {
                                     <SheetLeftColumn draft={draft} setDraft={updateDraft} />
 
                                     {/* Second Column - Health, Attacks, etc. */}
-                                    <div className="w-1/3 mx-2 p-5 rounded-xl shadow-md border-2 transition-shadow duration-200" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'} onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}>
+                                    <div className="w-1/3 mx-2 p-5 rounded-xl shadow-md border-2 transition-shadow duration-200" style={{backgroundColor: COLORS.primary, borderColor: COLORS.accent}} onMouseEnter={(e) => e.currentTarget.style.borderColor = COLORS.accentHover} onMouseLeave={(e) => e.currentTarget.style.borderColor = COLORS.accent}>
                                         <div className=' p-4 flex flex-col'>
 
                                             <PlayerStats draft={draft} setDraft={updateDraft}  />
@@ -270,7 +271,7 @@ function GetSheet() {
                                     </div>
 
                                     {/* Third Column - Traits and Features */}
-                                    <div className=" flex flex-col p-5 w-38/100 rounded-xl shadow-md border-2 transition-shadow duration-200" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'} onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}>
+                                    <div className=" flex flex-col p-5 w-38/100 rounded-xl shadow-md border-2 transition-shadow duration-200" style={{backgroundColor: COLORS.primary, borderColor: COLORS.accent}} onMouseEnter={(e) => e.currentTarget.style.borderColor = COLORS.accentHover} onMouseLeave={(e) => e.currentTarget.style.borderColor = COLORS.accent}>
                                         {/* placeholder for traits and features */}
                                         <SubclassInfo draft={draft} setDraft={updateDraft} />
                                         <SheetFeatures draft={draft} setDraft={updateDraft} />
@@ -282,7 +283,7 @@ function GetSheet() {
 
                         {/* Sheet Page 2 */}
                         <div className='flex w-full'>
-                            <div className="mt-4 p-6 mx-5 justify-self-center flex flex-col rounded-xl w-full shadow-lg border-2" style={{backgroundColor: '#edeae8', color: '#1a1a1a', borderColor: '#db7f3d'}}>
+                            <div className="mt-4 p-6 mx-5 justify-self-center flex flex-col rounded-xl w-full shadow-lg border-2" style={{backgroundColor: COLORS.primary, color: COLORS.secondary, borderColor: COLORS.accent}}>
 
                                 {/* Header */}
                                 <div className='flex items-center justify-center gap-4 '>
@@ -295,7 +296,7 @@ function GetSheet() {
                                         <Backstory draft={draft} setDraft={updateDraft} />
                                     </div>
                                     {draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) &&
-                                        <div className=' rounded-xl shadow-md p-4 flex flex-col items-center space-y-2 min-w-230 max-w-230 h-full border-2 transition-shadow duration-200' style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'} onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}>
+                                        <div className=' rounded-xl shadow-md p-4 flex flex-col items-center space-y-2 min-w-230 max-w-230 h-full border-2 transition-shadow duration-200' style={{backgroundColor: COLORS.primary, borderColor: COLORS.accent}} onMouseEnter={(e) => e.currentTarget.style.borderColor = COLORS.accentHover} onMouseLeave={(e) => e.currentTarget.style.borderColor = COLORS.accent}>
                                             <Spellcasting draft={draft} setDraft={updateDraft} />
                                             <SpellList draft={draft} setDraft={updateDraft} />
                                         </div>

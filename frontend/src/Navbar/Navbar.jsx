@@ -8,6 +8,7 @@ import { useAuth } from '../Auth/AuthContext';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import SheetDrawer from './SheetDrawer';
 import { isSheetSaved,saveSheet } from '../Sheets/SheetManager.js'; // <-- added
+import COLORS from '../constants/colors.js';
 
 function Navbar() {
     const location = useLocation();
@@ -34,7 +35,7 @@ function Navbar() {
     }
 
     return (
-        <AppBar position="static" color="inherit" style={{backgroundColor: '#edeae8'}}>
+        <AppBar position="static" color="inherit" style={{backgroundColor: COLORS.primary}}>
             <Toolbar className='!flex !items-center  !w-full'>
 
                 {/* Button to show drawer, if the location has one */}
@@ -48,7 +49,7 @@ function Navbar() {
                     component={RouterLink}
                     to="/"
                     className='!text-2xl !font-medium !text-2xl'
-                    style={{color: '#1a1a1a'}}
+                    style={{color: COLORS.secondary}}
                 >
                     <div className="text-3xl mr-2">
                         DnD Yonder
@@ -63,9 +64,9 @@ function Navbar() {
                             fontWeight: 600,
                             fontSize: '1.125rem',
                             textTransform: 'none',
-                            color: pathname === '/' ? '#db7f3d' : '#1a1a1a',
+                            color: pathname === '/' ? COLORS.accent : COLORS.secondary,
                             '&:hover': {
-                                color: '#c46d2f',
+                                color: COLORS.accentHover,
                             },
                         }}
                     >
@@ -79,10 +80,10 @@ function Navbar() {
                                 fontWeight: 600,
                                 fontSize: '1.125rem',
                                 textTransform: 'none',
-                                color: pathname === `/Sheets/${authUsername}` ? '#db7f3d' : '#1a1a1a',
-                                '&:hover': {
-                                    color: '#c46d2f',
-                                },
+                            color: pathname === `/Sheets/${authUsername}` ? COLORS.accent : COLORS.secondary,
+                            '&:hover': {
+                                color: COLORS.accentHover,
+                            },
                             }}
                         >
                             Sheets
@@ -101,9 +102,9 @@ function Navbar() {
                             fontWeight: 600,
                             fontSize: '1.125rem',
                             textTransform: 'none',
-                            color: pathname === '/Login' ? '#db7f3d' : '#1a1a1a',
+                            color: pathname === '/Login' ? COLORS.accent : COLORS.secondary,
                             '&:hover': {
-                                color: '#c46d2f',
+                                color: COLORS.accentHover,
                             },
                         }}
                         >
@@ -121,9 +122,9 @@ function Navbar() {
                             fontWeight: 600,
                             fontSize: '1.125rem',
                             textTransform: 'none',
-                            color: '#1a1a1a',
+                            color: COLORS.secondary,
                             '&:hover': {
-                                color: '#c46d2f',
+                                color: COLORS.accentHover,
                             },
                         }}
                         >
