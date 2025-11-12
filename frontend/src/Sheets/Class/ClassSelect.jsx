@@ -374,13 +374,57 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   return (
     <>
       <FormControl fullWidth variant="standard" margin="normal">
-        <InputLabel id="class-select-label">Class</InputLabel>
+        <InputLabel id="class-select-label" sx={{ color: '#1a1a1a', '&.Mui-focused': { color: '#db7f3d' } }}>Class</InputLabel>
         <Select
           labelId="class-select-label"
           id="class-select"
           value={sheet.class?.class_name || ''}
           onChange={handleChangingClass}
           disabled={loading || disabled}
+          sx={{
+            color: '#1a1a1a',
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#db7f3d',
+            },
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#c46d2f',
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#db7f3d',
+            },
+            '& .MuiSvgIcon-root': {
+              color: '#db7f3d',
+            },
+            '&:before': {
+              borderColor: '#db7f3d',
+            },
+            '&:after': {
+              borderColor: '#db7f3d',
+            },
+            '&:hover:not(.Mui-disabled):before': {
+              borderColor: '#c46d2f',
+            },
+          }}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                backgroundColor: '#edeae8',
+                border: '2px solid #db7f3d',
+                '& .MuiMenuItem-root': {
+                  color: '#1a1a1a',
+                  '&:hover': {
+                    backgroundColor: '#e0ddd9',
+                  },
+                  '&.Mui-selected': {
+                    backgroundColor: '#e0ddd9',
+                    '&:hover': {
+                      backgroundColor: '#e0ddd9',
+                    },
+                  },
+                },
+              },
+            },
+          }}
         >
           <MenuItem value="">— Select —</MenuItem>
           <MenuItem value="new">Add New Class…</MenuItem>

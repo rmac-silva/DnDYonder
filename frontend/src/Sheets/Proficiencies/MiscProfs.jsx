@@ -57,7 +57,7 @@ export default function MiscProfs({ draft = {}, setDraft }) {
         Other Proficiencies
       </Typography>
 
-      <Paper variant="" className="!w-full" >
+      <Paper variant="" className="!w-full" sx={{ border: '2px solid #db7f3d', borderRadius: 2, backgroundColor: '#edeae8', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
         <TextField
           fullWidth
           multiline
@@ -67,6 +67,21 @@ export default function MiscProfs({ draft = {}, setDraft }) {
           onChange={(e) => {setProficiencies(e.target.value);}}
           onBlur={handleChange}
           variant="outlined"
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              backgroundColor: '#edeae8',
+              '& fieldset': {
+                borderColor: '#db7f3d',
+                borderWidth: 2,
+              },
+              '&:hover fieldset': {
+                borderColor: '#c46d2f',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#c46d2f',
+              },
+            },
+          }}
         />
       </Paper>
     </Box>

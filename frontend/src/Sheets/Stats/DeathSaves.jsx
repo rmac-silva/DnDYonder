@@ -28,11 +28,11 @@ function PlayerStats({draft,setDraft}) {
     return (
         <>
             <div className="flex flex-col mr-8 items-center">
-                <label className="text-3xl font-semibold ">Death Saves</label>
-                <div className='w-45 bg-white h-26 mt-2 text-center border-2 border-gray-400 md:text-6xl place-content-center rounded-xl flex flex-col '>
+                <label className="text-3xl font-semibold" style={{color: '#1a1a1a'}}>Death Saves</label>
+                <div className='w-45 h-26 mt-2 text-center md:text-6xl place-content-center rounded-xl flex flex-col shadow-sm' style={{backgroundColor: '#edeae8', borderColor: '#db7f3d', borderWidth: '2px', borderStyle: 'solid'}}>
 
                     <div className='flex  justify-items-end items-center '>
-                        <label className="text-lg font-medium ml-2 mr-2">Successes</label>
+                        <label className="text-lg font-medium ml-2 mr-2" style={{color: '#1a1a1a'}}>Successes</label>
 
                         <Checkbox
                             icon={<CircleOutlinedIcon style={{ fontSize: '1.5rem' }} />}
@@ -45,7 +45,7 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#1a1a1a",
                                 },
                             }} />
                         <Checkbox
@@ -59,7 +59,7 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#1a1a1a",
                                 },
                             }} />
                         <Checkbox
@@ -74,12 +74,12 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#1a1a1a",
                                 },
                             }} />
                     </div>
                     <div className='flex justify-items-end items-center mt-2'>
-                        <label className=" text-lg font-medium ml-2 mr-2 ">Failures</label>
+                        <label className=" text-lg font-medium ml-2 mr-2" style={{color: '#1a1a1a'}}>Failures</label>
 
                         <Checkbox
                             icon={<CircleOutlinedIcon style={{ fontSize: '1.5rem' }} />}
@@ -92,7 +92,7 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#1a1a1a",
                                 },
                             }} />
                         <Checkbox
@@ -106,7 +106,7 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#1a1a1a",
                                 },
                             }} />
                         <Checkbox
@@ -120,7 +120,7 @@ function PlayerStats({draft,setDraft}) {
 
                                 color: grey400,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#1a1a1a",
                                 },
                             }} />
                     </div>

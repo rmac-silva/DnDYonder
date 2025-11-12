@@ -116,7 +116,7 @@ function Spellcasting({ draft, setDraft }) {
                     color: grey400,
 
                     "&.Mui-checked": {
-                        color: "#1f1f1f",
+                        color: "#1a1a1a",
                     },
                 }}
             />);
@@ -135,7 +135,7 @@ function Spellcasting({ draft, setDraft }) {
 
     return (
         <div className='w-full flex flex-col items-center'>
-            <div className='text-4xl font-semibold mb-4'>Spellcasting</div>
+            <div className='text-4xl font-semibold mb-4' style={{color: '#1a1a1a'}}>Spellcasting</div>
 
             <div className='flex justify-start w-full'>
 
@@ -148,7 +148,7 @@ function Spellcasting({ draft, setDraft }) {
 
                         <div className='items-center flex flex-col'>
 
-                            <label className="absolute   text-lg font-semibold">Spellcasting Lvl.</label>
+                            <label className="absolute   text-lg font-semibold" style={{color: '#1a1a1a'}}>Spellcasting Lvl.</label>
                             <input
                                 type="number"
                                 max={9}
@@ -156,19 +156,25 @@ function Spellcasting({ draft, setDraft }) {
                                 value={maxSpellLevel}
                                 onChange={(e) => setMaxSpellLevel(e.target.value)}
                                 onBlur={(e) => { draft.class.spellcasting.max_level_spellslots = e.target.value; setDraft({ ...draft }) }}
-                                className="border border-gray-300 rounded p-1 w-36 h-24 text-center text-4xl"
+                                className="border-2 rounded-lg p-1 w-36 h-24 text-center text-4xl transition-all duration-200"
+                                style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
+                                onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
+                                onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
                             />
                         </div>
 
                         <div className='items-center flex flex-col'>
-                            <label className="absolute   text-lg font-semibold">Spellcasting Ability</label>
+                            <label className="absolute   text-lg font-semibold" style={{color: '#1a1a1a'}}>Spellcasting Ability</label>
                             <input
                                 type="text"
                                 value={spellcastingAbility}
                                 placeholder='Wisdom'
                                 onChange={(e) => setSpellcastingAbility(e.target.value)}
                                 onBlur={(e) => { draft.class.spellcasting.spellcasting_ability = e.target.value; setDraft({ ...draft }) }}
-                                className="border border-gray-300 rounded p-1 w-48 h-24 text-center text-4xl"
+                                className="border-2 rounded-lg p-1 w-48 h-24 text-center text-4xl transition-all duration-200"
+                                style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
+                                onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
+                                onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
                             />
                         </div>
                     </div>
@@ -178,23 +184,25 @@ function Spellcasting({ draft, setDraft }) {
 
                         {/* Mod */}
                         <div className='items-center flex flex-col'>
-                            <label className="absolute   text-lg font-semibold">Modifier</label>
+                            <label className="absolute   text-lg font-semibold" style={{color: '#1a1a1a'}}>Modifier</label>
                             <input
                                 type="text"
                                 value={GetSpellcastingModifier()}
                                 readOnly
-                                className="border border-gray-300 rounded p-1 w-24 h-24 text-center text-4xl"
+                                className="border-2 rounded-lg p-1 w-24 h-24 text-center text-4xl transition-all duration-200"
+                                style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
                             />
                         </div>
 
                         {/* DC */}
                         <div className='items-center flex flex-col '>
-                            <label className="absolute   text-lg font-semibold">DC</label>
+                            <label className="absolute   text-lg font-semibold" style={{color: '#1a1a1a'}}>DC</label>
                             <input
                                 type="text"
                                 value={GetSpellcastingDC()}
                                 readOnly
-                                className="border border-gray-300 rounded p-1 w-24 h-24 text-center text-4xl"
+                                className="border-2 rounded-lg p-1 w-24 h-24 text-center text-4xl transition-all duration-200"
+                                style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
                             />
                         </div>
                     </div>
@@ -202,14 +210,14 @@ function Spellcasting({ draft, setDraft }) {
 
                 {/* The spell slots, with levels 1 to 9 will go here. With dots to represent the maximum spell slots known */}
             <div className='flex flex-col w-full items-center space-y-2'>
-                <div className='text-2xl'> Spell Slots</div>
+                <div className='text-2xl' style={{color: '#1a1a1a'}}> Spell Slots</div>
                 <div className='grid w-full grid-cols-3 place-items-center mt-2'>
                     {Array.from({ length: 9 }, (_, index) => (
-                        <div className=' flex border-1 border-zinc-400 w-42 px-4 py-2 rounded items-center space-x-4 mb-2 ml-1' key={index}>
+                        <div className=' flex border-2 w-42 px-4 py-2 rounded-lg items-center space-x-4 mb-2 ml-1 transition-all duration-200' style={{borderColor: '#db7f3d', backgroundColor: '#edeae8'}} onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'} onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'} key={index}>
                             {/* fixed minWidth makes all markers start at same place */}
                             <div
                                 className={index + 1 > maxSpellLevel ? 'disabled font-light' : 'font-medium'}
-                                style={{ minWidth: 38, textAlign: 'left' }}
+                                style={{ minWidth: 38, textAlign: 'left', color: '#1a1a1a' }}
                             >
                                 Lvl. {index + 1}
                             </div>

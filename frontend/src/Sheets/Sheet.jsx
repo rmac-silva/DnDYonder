@@ -244,18 +244,18 @@ function GetSheet() {
 
                         {/* Sheet Page 1 */}
                         <div className='flex w-full'>
-                            <div className="mt-4 p-4 bg-zinc-200 mx-5 justify-self-center rounded w-full text-gray-700">
+                            <div className="mt-4 p-6 mx-5 justify-self-center rounded-xl w-full shadow-lg border-2" style={{backgroundColor: '#edeae8', color: '#1a1a1a', borderColor: '#db7f3d'}}>
                                 {/* Header */}
                                 <SheetHeader draft={draft} setDraft={updateDraft} nameVar={nameVar} setNameVar={setNameVar} />
 
                                 {/* Three Columns */}
-                                <div className="flex mt-6">
+                                <div className="flex mt-8 gap-6">
 
                                     {/* First Column - Stats */}
                                     <SheetLeftColumn draft={draft} setDraft={updateDraft} />
 
                                     {/* Second Column - Health, Attacks, etc. */}
-                                    <div className="w-1/3 bg-white mx-4 p-4 rounded shadow">
+                                    <div className="w-1/3 mx-2 p-5 rounded-xl shadow-md border-2 transition-shadow duration-200" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'} onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}>
                                         <div className=' p-4 flex flex-col'>
 
                                             <PlayerStats draft={draft} setDraft={updateDraft}  />
@@ -270,7 +270,7 @@ function GetSheet() {
                                     </div>
 
                                     {/* Third Column - Traits and Features */}
-                                    <div className=" bg-white flex flex-col p-4 w-38/100 rounded shadow">
+                                    <div className=" flex flex-col p-5 w-38/100 rounded-xl shadow-md border-2 transition-shadow duration-200" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'} onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}>
                                         {/* placeholder for traits and features */}
                                         <SubclassInfo draft={draft} setDraft={updateDraft} />
                                         <SheetFeatures draft={draft} setDraft={updateDraft} />
@@ -282,7 +282,7 @@ function GetSheet() {
 
                         {/* Sheet Page 2 */}
                         <div className='flex w-full'>
-                            <div className="mt-4 p-4 bg-zinc-200 mx-5 justify-self-center flex flex-col rounded w-full  text-gray-700">
+                            <div className="mt-4 p-6 mx-5 justify-self-center flex flex-col rounded-xl w-full shadow-lg border-2" style={{backgroundColor: '#edeae8', color: '#1a1a1a', borderColor: '#db7f3d'}}>
 
                                 {/* Header */}
                                 <div className='flex items-center justify-center gap-4 '>
@@ -295,7 +295,7 @@ function GetSheet() {
                                         <Backstory draft={draft} setDraft={updateDraft} />
                                     </div>
                                     {draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) &&
-                                        <div className=' bg-white rounded shadow p-2 flex flex-col items-center space-y-2 min-w-230 max-w-230 h-full'>
+                                        <div className=' rounded-xl shadow-md p-4 flex flex-col items-center space-y-2 min-w-230 max-w-230 h-full border-2 transition-shadow duration-200' style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}} onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'} onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}>
                                             <Spellcasting draft={draft} setDraft={updateDraft} />
                                             <SpellList draft={draft} setDraft={updateDraft} />
                                         </div>

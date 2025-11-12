@@ -34,7 +34,7 @@ function Navbar() {
     }
 
     return (
-        <AppBar position="static" color="inherit" className='!bg-slate-300'>
+        <AppBar position="static" color="inherit" style={{backgroundColor: '#edeae8'}}>
             <Toolbar className='!flex !items-center  !w-full'>
 
                 {/* Button to show drawer, if the location has one */}
@@ -47,7 +47,8 @@ function Navbar() {
                     variant="h6"
                     component={RouterLink}
                     to="/"
-                    className='!text-black !font-medium !text-2xl'
+                    className='!text-2xl !font-medium !text-2xl'
+                    style={{color: '#1a1a1a'}}
                 >
                     <div className="text-3xl mr-2">
                         DnD Yonder
@@ -57,12 +58,15 @@ function Navbar() {
                 {/* Left buttons */}
                 <Box className='!flex !ml-4 !gap-2'>
                     <Button
-                        onClick={() => handleNavigate('/')} /* intercept navigation to warn about unsaved changes */
+                        onClick={() => handleNavigate('/')}
                         sx={{
                             fontWeight: 600,
                             fontSize: '1.125rem',
                             textTransform: 'none',
-                            color: pathname === '/' ? 'primary.main' : 'text.primary',
+                            color: pathname === '/' ? '#db7f3d' : '#1a1a1a',
+                            '&:hover': {
+                                color: '#c46d2f',
+                            },
                         }}
                     >
                         Home
@@ -70,12 +74,15 @@ function Navbar() {
 
                     {isLoggedIn &&
                         <Button
-                            onClick={() => handleNavigate(`/Sheets/${authUsername}`)} /* intercept navigation to warn about unsaved changes */
+                            onClick={() => handleNavigate(`/Sheets/${authUsername}`)}
                             sx={{
                                 fontWeight: 600,
                                 fontSize: '1.125rem',
                                 textTransform: 'none',
-                                color: pathname === `/Sheets/${authUsername}` ? 'primary.main' : 'text.primary',
+                                color: pathname === `/Sheets/${authUsername}` ? '#db7f3d' : '#1a1a1a',
+                                '&:hover': {
+                                    color: '#c46d2f',
+                                },
                             }}
                         >
                             Sheets
@@ -94,7 +101,10 @@ function Navbar() {
                             fontWeight: 600,
                             fontSize: '1.125rem',
                             textTransform: 'none',
-                            color: pathname === '/Login' ? 'primary.main' : 'text.primary',
+                            color: pathname === '/Login' ? '#db7f3d' : '#1a1a1a',
+                            '&:hover': {
+                                color: '#c46d2f',
+                            },
                         }}
                         >
                         Login
@@ -111,7 +121,10 @@ function Navbar() {
                             fontWeight: 600,
                             fontSize: '1.125rem',
                             textTransform: 'none',
-                            color: pathname === '/Login' ? 'primary.main' : 'text.primary',
+                            color: '#1a1a1a',
+                            '&:hover': {
+                                color: '#c46d2f',
+                            },
                         }}
                         >
                         Logout

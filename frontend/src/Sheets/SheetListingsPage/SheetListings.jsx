@@ -7,10 +7,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Navbar from '../../Navbar/Navbar.jsx';
 
-const iconColor = "#333333"
+const iconColor = "#1a1a1a"
 const iconSize = 80
 const iconTransparency = .80
-const bgCol = "#1b1b1b"
+const bgCol = "#edeae8"
 /*
 TODO: Add confirmation dialog before deleting a sheet
 */
@@ -121,10 +121,10 @@ function SheetListings() {
         const raceName = sheet.race.subrace ? `${sheet.race.subrace} ${sheet.race.race}` : sheet.race.race;
         return (
             <>
-                <Typography variant="body1" className='!text-xl text-shadow-lg' component="div" align="center">
+                <Typography variant="body1" className='!text-xl text-shadow-lg' component="div" align="center" sx={{color: '#1a1a1a'}}>
                     Lvl. {sheet.stats.level}
                 </Typography>
-                <Typography variant="body2" className='!text-xl text-shadow-lg' component="div" align="center">
+                <Typography variant="body2" className='!text-xl text-shadow-lg' component="div" align="center" sx={{color: '#1a1a1a'}}>
                     {raceName} {sheet.class?.class_name}
                 </Typography>
             </>
@@ -143,8 +143,10 @@ function SheetListings() {
                 {sheets.map(sheet => (
                     <div key={sheet.id}>
                         <Box
-                            className="group !w-48 !h-62 !mx-4  !rounded-xl !flex !flex-col !items-center !justify-center relative overflow-hidden"
-                            style={{ backgroundColor: bgCol }}
+                            className="group !w-48 !h-62 !mx-4  !rounded-xl !flex !flex-col !items-center !justify-center relative overflow-hidden border-2 transition-all duration-200 hover:shadow-lg"
+                            style={{ backgroundColor: bgCol, borderColor: '#db7f3d' }}
+                            onMouseEnter={(e) => {e.currentTarget.style.borderColor = '#c46d2f'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.12)'}}
+                            onMouseLeave={(e) => {e.currentTarget.style.borderColor = '#db7f3d'; e.currentTarget.style.boxShadow = 'none'}}
                         >
                             {/* Background icon */}
                             <div className={`absolute inset-0 flex items-center justify-center pointer-events-none`} style={{ opacity: iconTransparency }}>
@@ -168,19 +170,25 @@ function SheetListings() {
                                     textTransform: 'none',
                                     p: 0,
                                     gap: 1,
-                                    color: 'inherit',
+                                    color: '#1a1a1a',
+                                    '&:hover': {
+                                        backgroundColor: '#e0ddd9',
+                                    },
                                 }}
                             >
-                                <Typography variant="h5" component="div" sx={{ fontWeight: 600 }}>
+                                <Typography variant="h5" component="div" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
                                     {sheet.name}
                                 </Typography>
-                                <Typography variant="h6" component="div" sx={{ fontWeight: 500 }}>
+                                <Typography variant="h6" component="div" sx={{ fontWeight: 500, color: '#1a1a1a' }}>
                                     {GetCharacterDisplayName(sheet)}
                                 </Typography>
                             </Button>
 
                             <i
-                                className="fa-solid fa-trash absolute top-4 right-4 cursor-pointer hover:text-red-500 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                className="fa-solid fa-trash absolute top-4 right-4 cursor-pointer z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                style={{color: '#db7f3d'}}
+                                onMouseEnter={(e) => e.currentTarget.style.color = '#c46d2f'}
+                                onMouseLeave={(e) => e.currentTarget.style.color = '#db7f3d'}
                                 onClick={() => deleteSheet(sheet.id)}
                             ></i>
                         </Box>

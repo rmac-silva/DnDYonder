@@ -9,7 +9,7 @@ function ItemHoverInformation({ itemName, content }) {
         return String(val).charAt(0).toUpperCase() + String(val).slice(1);
     }
 
-    return (<div className="flex shadow flex-col p-2 bg-amber-100 ">
+    return (<div className="flex shadow-lg flex-col p-3 rounded-lg" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d', borderWidth: '2px', borderStyle: 'solid'}}>
         <div className="flex space-x-1 items-center border-b-2">
             <div className="font-semibold  text-xl ">{capitalizeFirstLetter(itemName)}</div>
             <div className="flex items-center font-serif ">

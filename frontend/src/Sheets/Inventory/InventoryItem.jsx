@@ -59,11 +59,34 @@ function InventoryItem({ itemName, index, onItemNameChange }) {
                 onClick={handlePopoverClose}
                 onMouseEnter={handlePopoverOpen}
                 onMouseLeave={handlePopoverClose}
+                sx={{
+                            '& .MuiOutlinedInput-root': {
+                                backgroundColor: '#edeae8',
+                                '& fieldset': {
+                                    borderColor: '#db7f3d',
+                                    borderWidth: 2,
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: '#c46d2f',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#c46d2f',
+                                },
+                            },
+                }}
             />
             {itemData &&
                 <Popover
                     id={`item-${index}`}
-                    sx={{ pointerEvents: 'none', maxWidth: '80vw' }}
+                    sx={{ 
+                        pointerEvents: 'none', 
+                        maxWidth: '80vw',
+                        '& .MuiPaper-root': {
+                            backgroundColor: 'transparent',
+                            boxShadow: 'none',
+                            border: 'none',
+                        },
+                    }}
                     open={popoverOpen}
                     anchorEl={document.getElementById(`item-${index}`)}
                     anchorOrigin={{

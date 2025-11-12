@@ -79,7 +79,7 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
                         visibility: skill.has_expertise ? "visible" : "hidden",
                         pointerEvents: skill.has_expertise ? "auto" : "none",
                         "&.Mui-checked": {
-                            color: "#1f1f1f",
+                            color: "#1a1a1a",
                         },
                     }}
                 />
@@ -96,17 +96,17 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
                     padding: 0,
                     color : grey400,
                     
-                    "&.Mui-checked": {
-                        color:  "#1f1f1f",
-                    },
+                        "&.Mui-checked": {
+                            color:  "#1a1a1a",
+                        },
                 }}
             />
 
             {/* Modifier */}
-            <div className="mx-1 w-2/12 text-center border-2 border-gray-400 rounded focus-visible:outline-none">{GetValue()}</div>
+            <div className="mx-1 w-2/12 text-center border-2 rounded-lg focus-visible:outline-none py-1 font-semibold" style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}>{GetValue()}</div>
 
             {/* Label/Name */}
-            <div className="mx-1 w-7/10 text-center border-2 border-gray-400 rounded focus-visible:outline-none">
+            <div className="mx-1 w-7/10 text-center border-2 rounded-lg focus-visible:outline-none py-1 transition-colors duration-200" style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}>
                 {skill.name}
             </div>
         </div>

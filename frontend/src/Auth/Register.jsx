@@ -80,10 +80,10 @@ export default function Register() {
                 {/* Centered form card with a fixed width so the whole card is centered on the page */}
                 <div
                     className="bg-zinc-200 rounded-md p-8 flex flex-col items-start"
-                    style={{ width: 900 }} // fixed card width keeps it centered reliably
+                    style={{ width: 900, backgroundColor: '#edeae8' }} // fixed card width keeps it centered reliably
                 >
                     {/* Header (centered within the card) */}
-                    <div className="text-4xl font-bold text-gray-800 mb-6 self-center">Register</div>
+                    <div className="text-4xl font-bold mb-6 self-center" style={{color: '#1a1a1a'}}>Register</div>
                     {error && <div className="text-red-600 mb-4">{error}</div>}
                     {/* Email Field (starts at same X as password input) */}
                     <div style={{ width: 800 }} className="mb-4">
@@ -110,7 +110,10 @@ export default function Register() {
                         loading={loading}
                         onClick={registerUser}
                             variant="contained"
-                            className="!bg-blue-500 !text-white !px-6 !py-2 !text-lg !font-semibold !rounded-md hover:!bg-blue-700"
+                            className="!px-6 !py-2 !text-lg !font-semibold !rounded-md"
+                            style={{backgroundColor: '#db7f3d', color: '#edeae8'}}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#c46d2f'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#db7f3d'}
 
                         >
                             Login

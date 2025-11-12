@@ -16,8 +16,8 @@ function SheetDrawer() {
     };
 
     return ( <div className="-ml-8">
-        <Button onClick={toggleDrawer(true)}><MenuIcon color="action"/></Button>
-        <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
+        <Button onClick={toggleDrawer(true)} sx={{ color: '#1a1a1a' }}><MenuIcon sx={{ color: '#1a1a1a' }}/></Button>
+        <Drawer anchor="left" open={open} onClose={toggleDrawer(false)} PaperProps={{ sx: { backgroundColor: '#edeae8' } }}>
             <div
             className="w-full"
                 role="presentation"

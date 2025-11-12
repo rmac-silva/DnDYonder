@@ -255,13 +255,57 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
     return (
         <>
             <FormControl fullWidth variant="standard" margin="normal">
-                <InputLabel id="race-select-label">Race</InputLabel>
+                <InputLabel id="race-select-label" sx={{ color: '#1a1a1a', '&.Mui-focused': { color: '#db7f3d' } }}>Race</InputLabel>
                 <Select
                     labelId="race-select-label"
                     id="race-select"
                     value={sheet.race.subrace !== '' ? sheet.race.subrace + " " + sheet.race.race : sheet.race.race || ''}
                     onChange={handleChangingRace}
                     disabled={loading || disabled}
+                    sx={{
+                        color: '#1a1a1a',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#db7f3d',
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#c46d2f',
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#db7f3d',
+                        },
+                        '& .MuiSvgIcon-root': {
+                            color: '#db7f3d',
+                        },
+                        '&:before': {
+                            borderColor: '#db7f3d',
+                        },
+                        '&:after': {
+                            borderColor: '#db7f3d',
+                        },
+                        '&:hover:not(.Mui-disabled):before': {
+                            borderColor: '#c46d2f',
+                        },
+                    }}
+                    MenuProps={{
+                        PaperProps: {
+                            sx: {
+                                backgroundColor: '#edeae8',
+                                border: '2px solid #db7f3d',
+                                '& .MuiMenuItem-root': {
+                                    color: '#1a1a1a',
+                                    '&:hover': {
+                                        backgroundColor: '#e0ddd9',
+                                    },
+                                    '&.Mui-selected': {
+                                        backgroundColor: '#e0ddd9',
+                                        '&:hover': {
+                                            backgroundColor: '#e0ddd9',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    }}
                 >
                     <MenuItem value="">— Select —</MenuItem>
                     <MenuItem value="new">Add New Race...</MenuItem>
@@ -309,7 +353,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                     {/* Row: Hit Dice select + two small text fields */}
                     <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
                         <FormControl sx={{ minWidth: 160 }}>
-                            <InputLabel id="creature_type-label">Creature Type</InputLabel>
+                            <InputLabel id="creature_type-label" sx={{ color: '#1a1a1a', '&.Mui-focused': { color: '#db7f3d' } }}>Creature Type</InputLabel>
                             <Select
                                 required
                                 error={errorField === 'creature_type'}
@@ -318,6 +362,50 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                                 value={newRace.creature_type}
                                 label="Creature Type"
                                 onChange={(e) => setNewRace((s) => ({ ...s, creature_type: e.target.value }))}
+                                sx={{
+                                    color: '#1a1a1a',
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '& .MuiSvgIcon-root': {
+                                        color: '#db7f3d',
+                                    },
+                                    '&:before': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:after': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:hover:not(.Mui-disabled):before': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                }}
+                                MenuProps={{
+                                    PaperProps: {
+                                        sx: {
+                                            backgroundColor: '#edeae8',
+                                            border: '2px solid #db7f3d',
+                                            '& .MuiMenuItem-root': {
+                                                color: '#1a1a1a',
+                                                '&:hover': {
+                                                    backgroundColor: '#e0ddd9',
+                                                },
+                                                '&.Mui-selected': {
+                                                    backgroundColor: '#e0ddd9',
+                                                    '&:hover': {
+                                                        backgroundColor: '#e0ddd9',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                }}
                             >
                                 <MenuItem value="Humanoid">Humanoid</MenuItem>
                                 <MenuItem value="Aberration">Aberration</MenuItem>
@@ -337,7 +425,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                         </FormControl>
 
                         <FormControl sx={{ minWidth: 160 }}>
-                            <InputLabel id="size-label">Size</InputLabel>
+                            <InputLabel id="size-label" sx={{ color: '#1a1a1a', '&.Mui-focused': { color: '#db7f3d' } }}>Size</InputLabel>
                             <Select
                                 required
                                 labelId="size-label"
@@ -346,6 +434,50 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                                 value={newRace.size}
                                 label="Creature Type"
                                 onChange={(e) => setNewRace((s) => ({ ...s, size: e.target.value }))}
+                                sx={{
+                                    color: '#1a1a1a',
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '& .MuiSvgIcon-root': {
+                                        color: '#db7f3d',
+                                    },
+                                    '&:before': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:after': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:hover:not(.Mui-disabled):before': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                }}
+                                MenuProps={{
+                                    PaperProps: {
+                                        sx: {
+                                            backgroundColor: '#edeae8',
+                                            border: '2px solid #db7f3d',
+                                            '& .MuiMenuItem-root': {
+                                                color: '#1a1a1a',
+                                                '&:hover': {
+                                                    backgroundColor: '#e0ddd9',
+                                                },
+                                                '&.Mui-selected': {
+                                                    backgroundColor: '#e0ddd9',
+                                                    '&:hover': {
+                                                        backgroundColor: '#e0ddd9',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                }}
                             >
                                 <MenuItem value="Tiny">Tiny</MenuItem>
                                 <MenuItem value="Small">Small</MenuItem>

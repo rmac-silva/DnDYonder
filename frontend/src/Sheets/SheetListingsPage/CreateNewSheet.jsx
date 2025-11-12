@@ -22,7 +22,7 @@ function CreateNewSheet() {
     return (
     <Box
       className=" !w-48 !h-62 !mx-4 !rounded-xl !flex !flex-col !items-center !justify-center"
-      style={{ backgroundColor: '#1b1b1b' }}
+      style={{ backgroundColor: '#edeae8', border: '2px solid #db7f3d', borderStyle: 'solid' }}
     >
       <Button
         component={RouterLink}
@@ -37,7 +37,10 @@ function CreateNewSheet() {
           textTransform: 'none',
           p: 0,
           gap: 1,
-          color: 'inherit',
+          color: '#1a1a1a',
+          '&:hover': {
+            backgroundColor: '#e0ddd9',
+          },
         }}
       >
         <svg
@@ -53,10 +56,10 @@ function CreateNewSheet() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
 
-        <Typography variant="h5" component="div" sx={{ fontWeight: 600 }}>
+        <Typography variant="h5" component="div" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
           New
         </Typography>
-        <Typography variant="h5" component="div" sx={{ fontWeight: 600 }}>
+        <Typography variant="h5" component="div" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
           Sheet
         </Typography>
       </Button>

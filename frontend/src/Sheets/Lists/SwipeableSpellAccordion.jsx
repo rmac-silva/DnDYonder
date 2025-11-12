@@ -24,6 +24,7 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
     // long-press state
     const pressStartRef = useRef(0);
     const rafRef = useRef(null);
+    const delayTimeoutRef = useRef(null);
     const [pressProgress, setPressProgress] = useState(0); // 0..1
     const [isPressing, setIsPressing] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -83,17 +84,27 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
         // left mouse only or touch
         if (e.pointerType === 'mouse' && e.button !== 0) return;
 
-        pressStartRef.current = Date.now();
-        setIsPressing(true);
-        setPressProgress(0);
-        // start RAF loop
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-        rafRef.current = requestAnimationFrame(tickPress);
+        // Wait 300ms before starting the delete progress
+        delayTimeoutRef.current = setTimeout(() => {
+            pressStartRef.current = Date.now();
+            setIsPressing(true);
+            setPressProgress(0);
+            // start RAF loop
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+            rafRef.current = requestAnimationFrame(tickPress);
+        }, 300);
+        
         // capture pointer so we still get up events
         e.target.setPointerCapture?.(e.pointerId);
     };
 
     const handlePointerUp = (e) => {
+        // Clear the delay timeout if it hasn't fired yet
+        if (delayTimeoutRef.current) {
+            clearTimeout(delayTimeoutRef.current);
+            delayTimeoutRef.current = null;
+        }
+        
         if (rafRef.current) {
             cancelAnimationFrame(rafRef.current);
             rafRef.current = null;
@@ -108,6 +119,7 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
     useEffect(() => {
         return () => {
             if (rafRef.current) cancelAnimationFrame(rafRef.current);
+            if (delayTimeoutRef.current) clearTimeout(delayTimeoutRef.current);
         };
     }, []);
 
@@ -173,11 +185,17 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
             >
                 <Button
                     variant="contained"
-                    color="error"
                     onClick={() => {
                         if (window.confirm(`Delete spell "${spell.name}"?`)) onDelete?.(spell);
                     }}
                     size="small"
+                    sx={{
+                        backgroundColor: '#db7f3d',
+                        color: '#edeae8',
+                        '&:hover': {
+                            backgroundColor: '#c46d2f',
+                        },
+                    }}
                 >
                     <DeleteIcon />
                 </Button>
@@ -202,34 +220,42 @@ const SwipeableSpellAccordion = ({ spell, onDelete }) => {
                     sx={{
                         mb: 1,
                         '&:before': { display: 'none' },
-                        backgroundColor: '#fff',
+                        backgroundColor: '#edeae8',
                         transformOrigin: 'center left',
+                        border: '2px solid #db7f3d',
+                        borderRadius: 2,
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
+                        '&:hover': {
+                            boxShadow: '0 4px 8px rgba(0,0,0,0.12)',
+                            borderColor: '#c46d2f',
+                        },
+                        transition: 'all 0.2s ease',
                     }}
                 >
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
-                        sx={{ px: 2, py: 1.25 }}
-                        className='!bg-amber-50'
+                        sx={{ px: 2, py: 1.25, backgroundColor: '#edeae8' }}
+                        className='!bg-edeae8'
                     >
                         <Slide direction="left" in={true} mountOnEnter unmountOnExit>
                             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'left', width: '100%' }}>
-                                <div className="px-2 bg-amber-50 rounded w-full">
-                                    <div className="font-semibold text-xl">{spell.name}</div>
-                                    <div className="text-md"><strong>Casting Time:</strong> {spell.casting_time}</div>
+                                <div className="px-2 rounded w-full" style={{backgroundColor: '#edeae8', color: '#1a1a1a'}}>
+                                    <div className="font-semibold text-xl" style={{color: '#1a1a1a'}}>{spell.name}</div>
+                                    <div className="text-md" style={{color: '#1a1a1a'}}><strong>Casting Time:</strong> {spell.casting_time}</div>
                                     <div className="flex space-x-2">
-                                        <div className="text-md"><strong>Range:</strong> {spell.range}</div>
-                                        <div className="text-md"><strong>Level:</strong> {spell.level}</div>
+                                        <div className="text-md" style={{color: '#1a1a1a'}}><strong>Range:</strong> {spell.range}</div>
+                                        <div className="text-md" style={{color: '#1a1a1a'}}><strong>Level:</strong> {spell.level}</div>
                                     </div>
-                                    <div className="text-md"><strong className="!text-md">Duration:</strong> {spell.duration}</div>
+                                    <div className="text-md" style={{color: '#1a1a1a'}}><strong className="!text-md">Duration:</strong> {spell.duration}</div>
                                 </div>
                             </Box>
                         </Slide>
                     </AccordionSummary>
 
-                    <AccordionDetails sx={{ pt: 0, px: 2, pb: 2 }} className='!bg-amber-50'>
-                        <div className=" px-2 border-t-2 ">
-                            <div className="text-sm mt-2"><strong >Components:</strong> {spell.components}</div>
-                            <div className="mt-2 text-sm">{String(spell.description || '').split("\n\n").map((para, index) => (
+                    <AccordionDetails sx={{ pt: 0, px: 2, pb: 2, backgroundColor: '#edeae8' }} className='!bg-edeae8'>
+                        <div className=" px-2 border-t-2" style={{borderColor: '#db7f3d'}}>
+                            <div className="text-sm mt-2" style={{color: '#1a1a1a'}}><strong >Components:</strong> {spell.components}</div>
+                            <div className="mt-2 text-sm" style={{color: '#1a1a1a'}}>{String(spell.description || '').split("\n\n").map((para, index) => (
                                 <p className="mt-2" key={index}>{para}</p>
                             ))}</div>
                         </div>

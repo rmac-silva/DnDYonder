@@ -76,13 +76,13 @@ function Inventory({draft, setDraft}) {
     }
 
     if(loading) {
-        return <div className="text-2xl font-bold p-2 mt-6 flex flex-col justify-center border-2 border-gray-400 rounded-md items-center">Loading Inventory...</div>;
+        return <div className="text-2xl font-bold p-2 mt-6 flex flex-col justify-center border-2 rounded-xl items-center shadow-sm" style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}>Loading Inventory...</div>;
     }
 
     return (
-        <div className="p-2 mt-6 flex flex-col justify-center border-2 border-gray-400 rounded-md items-center">
-            <h2 className="text-4xl font-bold mb-2">Inventory</h2>
-            <h1 className="text-md font-medium ">Double click to edit</h1>
+        <div className="p-4 mt-6 flex flex-col justify-center border-2 rounded-xl items-center shadow-sm transition-shadow duration-200" style={{borderColor: '#db7f3d', backgroundColor: '#edeae8'}}>
+            <h2 className="text-4xl font-bold mb-2" style={{color: '#1a1a1a'}}>Inventory</h2>
+            <h1 className="text-md font-medium" style={{color: '#1a1a1a'}}>Double click to edit</h1>
             {/* Button to add a new blank item */}
             <div className="grid  w-full  text-lg grid-cols-2 gap-y-2 mt-4">
             
@@ -90,12 +90,24 @@ function Inventory({draft, setDraft}) {
                 <div key={index} className="flex w-full items-center ">
 
                 <InventoryItem index={index}  itemName={item.name} onItemNameChange={handleInventoryChange} />
-                        <CancelIcon className=" mr-6 -ml-1  !text-red-600 cursor-pointer" fontSize="medium" onClick={() => handleRemoveItem(index)}></CancelIcon>
+                        <CancelIcon className=" mr-6 -ml-1 cursor-pointer" fontSize="medium" style={{color: '#db7f3d'}} onClick={() => handleRemoveItem(index)}></CancelIcon>
                 </div>
             ))} 
                 
             </div>
-            <Button className="!mx-20 !mt-4" variant="contained" onClick={handleAddItem} sx={{maxHeight:35}} >
+            <Button 
+                className="!mx-20 !mt-4" 
+                variant="contained" 
+                onClick={handleAddItem} 
+                sx={{
+                    maxHeight: 35,
+                    backgroundColor: '#db7f3d',
+                    color: '#edeae8',
+                    '&:hover': {
+                        backgroundColor: '#c46d2f',
+                    },
+                }}
+            >
                 <AddIcon></AddIcon>
             </Button>
         </div>

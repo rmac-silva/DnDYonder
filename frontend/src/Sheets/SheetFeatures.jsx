@@ -70,18 +70,21 @@ function SubclassInfo({ draft, setDraft }) {
     >
       <div
         style={{
-          border: '1px solid rgba(0,0,0,0.08)',
-          borderRadius: 10,
-          padding: 12,
-          background: '#fbfbfb',
-          boxShadow: '0 1px 6px rgba(0,0,0,0.04)',
+          border: '2px solid #db7f3d',
+          borderRadius: 12,
+          padding: 16,
+          background: '#edeae8',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           display: 'flex',
           flexDirection: 'column',
           gap: 12,
           flex: 1,
           minHeight: 0,
           overflow: 'hidden',
+          transition: 'box-shadow 0.2s ease',
         }}
+        onMouseEnter={(e) => {e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = '#c46d2f'}}
+        onMouseLeave={(e) => {e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)'; e.currentTarget.style.borderColor = '#db7f3d'}}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ flex: 0 }}>
@@ -98,7 +101,18 @@ function SubclassInfo({ draft, setDraft }) {
 
           {/* Add feature button */}
           <div style={{ flex: 0 }}>
-            <Button variant="contained" size="small" onClick={() => setAddDialogOpen(true)}>
+            <Button 
+                variant="contained" 
+                size="small" 
+                onClick={() => setAddDialogOpen(true)}
+                sx={{
+                    backgroundColor: '#db7f3d',
+                    color: '#edeae8',
+                    '&:hover': {
+                        backgroundColor: '#c46d2f',
+                    },
+                }}
+            >
               Add feature
             </Button>
           </div>

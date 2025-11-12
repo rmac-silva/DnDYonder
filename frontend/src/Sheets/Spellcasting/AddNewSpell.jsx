@@ -17,6 +17,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Autocomplete from '@mui/material/Autocomplete';
 import Tooltip from '@mui/material/Tooltip';
 import CachedIcon from '@mui/icons-material/Cached';
+import Paper from '@mui/material/Paper';
 
 function AddNewSpell({ draft, setDraft, onAdd }) {
 
@@ -228,11 +229,34 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                         if (opt === "new") return "Create New Spell…";
                         return String(opt);
                     }}
+                    PaperComponent={(props) => (
+                        <Paper {...props} sx={{ backgroundColor: '#edeae8', border: '2px solid #db7f3d' }} />
+                    )}
+                    renderOption={(props, option) => (
+                        <li {...props} style={{ color: '#1a1a1a' }}>
+                            {option === "" ? "— Select —" : option === "new" ? "Create New Spell…" : String(option)}
+                        </li>
+                    )}
                     renderInput={(params) => (
                         <TextField
                             {...params}
                             label="Add a spell..."
                             placeholder=""
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    backgroundColor: '#edeae8',
+                                    '& fieldset': {
+                                        borderColor: '#db7f3d',
+                                        borderWidth: 2,
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                },
+                            }}
                         />
                     )}
                 />
@@ -256,7 +280,23 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                             <TextField
                                 fullWidth
                                 required
-                                sx={{ ml: 2, maxWidth: 400 }}
+                                sx={{ 
+                                    ml: 2, 
+                                    maxWidth: 400,
+                                    '& .MuiOutlinedInput-root': {
+                                        backgroundColor: '#edeae8',
+                                        '& fieldset': {
+                                            borderColor: '#db7f3d',
+                                            borderWidth: 2,
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#c46d2f',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#c46d2f',
+                                        },
+                                    },
+                                }}
                                 label="Spell Name"
                                 variant="outlined"
                                 value={newSpell.name}
@@ -267,7 +307,22 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                             <TextField
                                 fullWidth
                                 required
-                                sx={{ maxWidth: 200 }}
+                                sx={{ 
+                                    maxWidth: 200,
+                                    '& .MuiOutlinedInput-root': {
+                                        backgroundColor: '#edeae8',
+                                        '& fieldset': {
+                                            borderColor: '#db7f3d',
+                                            borderWidth: 2,
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#c46d2f',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#c46d2f',
+                                        },
+                                    },
+                                }}
                                 label="Casting Time"
                                 variant="outlined"
                                 value={newSpell.casting_time}
@@ -282,10 +337,54 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                 id="spell-level"
                                 required
 
-                                sx={{ minWidth: 200, maxHeight: 50 }}
+                                sx={{ 
+                                    minWidth: 200, 
+                                    maxHeight: 50,
+                                    color: '#1a1a1a',
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '& .MuiSvgIcon-root': {
+                                        color: '#db7f3d',
+                                    },
+                                    '&:before': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:after': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:hover:not(.Mui-disabled):before': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                }}
                                 value={newSpell.level}
                                 onChange={(e) => setNewSpell((s) => ({ ...s, level: e.target.value }))}
-
+                                MenuProps={{
+                                    PaperProps: {
+                                        sx: {
+                                            backgroundColor: '#edeae8',
+                                            border: '2px solid #db7f3d',
+                                            '& .MuiMenuItem-root': {
+                                                color: '#1a1a1a',
+                                                '&:hover': {
+                                                    backgroundColor: '#edeae8',
+                                                },
+                                                '&.Mui-selected': {
+                                                    backgroundColor: '#edeae8',
+                                                    '&:hover': {
+                                                        backgroundColor: '#edeae8',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                }}
                             >
                                 <MenuItem value={-1}>— Spell Level —</MenuItem>
                                 <MenuItem value={0}>Cantrip (0)</MenuItem>
@@ -304,9 +403,54 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                                 id="spell-level"
                                 required
 
-                                sx={{ minWidth: 200, maxHeight: 50 }}
+                                sx={{ 
+                                    minWidth: 200, 
+                                    maxHeight: 50,
+                                    color: '#1a1a1a',
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '& .MuiSvgIcon-root': {
+                                        color: '#db7f3d',
+                                    },
+                                    '&:before': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:after': {
+                                        borderColor: '#db7f3d',
+                                    },
+                                    '&:hover:not(.Mui-disabled):before': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                }}
                                 value={newSpell.school || ""}
                                 onChange={(e) => setNewSpell((s) => ({ ...s, school: e.target.value }))}
+                                MenuProps={{
+                                    PaperProps: {
+                                        sx: {
+                                            backgroundColor: '#edeae8',
+                                            border: '2px solid #db7f3d',
+                                            '& .MuiMenuItem-root': {
+                                                color: '#1a1a1a',
+                                                '&:hover': {
+                                                    backgroundColor: '#edeae8',
+                                                },
+                                                '&.Mui-selected': {
+                                                    backgroundColor: '#edeae8',
+                                                    '&:hover': {
+                                                        backgroundColor: '#edeae8',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                }}
                             >
                                 <MenuItem value={"None"}>— Magic School —</MenuItem>
                                 <MenuItem value={"Abjuration"}>Abjuration</MenuItem>
@@ -333,7 +477,23 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                             <TextField
                                 fullWidth
                                 required
-                                sx={{ ml: 2, maxWidth: 350 }}
+                                sx={{ 
+                                    ml: 2, 
+                                    maxWidth: 350,
+                                    '& .MuiOutlinedInput-root': {
+                                        backgroundColor: '#edeae8',
+                                        '& fieldset': {
+                                            borderColor: '#db7f3d',
+                                            borderWidth: 2,
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#c46d2f',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#c46d2f',
+                                        },
+                                    },
+                                }}
                                 label="Components"
                                 variant="outlined"
                                 value={newSpell.components}
@@ -343,7 +503,22 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                             <TextField
                                 fullWidth
                                 required
-                                sx={{ maxWidth: 150 }}
+                                sx={{ 
+                                    maxWidth: 150,
+                                    '& .MuiOutlinedInput-root': {
+                                        backgroundColor: '#edeae8',
+                                        '& fieldset': {
+                                            borderColor: '#db7f3d',
+                                            borderWidth: 2,
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#c46d2f',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#c46d2f',
+                                        },
+                                    },
+                                }}
                                 label="Range"
                                 variant="outlined"
                                 value={newSpell.range}
@@ -353,7 +528,22 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                             <TextField
                                 fullWidth
                                 required
-                                sx={{ maxWidth: 250 }}
+                                sx={{ 
+                                    maxWidth: 250,
+                                    '& .MuiOutlinedInput-root': {
+                                        backgroundColor: '#edeae8',
+                                        '& fieldset': {
+                                            borderColor: '#db7f3d',
+                                            borderWidth: 2,
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#c46d2f',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#c46d2f',
+                                        },
+                                    },
+                                }}
                                 label="Duration"
                                 variant="outlined"
                                 value={newSpell.duration}
@@ -368,7 +558,23 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                         <TextField
                             fullWidth
                             required
-                            sx={{ ml: 2, maxWidth: 1000 }}
+                            sx={{ 
+                                ml: 2, 
+                                maxWidth: 1000,
+                                '& .MuiOutlinedInput-root': {
+                                    backgroundColor: '#edeae8',
+                                    '& fieldset': {
+                                        borderColor: '#db7f3d',
+                                        borderWidth: 2,
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#c46d2f',
+                                    },
+                                },
+                            }}
                             label="Spell Description"
                             variant="outlined"
                             value={newSpell.description}

@@ -27,10 +27,10 @@ function PlayerStats({draft, setDraft}) {
     return (
         <>
             {/* Top row: AC, Initiative, Speed */}
-            <div className="flex w-full items-start space-x-12 justify-center mb-16 mt-1">
+            <div className="flex w-full items-start space-x-12 justify-center mb-16 mt-2">
                 <div className='flex flex-col items-center'>
-                    <div className="relative bg-white inline-block">
-                    <label htmlFor='ac-input' className="absolute left-11 text-2xl font-semibold">AC</label>
+                    <div className="relative inline-block" style={{backgroundColor: '#edeae8'}}>
+                    <label htmlFor='ac-input' className="absolute left-11 text-2xl font-semibold" style={{color: '#1a1a1a'}}>AC</label>
                     <input
                         type="text"
                         placeholder={"AC"}
@@ -38,7 +38,10 @@ function PlayerStats({draft, setDraft}) {
                         value={parseInt(ac)}
                         onChange={(e) => {setAC(parseInt(e.target.value))}}
                         onBlur={(e) => {draft.stats.armor_class = parseInt(e.target.value); setDraft({...draft})}}
-                        className="w-30 h-30 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
+                        className="w-30 h-30 text-center border-2 text-5xl font-semibold rounded-lg focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                        style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
+                        onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
+                        onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
                     />
                     <input
                         type="text"
@@ -47,13 +50,14 @@ function PlayerStats({draft, setDraft}) {
                         value={parseInt(tempAC)}
                         onChange={(e) => {setTempAC(parseInt(e.target.value))}}
                         onBlur={(e) => {draft.stats.armor_class_temp = parseInt(e.target.value); setDraft({...draft})}}
-                        className="w-18 h-18 absolute -bottom-6 -right-8 text-center bg-zinc-100 border-2 border-gray-400 text-2xl font-semibold rounded focus-visible:outline-none"
+                        className="w-18 h-18 absolute -bottom-6 -right-8 text-center border-2 text-2xl font-semibold rounded-lg focus-visible:outline-none shadow-sm"
+                        style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
                     />
                     </div>
                 </div>
 
-                <div className='flex bg-white flex-col items-center'>
-                    <label htmlFor='ini-input' className="absolute text-2xl font-semibold">Initiative</label>
+                <div className='flex flex-col items-center' style={{backgroundColor: '#edeae8'}}>
+                    <label htmlFor='ini-input' className="absolute text-2xl font-semibold" style={{color: '#1a1a1a'}}>Initiative</label>
                     <input
                         type="text"
                         placeholder={"Ini."}
@@ -61,12 +65,15 @@ function PlayerStats({draft, setDraft}) {
                         value={parseInt(iniBonus)}
                         onChange={(e) => {setIniBonus(parseInt(e.target.value))}}
                         onBlur={(e) => {draft.stats.initiative_bonus = parseInt(e.target.value); setDraft({...draft})}}
-                        className="w-30 h-30 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
+                        className="w-30 h-30 text-center border-2 text-5xl font-semibold rounded-lg focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                        style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
+                        onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
+                        onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
                     />
                 </div>
 
-                <div className='flex bg-white flex-col items-center'>
-                    <label htmlFor='spd-input' className="absolute text-2xl font-semibold">Speed</label>
+                <div className='flex flex-col items-center' style={{backgroundColor: '#edeae8'}}>
+                    <label htmlFor='spd-input' className="absolute text-2xl font-semibold" style={{color: '#1a1a1a'}}>Speed</label>
                     <input
                         type="text"
                         placeholder={"Spd."}
@@ -74,7 +81,10 @@ function PlayerStats({draft, setDraft}) {
                         value={parseInt(speed)}
                         onChange={(e) => {setSpeed(parseInt(e.target.value))}}
                         onBlur={(e) => {draft.stats.speed = parseInt(e.target.value); setDraft({...draft})}}
-                        className="w-30 h-30 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
+                        className="w-30 h-30 text-center border-2 text-5xl font-semibold rounded-lg focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                        style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
+                        onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
+                        onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
                     />
                 </div>
 
@@ -85,7 +95,7 @@ function PlayerStats({draft, setDraft}) {
                 
                 {/*HP*/}
                 <div className="relative  inline-block">
-                    <label htmlFor="hp-current" className="absolute left-18 top-1  z-20 text-2xl font-semibold">Current HP</label>
+                    <label htmlFor="hp-current" className="absolute left-18 top-1  z-20 text-2xl font-semibold" style={{color: '#1a1a1a'}}>Current HP</label>
 
                     <input
                         id="hp-current"
@@ -94,10 +104,13 @@ function PlayerStats({draft, setDraft}) {
                         onBlur={() => {draft.stats.current_hp = parseInt(currentHP); setDraft({...draft})}}
                         type="text"
                         placeholder="HP"
-                        className="w-52 h-36 text-center border-2 bg-white border-gray-400 text-5xl font-semibold rounded-2xl focus-visible:outline-none"
+                        className="w-52 h-36 text-center border-2 text-5xl font-semibold rounded-2xl focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                        style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
+                        onMouseEnter={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
+                        onMouseLeave={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
                     />
 
-<label htmlFor="hp-max" className="absolute -left-6 -top-5 z-20 text-xl font-semibold">Max HP</label>
+<label htmlFor="hp-max" className="absolute -left-6 -top-5 z-20 text-xl font-semibold" style={{color: '#1a1a1a'}}>Max HP</label>
                     <input
                         id="hp-max"
                         type="text"
@@ -106,7 +119,8 @@ function PlayerStats({draft, setDraft}) {
                         defaultValue={GetMaxHP()}
                         onChange={(e) => setMaxHP(parseInt(e.target.value))}
                         onBlur={() => {draft.stats.max_hp = parseInt(maxHP); setDraft({...draft})}}
-                        className="absolute -top-5 -left-7 w-20 h-22 text-center border-2 border-gray-400 bg-zinc-100 text-2xl font-semibold rounded z-10 focus-visible:outline-none"
+                        className="absolute -top-5 -left-7 w-20 h-22 text-center border-2 text-2xl font-semibold rounded-lg z-10 focus-visible:outline-none shadow-sm"
+                        style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
                     />
                 </div>
                 {/*Temporary HP*/}
@@ -118,9 +132,10 @@ function PlayerStats({draft, setDraft}) {
                         onChange={(e) => setTempHP(parseInt(e.target.value))}
                         onBlur={() => {draft.stats.temporary_hp = parseInt(tempHP); setDraft({...draft})}}
                         placeholder="Temp.HP"
-                        className="w-52 h-36 text-pretty text-center bg-white border-2 border-gray-400 text-5xl font-semibold rounded-2xl focus-visible:outline-none"
+                        className="w-52 h-36 text-pretty text-center border-2 text-5xl font-semibold rounded-2xl focus-visible:outline-none"
+                        style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}
                     />
-                    <label htmlFor="temp-hp-current" className="w-28 absolute right-13.5 border-gray-400  border-2 bg-zinc-100 rounded -top-8 z-20 text-pretty text-center text-xl font-semibold">Temporary Hitpoints</label>
+                    <label htmlFor="temp-hp-current" className="w-28 absolute right-13.5 border-2 rounded-lg -top-8 z-20 text-pretty text-center text-xl font-semibold shadow-sm" style={{borderColor: '#db7f3d', backgroundColor: '#edeae8', color: '#1a1a1a'}}>Temporary Hitpoints</label>
                 </div>
             </div>
         </>

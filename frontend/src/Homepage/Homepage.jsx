@@ -39,11 +39,12 @@ function Homepage() {
                 <Typography
                   variant="h2"
                   component="h1"
-                  className="font-extrabold text-3xl md:text-5xl text-gray-900 mb-4"
+                  className="font-extrabold text-3xl md:text-5xl mb-4"
+                  style={{color: '#1a1a1a'}}
                 >
                   Build and manage your DnD characters
                 </Typography>
-                <Typography variant="body1" className="text-gray-700 !mb-6 font-bold !text-xl">
+                <Typography variant="body1" className="!mb-6 font-bold !text-xl" style={{color: '#1a1a1a'}}>
                   Create, track, and share character sheets with intuitive controls and focused tools.
                   Lightweight, fast, and tailored for tabletop play.
                 </Typography>
@@ -55,8 +56,14 @@ function Homepage() {
                         component={RouterLink}
                         to="/login"
                         variant="contained"
-                        color="primary"
                         className="!px-6 !py-2 !text-lg"
+                        sx={{
+                            backgroundColor: '#db7f3d',
+                            color: '#edeae8',
+                            '&:hover': {
+                                backgroundColor: '#c46d2f',
+                            },
+                        }}
                       >
                         Login
                       </Button>
@@ -64,8 +71,15 @@ function Homepage() {
                         component={RouterLink}
                         to="/register"
                         variant="outlined"
-                        color="primary"
                         className="!px-6 !ml-4 !py-2 !text-lg"
+                        sx={{
+                            borderColor: '#db7f3d',
+                            color: '#db7f3d',
+                            '&:hover': {
+                                borderColor: '#c46d2f',
+                                backgroundColor: '#edeae8',
+                            },
+                        }}
                       >
                         Register
                       </Button>
@@ -77,8 +91,15 @@ function Homepage() {
                       component={RouterLink}
                       to={`/sheets/${authUsername}`}
                       variant="outlined"
-                      color="primary"
                       className="!px-6 !py-2 !text-lg"
+                      sx={{
+                          borderColor: '#db7f3d',
+                          color: '#db7f3d',
+                          '&:hover': {
+                              borderColor: '#c46d2f',
+                              backgroundColor: '#edeae8',
+                          },
+                      }}
                     >
                       View Sheets
                     </Button>

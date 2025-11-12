@@ -56,7 +56,7 @@ export default function MainProfs({ draft, setDraft }) {
         Proficiencies
       </Typography>
 
-      <Paper variant="outlined" className='w-full' sx={{ p: 2 }}>
+      <Paper variant="outlined" className='w-full' sx={{ p: 3, border: '2px solid #db7f3d', borderRadius: 2, backgroundColor: '#edeae8', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
         <Box
           component="section"
           display="grid"

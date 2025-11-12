@@ -3,9 +3,9 @@ function SheetHeader({draft,setDraft, nameVar, setNameVar}) {
     
     const textClasses = 'focus-visible:outline-none';
 
-    return (<div className="flex bg-white rounded shadow font-semibold p-4 justify-between">
+    return (<div className="flex rounded-xl shadow-md font-semibold p-5 justify-between border-2 mb-4" style={{backgroundColor: '#edeae8', borderColor: '#db7f3d'}}>
         <div className="flex-1 mr-4">
-            <label htmlFor="characterName" className="block text-xl text-gray-700">
+            <label htmlFor="characterName" className="block text-xl" style={{color: '#1a1a1a'}}>
                 Character Name:
             </label>
             {/* Character Name */}
@@ -15,7 +15,10 @@ function SheetHeader({draft,setDraft, nameVar, setNameVar}) {
                 onChange={(e) => setNameVar(e.target.value)}
                 value={nameVar}
                 placeholder="Grommisk"
-                className={`mt-1 px-2 py-2 block w-full border-b-2 !text-gray-700 !text-4xl font-semibold leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
+                className={`mt-1 px-3 py-2 block w-full border-b-2 bg-transparent !text-4xl font-semibold leading-tight whitespace-nowrap overflow-y-hidden transition-colors duration-200 ${textClasses}`}
+                style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
+                onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
+                onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
             />
         </div>
 
@@ -27,7 +30,10 @@ function SheetHeader({draft,setDraft, nameVar, setNameVar}) {
                 defaultValue={draft.class.class_name}
                 onBlur={(e) => { draft.class.class_name = e.target.value; setDraft({ ...draft }) }}
                 placeholder="Race"
-                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
+                className={`mt-1 px-3 py-2 block w-full border-b-2 bg-transparent !text-md leading-tight whitespace-nowrap overflow-y-hidden transition-colors duration-200 ${textClasses}`}
+                style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
+                onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
+                onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
             />
 
             {/* Background */}
@@ -36,7 +42,10 @@ function SheetHeader({draft,setDraft, nameVar, setNameVar}) {
                 placeholder="Background"
                 onBlur={(e) => { draft.background.background = e.target.value; setDraft({ ...draft }) }}
                 defaultValue={draft.background.background}
-                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
+                className={`mt-1 px-3 py-2 block w-full border-b-2 bg-transparent !text-md leading-tight whitespace-nowrap overflow-y-hidden transition-colors duration-200 ${textClasses}`}
+                style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
+                onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
+                onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
             />
 
             {/* Race */}
@@ -46,7 +55,10 @@ function SheetHeader({draft,setDraft, nameVar, setNameVar}) {
                 defaultValue={draft.race.subrace !== '' ? draft.race.subrace + " " + draft.race.race : draft.race.race}
                 onBlur={(e) => { draft.race.race = e.target.value; setDraft({ ...draft }) }}
                 placeholder="Race"
-                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
+                className={`mt-1 px-3 py-2 block w-full border-b-2 bg-transparent !text-md leading-tight whitespace-nowrap overflow-y-hidden transition-colors duration-200 ${textClasses}`}
+                style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
+                onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
+                onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
             />
 
             {/* Alignment */}
@@ -55,7 +67,10 @@ function SheetHeader({draft,setDraft, nameVar, setNameVar}) {
                 defaultValue={draft.race.alignment}
                 onBlur={(e) => { draft.race.alignment = e.target.value; setDraft({ ...draft }) }}
                 placeholder="Alignment"
-                className={`mt-1 px-2 py-2 block w-full border-b-2 border-zinc-500 !text-md leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
+                className={`mt-1 px-3 py-2 block w-full border-b-2 bg-transparent !text-md leading-tight whitespace-nowrap overflow-y-hidden transition-colors duration-200 ${textClasses}`}
+                style={{borderColor: '#db7f3d', color: '#1a1a1a'}}
+                onFocus={(e) => e.currentTarget.style.borderColor = '#c46d2f'}
+                onBlur={(e) => e.currentTarget.style.borderColor = '#db7f3d'}
             />
         </div>
     </div>)

@@ -173,10 +173,15 @@ const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
             >
                 <Button
                     variant="contained"
-                    color="error"
                     onClick={handleDelete}
                     size="small"
-
+                    sx={{
+                        backgroundColor: '#db7f3d',
+                        color: '#edeae8',
+                        '&:hover': {
+                            backgroundColor: '#c46d2f',
+                        },
+                    }}
                 >
                     <DeleteIcon />
                 </Button>
@@ -195,11 +200,16 @@ const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
                     TransitionProps={{ unmountOnExit: true }}
                     sx={{
                         mb: 1,
-                        boxShadow: 'none',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
                         '&:before': { display: 'none' },
                         borderRadius: 2,
-                        border: '1px solid rgba(0,0,0,0.04)',
-                        backgroundColor: '#fff',
+                        border: '2px solid #db7f3d',
+                        backgroundColor: '#edeae8',
+                        '&:hover': {
+                            boxShadow: '0 4px 8px rgba(0,0,0,0.12)',
+                            borderColor: '#c46d2f',
+                        },
+                        transition: 'all 0.2s ease',
                     }}
                 >
                     <AccordionSummary
