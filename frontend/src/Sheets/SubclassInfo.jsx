@@ -18,13 +18,29 @@ function SubclassInfo({ draft, setDraft }) {
     }
 
     return (
-        <div className=" bg-white flex flex-col p-4 w-full rounded shadow">
+        <div className=" bg-white flex flex-col p-4 w-full mb-4 rounded shadow">
             {/* placeholder for subclass info */}
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
                 <div className="text-3xl font-semibold underline">{draft.class.subclass.name}</div>
-                <div className="text-3xl font-semibold border-3 pl-2.5   rounded-full w-10 h-10">{draft.class.subclass.level}</div>
-
-                
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 48, width: 48 }}>
+                    <svg width={48} height={48} viewBox="0 0 48 48" style={{ position: 'absolute' }}>
+                        <circle cx={24} cy={24} r={22} fill="#fff" stroke="#000000" strokeWidth={3} />
+                    </svg>
+                    <span style={{
+                        position: 'relative',
+                        zIndex: 1,
+                        fontSize: '1.6rem',
+                        fontWeight: 600,
+                        color: '#000000',
+                        width: 48,
+                        height: 48,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+                        {draft.class.subclass.level}
+                    </span>
+                </div>
             </div>
 
             {!subclassSelected && 

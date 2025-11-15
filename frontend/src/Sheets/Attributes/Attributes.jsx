@@ -103,10 +103,10 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
             />
 
             {/* Modifier */}
-            <div className="mx-1 w-2/12 text-center border-2 border-gray-400 rounded focus-visible:outline-none">{GetValue()}</div>
+            <div className="mx-1 w-2/12 text-center border-2 border-gray-400 rounded focus-visible:outline-none pointer-events-none">{GetValue()}</div>
 
             {/* Label/Name */}
-            <div className="mx-1 w-7/10 text-center border-2 border-gray-400 rounded focus-visible:outline-none">
+            <div className="mx-1 w-7/10 text-center border-2 border-gray-400 rounded focus-visible:outline-none pointer-events-none">
                 {skill.name}
             </div>
         </div>

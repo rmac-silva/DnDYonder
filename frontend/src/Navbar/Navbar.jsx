@@ -3,6 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { useAuth } from '../Auth/AuthContext';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
@@ -33,25 +34,36 @@ function Navbar() {
         navigate('/');
     }
 
+    const atSheetsPage = pathname.split("/")[1] === "sheets";
+    const atHomePage = pathname === "/";
+    const atLoginPage = pathname === "/login";
+
     return (
-        <AppBar position="static" color="inherit" className='!bg-slate-300'>
+        <>
+        <AppBar position="fixed"  color="primary" elevation={1}>
+            <Container maxWidth="full" disableGutters>
+
             <Toolbar className='!flex !items-center  !w-full'>
 
                 {/* Button to show drawer, if the location has one */}
-                {pathname.split("/")[1] === "sheets" &&
+                {atSheetsPage &&
                     <SheetDrawer />
                 }
 
                 {/* Logo */}
                 <Typography
-                    variant="h6"
+                    
                     component={RouterLink}
                     to="/"
-                    className='!text-black !font-medium !text-2xl'
+                    className=' !font-medium !text-4xl'
+                    
+                    sx={{ 
+                            color: 'textMain.main',
+                            '&:hover': { color: 'textHover.main'}
+                     }}
+                    
                 >
-                    <div className="text-3xl mr-2">
-                        DnD Yonder
-                    </div>
+                    DnD Yonder
                 </Typography>
 
                 {/* Left buttons */}
@@ -62,7 +74,8 @@ function Navbar() {
                             fontWeight: 600,
                             fontSize: '1.125rem',
                             textTransform: 'none',
-                            color: pathname === '/' ? 'primary.main' : 'text.primary',
+                            color: atHomePage ?  'textHighlights.main' : 'textMain.main',
+                            '&:hover': { color: 'textHover.main' },
                         }}
                     >
                         Home
@@ -75,7 +88,8 @@ function Navbar() {
                                 fontWeight: 600,
                                 fontSize: '1.125rem',
                                 textTransform: 'none',
-                                color: pathname === `/Sheets/${authUsername}` ? 'primary.main' : 'text.primary',
+                                color: atSheetsPage ? 'textHighlights.main' : 'textMain.main',
+                                '&:hover': { color: 'textHover.main' },
                             }}
                         >
                             Sheets
@@ -89,12 +103,13 @@ function Navbar() {
                 <Box className='!flex !ml-auto'>
                     <Button
                         component={RouterLink}
-                        to="/Login"
+                        to="/login"
                         sx={{
                             fontWeight: 600,
                             fontSize: '1.125rem',
                             textTransform: 'none',
-                            color: pathname === '/Login' ? 'primary.main' : 'text.primary',
+                            color: atLoginPage ? 'textHighlights.main' : 'textMain.main',
+                            '&:hover': { color: 'textHover.main' },
                         }}
                         >
                         Login
@@ -105,13 +120,14 @@ function Navbar() {
                 {isLoggedIn &&
                 <Box className='!flex !ml-auto'>
                     <Button
-                        component={RouterLink}
-                        onClick={() => {handleLogout()}}
+                        onClick={handleLogout}
+                        type="button"
                         sx={{
                             fontWeight: 600,
                             fontSize: '1.125rem',
                             textTransform: 'none',
-                            color: pathname === '/Login' ? 'primary.main' : 'text.primary',
+                            color: atLoginPage ? 'textHighlights.main' : 'textMain.main',
+                            '&:hover': { color: 'textHover.main' },
                         }}
                         >
                         Logout
@@ -119,7 +135,11 @@ function Navbar() {
                 </Box>
                     }
             </Toolbar>
+            </Container>
+
         </AppBar>
+        <Toolbar />
+        </>
     );
 }
 

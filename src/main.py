@@ -11,10 +11,9 @@ from sheet.sheet import CharacterSheet
 from utils.db_manager import DatabaseManager
 from utils.WikidotScraper import WikidotScraper
 
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-origins = ["http://localhost:5173"]
+origins = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
 
 #JWT Secrets - Fetched from .env file
 load_dotenv()  # Load environment variables from a .env file
@@ -25,7 +24,7 @@ DB_PATH = os.getenv("DB_PATH", "NO_VALID_DATABASE_PATH")
 ACCESS_TOKEN_EXPIRE_MINUTES = 3600
 
 #Database access
-db = DatabaseManager(DB_PATH)
+db = DatabaseManager(DB_PATH, SECRET_KEY)
 
 #Scraper
 wks = WikidotScraper()
@@ -142,6 +141,22 @@ def delete_sheet(username: str, sheet_id: int, data : dict):
     else:
         return res[1]
 
+@app.get("/share/{username}/{sheet_id}")
+def generate_shareable_link(username: str, sheet_id: int):
+    res = db.generate_shareable_link(username, sheet_id)
+    if res[0] is False:
+        raise HTTPException(status_code=500, detail=res[1])
+    else:
+        return res[1]
+    
+@app.post("/import/{share_code}")
+def import_shared_sheet(share_code: str, data : dict):
+    
+    res = db.import_shared_sheet(share_code, data.get("username",""))
+    if res[0] is False:
+        raise HTTPException(status_code=500, detail=res[1])
+    else:
+        return res[1]
 #endregion - Sheets
 
 #region - Sheet Information
@@ -169,9 +184,9 @@ def save_new_class(data: dict):
     else:
         return res[1]
     
-@app.get("/info/subclasses")
-def get_available_subclasses( ):
-    res = info_manager.get_available_subclasses()
+@app.get("/info/subclasses/{class_name}")
+def get_available_subclasses(class_name : str ):
+    res = info_manager.get_available_subclasses(class_name)
     
     if res[0]:
         return {"subclasses": res[1]}
@@ -315,4 +330,9 @@ def get_wikidot_spell_info(spell_name: str):
     print("Fetching Wikidot info for item:", spell_name)
     res = wks.fetch_spell_info(spell_name.lower()).format_results_dndroll_spells()
     return res
+
+
 #endregion
+
+
+

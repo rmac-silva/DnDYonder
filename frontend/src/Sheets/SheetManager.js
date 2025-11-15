@@ -73,7 +73,7 @@ export const saveNewSheet = async () => {
                 'username': hashedemailGlobal,
                 'token': localStorage.getItem('authToken')
             } // plain JS object
-            const res = await fetch('http://127.0.0.1:8000/sheets/new', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/sheets/new`, {
                 method: 'POST', // or PUT depending on your API
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
@@ -105,7 +105,7 @@ export const saveNewSheet = async () => {
         
         try {
 
-            const res = await fetch(`http://127.0.0.1:8000/sheets/${hashedemailGlobal}/${sheetidGlobal}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/sheets/${hashedemailGlobal}/${sheetidGlobal}`, {
                 method: 'POST', // or PUT depending on your API
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),

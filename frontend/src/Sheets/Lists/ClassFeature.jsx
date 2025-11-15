@@ -87,7 +87,7 @@ const GetClassFeats = ({ onChange, label, objectFeatures, object }) => {
         return;
       }
 
-      var ignored_keys = ['Class Features']
+      var ignored_keys = ['Class Features', 'Spellcasting']
   
       var new_class_features = [];
       for (const [key, value] of Object.entries(data)) {
@@ -142,7 +142,7 @@ const GetClassFeats = ({ onChange, label, objectFeatures, object }) => {
       }
   
       try {
-        const res = await fetch(`http://127.0.0.1:8000/wikidot/class/${object.class_name}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/wikidot/class/${object.class_name}`, {
           method: 'GET',
         });
   
@@ -171,7 +171,7 @@ const GetClassFeats = ({ onChange, label, objectFeatures, object }) => {
       try {
         
 
-        const res = await fetch(`http://127.0.0.1:8000/wikidot/subclass/${object.class_name}/${subclassName}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/wikidot/subclass/${object.class_name}/${subclassName}`, {
           method: 'GET',
           
         });

@@ -36,6 +36,7 @@ def create_sheets_table(c):
         sheet_id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT NOT NULL,
         content TEXT NOT NULL,
+        shared BOOLEAN DEFAULT 0,
         FOREIGN KEY(username) REFERENCES users(username)
         );''')
     

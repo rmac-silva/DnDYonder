@@ -51,3 +51,9 @@ class CharacterSheet():
         self.attributes.load_from_dict(data.get("attributes", {}))
         self.stats.load_from_dict(data.get("stats", {}))
         self.misc.load_from_dict(data.get("misc", {}))
+        
+        return self
+        
+
+
+

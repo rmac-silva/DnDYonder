@@ -10,7 +10,7 @@ function PersonalityTraits({ draft, setDraft }) {
     const [flaws, setFlaws] = useState(draft.char_info.flaws);
     
     return (
-        <div className="flex flex-col space-y-2 items-center w-full bg-white rounded shadow p-4">
+        <div className="flex flex-col space-y-2 items-center w-full self-stretch h-full bg-white rounded shadow p-4">
             <div className="text-3xl font-semibold mt-2">
                 Personality Traits
             </div>

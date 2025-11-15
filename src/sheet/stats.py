@@ -28,15 +28,15 @@ class CharacterStats():
         
     def get_proficiency_bonus(self):
         """Calculate proficiency bonus based on level."""
-        if self.level >= 1 and self.level <= 4:
+        if int(self.level) >= 1 and int(self.level) <= 4:
             return 2
-        elif self.level >= 5 and self.level <= 8:
+        elif int(self.level) >= 5 and int(self.level) <= 8:
             return 3
-        elif self.level >= 9 and self.level <= 12:
+        elif int(self.level) >= 9 and int(self.level) <= 12:
             return 4
-        elif self.level >= 13 and self.level <= 16:
+        elif int(self.level) >= 13 and int(self.level) <= 16:
             return 5
-        elif self.level >= 17 and self.level <= 20:
+        elif int(self.level) >= 17 and int(self.level) <= 20:
             return 6
         else:
             return 0

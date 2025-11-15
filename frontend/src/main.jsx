@@ -2,6 +2,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import theme from './theme.jsx'
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -25,6 +27,8 @@ initItemCache().catch(err => console.error('ItemCache init failed', err));
 createRoot(document.getElementById('root')).render(
   <Router>
     <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/sheets/:username" element={<SheetListings />} />
@@ -33,6 +37,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/register" element={<Register />} />
         <Route path="/NewSheet" element={<Sheet />} />
       </Routes>
+      </ThemeProvider>
     </AuthProvider>
   </Router>
 )

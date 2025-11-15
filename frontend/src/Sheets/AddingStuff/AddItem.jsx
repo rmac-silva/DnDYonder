@@ -85,7 +85,7 @@ const AddItem = ({ onAddItem, isOpen, itemTypeDefault }) => {
             'token': localStorage.getItem('authToken'),
         }
         console.log(item);
-        const res = await fetch('http://127.0.0.1:8000/info/save_item', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/info/save_item`, {
             method: 'POST', // or PUT depending on your API
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
@@ -174,7 +174,7 @@ const AddItem = ({ onAddItem, isOpen, itemTypeDefault }) => {
         try {
             // Sanitize the string for URL (replace spaces with underscores)
             item_name = item_name.trim().replace(/\s+/g, '_');
-            const res = await fetch(`http://127.0.0.1:8000/wikidot/item/${item_name}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/wikidot/item/${item_name}`, {
                 method: 'GET',
             });
 

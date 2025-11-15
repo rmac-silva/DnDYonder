@@ -2,9 +2,12 @@ import React from 'react';
 import Checkbox from "@mui/material/Checkbox";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import AdjustIcon from "@mui/icons-material/Adjust";
-import { grey } from "@mui/material/colors";
+
+import { Box, useTheme } from '@mui/material';
+
+
 function PlayerStats({draft,setDraft}) {
-    const grey400 = grey[400]; // assuming you want to use MUI's grey[400]
+    const theme = useTheme();
     
     function handleDeathSaveChange(type, checked) {
         // console.log("Death save change:", type, checked);
@@ -29,7 +32,12 @@ function PlayerStats({draft,setDraft}) {
         <>
             <div className="flex flex-col mr-8 items-center">
                 <label className="text-3xl font-semibold ">Death Saves</label>
-                <div className='w-45 bg-white h-26 mt-2 text-center border-2 border-gray-400 md:text-6xl place-content-center rounded-xl flex flex-col '>
+                <Box className=" p-4 rounded-2xl shadow border-2 py-6 mt-2 hover:shadow-md"
+                    sx={{
+                        borderColor: theme.palette.baseColor.main,
+                        
+                    }}>
+
 
                     <div className='flex  justify-items-end items-center '>
                         <label className="text-lg font-medium ml-2 mr-2">Successes</label>
@@ -43,9 +51,9 @@ function PlayerStats({draft,setDraft}) {
                                 padding: 0,
 
 
-                                color: grey400,
+                                color:  theme.palette.baseColor.main,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#1e590a",
                                 },
                             }} />
                         <Checkbox
@@ -57,9 +65,9 @@ function PlayerStats({draft,setDraft}) {
                                 padding: 0,
 
 
-                                color: grey400,
+                                color:  theme.palette.baseColor.main,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#1e590a",
                                 },
                             }} />
                         <Checkbox
@@ -72,9 +80,9 @@ function PlayerStats({draft,setDraft}) {
                                 padding: 0,
 
 
-                                color: grey400,
+                                color:  theme.palette.baseColor.main,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#1e590a",
                                 },
                             }} />
                     </div>
@@ -90,9 +98,9 @@ function PlayerStats({draft,setDraft}) {
                                 padding: 0,
 
 
-                                color: grey400,
+                                color:  theme.palette.baseColor.main,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#bf1f1f",
                                 },
                             }} />
                         <Checkbox
@@ -104,9 +112,9 @@ function PlayerStats({draft,setDraft}) {
                                 padding: 0,
 
 
-                                color: grey400,
+                                color:  theme.palette.baseColor.main,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#bf1f1f",
                                 },
                             }} />
                         <Checkbox
@@ -118,14 +126,15 @@ function PlayerStats({draft,setDraft}) {
                                 padding: 0,
 
 
-                                color: grey400,
+                                color:  theme.palette.baseColor.main,
                                 "&.Mui-checked": {
-                                    color: "#363636ff",
+                                    color: "#bf1f1f",
                                 },
                             }} />
                     </div>
+                </Box>
 
-                </div>
+                
             </div>
         </>
     )

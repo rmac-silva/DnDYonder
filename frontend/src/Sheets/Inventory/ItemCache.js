@@ -4,7 +4,7 @@ let _readyPromise = null;
 async function init() {
   if (_readyPromise) return _readyPromise;
   _readyPromise = (async () => {
-    const res = await fetch('http://127.0.0.1:8000/info/equipment');
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/info/equipment`);
     if (!res.ok) {
       const err = await res.json().catch(() => ({ detail: 'Unknown' }));
       throw new Error(`HTTP ${res.status} - ${err.detail}`);

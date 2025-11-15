@@ -4,10 +4,14 @@ import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import AdjustIcon from "@mui/icons-material/Adjust";
+import TextField from "@mui/material/TextField";
+import { useTheme } from '@mui/material/styles';
+import Link from '@mui/material/Link';
 
 function Spellcasting({ draft, setDraft }) {
+    const theme = useTheme();
     const grey400 = grey[400];
-    const [maxSpellLevel, setMaxSpellLevel] = useState(draft.class.spellcasting.max_level_spellslots);
+    const [maxSpellLevel, setMaxSpellLevel] = useState(draft.class.spellcasting.max_level_spellslots || 1);
     const [spellcastingAbility, setSpellcastingAbility] = useState(draft.class.spellcasting.spellcasting_ability);
     const [loading, setLoading] = useState(true);
     const maxSlotsPerLevel = {
@@ -95,10 +99,6 @@ function Spellcasting({ draft, setDraft }) {
     }
 
     function DrawSpellslotMarkers(index) {
-        // wrapper ensures consistent horizontal spacing and vertical alignment
-
-
-
         const markers = [];
         for (let i = 0; i < maxSlotsPerLevel[index + 1]; i++) {
             markers.push(<Checkbox
@@ -106,122 +106,181 @@ function Spellcasting({ draft, setDraft }) {
                 icon={<CircleOutlinedIcon />}
                 checkedIcon={<AdjustIcon />}
                 disabled={index + 1 > maxSpellLevel}
-                size="small"                      // use valid MUI size value
-                checked={draft.class.spellcasting.spell_slots[index + 1][i]}      // coerce to boolean to avoid uncontrolled->controlled
+                size="small"
+                checked={draft.class.spellcasting.spell_slots[index + 1][i]}
                 onChange={() => ToggleSpellcastingSlot(index + 1, i)}
                 sx={{
                     padding: 0,
                     marginBottom: 0.2,
                     marginRight: -1,
                     color: grey400,
-
                     "&.Mui-checked": {
-                        color: "#1f1f1f",
+                        color: theme.palette.primary.main,
                     },
                 }}
             />);
         }
 
         return (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {markers}
-            </div>
+            </Box>
         );
     }
 
-    if(loading){
+    if (loading) {
         return <div>Loading Spellsheet...</div>;
     }
 
     return (
         <div className='w-full flex flex-col items-center'>
-            <div className='text-4xl font-semibold mb-4'>Spellcasting</div>
+            <div className='text-4xl font-semibold mb-2 mt-2' >Spellcasting</div>
+                <div className='flex flex-row  justify-center space-x-4 w-full'>
 
+            <Link className='!text-md !font-semibold !mb-4 !mr-4 ' href={`https://dnd5e.wikidot.com/spells:${draft.class.class_name.toLowerCase()}`}>Class Spells</Link>
+            <Link className='!text-md !font-semibold !mb-4 !ml-4' href={`https://dnd5e.wikidot.com/spells`}>All Spells</Link>
+            </div>
+
+            
             <div className='flex justify-start w-full'>
-
-
                 {/* Modifier, Spellcasting Ability, and Max Spell Slot Level */}
                 <div className="relative flex flex-col w-auto items-center justify-center top-10">
-
                     {/* Input that specifies the max level of the spell slot */}
                     <div className="flex space-x-2 mt-2 justify-center items-center w-full ml-6 mr-2">
-
                         <div className='items-center flex flex-col'>
-
-                            <label className="absolute   text-lg font-semibold">Spellcasting Lvl.</label>
-                            <input
+                            <label className="absolute text-lg font-semibold">Spellcasting Lvl.</label>
+                            <TextField
                                 type="number"
-                                max={9}
-                                min={1}
+                                variant="outlined"
+                                slotProps={{
+                                    htmlInput: {
+                                        max: 9,
+                                        min: 1,
+                                        style: { textAlign: 'center' }
+                                    }
+                                }}
                                 value={maxSpellLevel}
                                 onChange={(e) => setMaxSpellLevel(e.target.value)}
                                 onBlur={(e) => { draft.class.spellcasting.max_level_spellslots = e.target.value; setDraft({ ...draft }) }}
-                                className="border border-gray-300 rounded p-1 w-36 h-24 text-center text-4xl"
+                                sx={{
+                                    width: '9rem',
+                                    '& .MuiOutlinedInput-root': {
+                                        height: '6rem',
+                                        fontSize: '2.25rem',
+                                    }
+                                }}
                             />
                         </div>
 
                         <div className='items-center flex flex-col'>
-                            <label className="absolute   text-lg font-semibold">Spellcasting Ability</label>
-                            <input
+                            <label className="absolute text-lg font-semibold">Spellcasting Ability</label>
+                            <TextField
                                 type="text"
+                                variant="outlined"
                                 value={spellcastingAbility}
                                 placeholder='Wisdom'
                                 onChange={(e) => setSpellcastingAbility(e.target.value)}
                                 onBlur={(e) => { draft.class.spellcasting.spellcasting_ability = e.target.value; setDraft({ ...draft }) }}
-                                className="border border-gray-300 rounded p-1 w-48 h-24 text-center text-4xl"
+                                slotProps={{
+                                    htmlInput: {
+                                        style: { textAlign: 'center' }
+                                    }
+                                }}
+                                sx={{
+                                    width: '12rem',
+                                    '& .MuiOutlinedInput-root': {
+                                        height: '6rem',
+                                        fontSize: '2.25rem',
+                                    }
+                                }}
                             />
                         </div>
                     </div>
 
                     <div className="flex space-x-2 mt-2 justify-center items-start w-full ml-6 mr-2">
-
-
                         {/* Mod */}
                         <div className='items-center flex flex-col'>
-                            <label className="absolute   text-lg font-semibold">Modifier</label>
-                            <input
+                            <label className="absolute text-lg font-semibold">Modifier</label>
+                            <TextField
                                 type="text"
+                                variant="outlined"
                                 value={GetSpellcastingModifier()}
-                                readOnly
-                                className="border border-gray-300 rounded p-1 w-24 h-24 text-center text-4xl"
+                                slotProps={{
+                                    input: {
+                                        readOnly: true,
+                                    },
+                                    htmlInput: {
+                                        style: { textAlign: 'center' }
+                                    }
+                                }}
+                                sx={{
+                                    width: '6rem',
+                                    pointerEvents: 'none',
+                                    '& .MuiOutlinedInput-root': {
+                                        height: '6rem',
+                                        fontSize: '2.25rem',
+                                    }
+                                }}
                             />
                         </div>
 
                         {/* DC */}
                         <div className='items-center flex flex-col '>
-                            <label className="absolute   text-lg font-semibold">DC</label>
-                            <input
+                            <label className="absolute text-lg font-semibold">DC</label>
+                            <TextField
                                 type="text"
+                                variant="outlined"
                                 value={GetSpellcastingDC()}
-                                readOnly
-                                className="border border-gray-300 rounded p-1 w-24 h-24 text-center text-4xl"
+                                slotProps={{
+                                    input: {
+                                        readOnly: true,
+                                    },
+                                    htmlInput: {
+                                        style: { textAlign: 'center' }
+                                    }
+                                }}
+                                sx={{
+                                    width: '6rem',
+                                    pointerEvents: 'none',
+                                    '& .MuiOutlinedInput-root': {
+                                        height: '6rem',
+                                        fontSize: '2.25rem',
+                                    }
+                                }}
                             />
                         </div>
                     </div>
                 </div>
 
                 {/* The spell slots, with levels 1 to 9 will go here. With dots to represent the maximum spell slots known */}
-            <div className='flex flex-col w-full items-center space-y-2'>
-                <div className='text-2xl'> Spell Slots</div>
-                <div className='grid w-full grid-cols-3 place-items-center mt-2'>
-                    {Array.from({ length: 9 }, (_, index) => (
-                        <div className=' flex border-1 border-zinc-400 w-42 px-4 py-2 rounded items-center space-x-4 mb-2 ml-1' key={index}>
-                            {/* fixed minWidth makes all markers start at same place */}
-                            <div
-                                className={index + 1 > maxSpellLevel ? 'disabled font-light' : 'font-medium'}
-                                style={{ minWidth: 38, textAlign: 'left' }}
+                <div className='flex flex-col w-full items-center space-y-2'>
+                    <div className='text-2xl'> Spell Slots</div>
+                    <Box className='grid w-full grid-cols-3 place-items-center mt-2'>
+                        {Array.from({ length: 9 }, (_, index) => (
+                            <Box 
+                                key={index} 
+                                className='flex w-42 px-4 py-2 rounded items-center space-x-4 mb-2 ml-1'
+                                sx={{
+                                    border: `1px solid ${theme.palette.baseColor.main}`,
+                                    '&:hover': {
+                                        borderColor: theme.palette.primary.main,
+                                    },
+                                    transition: 'border-color 0.2s ease',
+                                }}
                             >
-                                Lvl. {index + 1}
-                            </div>
+                                <div
+                                    className={index + 1 > maxSpellLevel ? 'disabled font-light' : 'font-medium'}
+                                    style={{ minWidth: 38, textAlign: 'left' }}
+                                >
+                                    Lvl. {index + 1}
+                                </div>
 
-                            {DrawSpellslotMarkers(index)}
-
-                        </div>
-                    ))}
+                                {DrawSpellslotMarkers(index)}
+                            </Box>
+                        ))}
+                    </Box>
                 </div>
             </div>
-            </div>
-
         </div>
     );
 }

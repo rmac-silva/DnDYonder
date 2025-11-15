@@ -43,6 +43,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
         creature_type: '',
         size: '',
         speed: 30,
+        alignment: '',
 
         armor_proficiencies: [], //Some races have innate proficiencies
         weapon_proficiencies: [], //Some races have innate proficiencies
@@ -77,7 +78,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
         let mounted = true;
         const getClasses = async () => {
             try {
-                const res = await fetch('http://127.0.0.1:8000/info/races');
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/info/races`);
                 if (!res.ok) {
                     const err = await res.json().catch(() => ({ detail: 'Unknown' }));
                     throw new Error(`HTTP ${res.status} - ${err.detail}`);
@@ -224,7 +225,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
             'race': newRace,
             'token': localStorage.getItem('authToken'),
         }
-        const res = await fetch('http://127.0.0.1:8000/info/races', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/info/races`, {
             method: 'POST', // or PUT depending on your API
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),

@@ -1,13 +1,14 @@
 from enum import Enum
 
 class ArmorType(Enum):
-    LIGHT = "Light"
-    MEDIUM = "Medium"
-    HEAVY = "Heavy"
+    LIGHT = "Light Armor"
+    MEDIUM = "Medium Armor"
+    HEAVY = "Heavy Armor"
+    SHIELD = "Shields"
 
 class WeaponType(Enum):
-    SIMPLE = "Simple"
-    MARTIAL = "Martial"
+    SIMPLE = "Simple Weapons"
+    MARTIAL = "Martial Weapons"
 
 class Attributes(Enum):
     STR = "Strength"

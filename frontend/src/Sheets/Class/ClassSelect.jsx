@@ -122,7 +122,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     let mounted = true;
     const getClasses = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/info/classes');
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/info/classes`);
         if (!res.ok) {
           const err = await res.json().catch(() => ({ detail: 'Unknown' }));
           throw new Error(`HTTP ${res.status} - ${err.detail}`);
@@ -320,7 +320,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
       'class': newClass,
       'token': localStorage.getItem('authToken'),
     }
-    const res = await fetch('http://127.0.0.1:8000/info/classes', {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/info/classes`, {
       method: 'POST', // or PUT depending on your API
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

@@ -7,8 +7,9 @@ ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 class DatabaseManager:
     
-    def __init__(self,db_path : str):
+    def __init__(self,db_path : str, SECRET_KEY : str):
         self.db_path = db_path
+        self.SECRET_KEY = SECRET_KEY
         print(f"Database path: {db_path}")
         setup_database(self.db_path)
         pass
@@ -19,7 +20,7 @@ class DatabaseManager:
     
     def hash(self, input : str) -> str:
         
-        return hashlib.sha256(input.encode()).hexdigest()
+        return hashlib.sha256(input.encode()).hexdigest()        
     
     def generate_salt(self) -> str:
         """Generates a random salt. Currently just a placeholder.
@@ -143,7 +144,7 @@ class DatabaseManager:
         Returns:
             tuple[bool, str | dict]: A tuple containing a boolean indicating success or failure, and either an error message or the retrieved sheet data.
         """
-        print(f"Retrieving sheet {sheet_id} for user {username}")
+        
         conn = self.c().connection
         com = """
         SELECT content FROM sheets WHERE username = ? AND sheet_id = ?;
@@ -203,4 +204,58 @@ class DatabaseManager:
         except Exception as e:
             print(f"Error deleting character sheet: {e}")
             return (False, f"Error deleting character sheet: {e}")
+    
+    def generate_shareable_link(self, username: str, sheet_id: int) -> tuple[bool, str]:
+        print("Generating a share link ," f" for user {username} and sheet {sheet_id}")
+        
+        shared_link = f"{username}:{sheet_id}"
+        
+        com = """
+        UPDATE sheets SET shared = 1 WHERE username = ? AND sheet_id = ?;
+        """
+        
+        conn = self.c().connection
+        try:
+            res = conn.execute(com, (username, sheet_id))
+            if res.rowcount == 0:
+                return (False, "No sheet found to share.")
+            else:
+                conn.commit()
+                return(True, shared_link)
+            
+        except Exception as e:
+            print(f"Error sharing character sheet: {e}")
+            return (False, f"Error sharing character sheet: {e}")
+        
+    def import_shared_sheet(self, share_code: str, username : str) -> tuple[bool, str | dict]:
+        print("Importing shared sheet with code:", share_code)
+        try:
+            imported_sheet_username, sheet_id_str = share_code.split("-")
+            sheet_id = int(sheet_id_str)
+            print("Parsed share code - Username:", imported_sheet_username, "Sheet ID:", sheet_id)
+        except:
+            return (False, "Invalid share code format.")
+        
+        # Fetch the shared sheet
+        conn = self.c().connection
+        com = """
+        SELECT content FROM sheets WHERE username = ? AND sheet_id = ? AND shared = 1;
+        """
+        res = conn.execute(com, (imported_sheet_username, sheet_id)).fetchone()
+        
+        if(res is None):
+            return (False, "Shared sheet not found.")
+        
+        #Set the sheet to our username, so we have our own copy
+        sheet_data = json.loads(res[0])
+        
+        res = self.save_character_sheet(username,sheet_data)
+        
+        if res[0] is False:
+            return (False, "Shared sheet not found.")
+        else:
+            return (True, "Sheet imported successfully.")
+        
+        
     #endregion
+    

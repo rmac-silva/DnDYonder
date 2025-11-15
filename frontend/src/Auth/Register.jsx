@@ -39,7 +39,7 @@ export default function Register() {
         formDetails.append('username', username);
         
         try {
-            const response = await fetch('http://127.0.0.1:8000/auth/register', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -113,7 +113,7 @@ export default function Register() {
                             className="!bg-blue-500 !text-white !px-6 !py-2 !text-lg !font-semibold !rounded-md hover:!bg-blue-700"
 
                         >
-                            Login
+                            Register
                         </Button>
                     </div>
                 </div>

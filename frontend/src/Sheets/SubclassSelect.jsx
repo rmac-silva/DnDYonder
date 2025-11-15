@@ -44,7 +44,7 @@ function SubclassSelect({ draft, setDraft }) {
     let mounted = true;
     const getClasses = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/info/subclasses');
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/info/subclasses/${draft.class.class_name}`);
         if (!res.ok) {
           const err = await res.json().catch(() => ({ detail: 'Unknown' }));
           throw new Error(`HTTP ${res.status} - ${err.detail}`);
@@ -52,7 +52,7 @@ function SubclassSelect({ draft, setDraft }) {
         const data = await res.json();
         if (!mounted) return;
         // expecting data.classes or an array
-        console.log('Fetched subclasses:', data.subclasses);
+        
         newSubclass.class_name = draft.class.class_name;
         setFetchedSubclasses(data.subclasses);
       } catch (err) {
@@ -127,7 +127,7 @@ function SubclassSelect({ draft, setDraft }) {
         'subclass': newSubclass,
         'token': localStorage.getItem('authToken'),
       }
-      const res = await fetch('http://127.0.0.1:8000/info/subclasses', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/info/subclasses`, {
         method: 'POST', // or PUT depending on your API
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

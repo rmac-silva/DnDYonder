@@ -20,18 +20,20 @@
 ## Bug Testing
 - Form validate everything, try and create empty items, classes, duplicate entries, SUBCLASSES.
 
-## Features to add
+## Features to add - Post Release
 - Visual overhaul of the class and race feature hovering menu when creating a new character.
+- Button to go to WIKI
+- Sorting / Filtering class/race features.
+- A tag system, so you can tag features with stuff like "+2 to dexterity, capped at 20" or "proficiency to stealth" so when creating character.
+- Add sharing capabilities for characters.
+- Eventually add macros to roll dice.
 
 ## Known Issues
 - BUG! There's no feedback when you create an item with no name. Add form validation to item creation. This includes verifying that the item doesn't already exist (itemCache). Not sure if this is still valid.
 - BUG! No feedback when WikiDot item fetching fails.
 
+
 # Changelog
-- Added alerts for form validation errors when creating a new race, item, class, etc...
-- Prevented adding duplicate entries to items, races and classes.
-- Fixed an issue where races with subraces names would not appear selected
-- BUG! Even though I had weapon prof. shortsword, it didn't appear in misc profs. (Fixed by adding the misc proficiencies when creating the character.)
-- Change how the max HP works. Some other factors can change how the maxHP is calculated, like feats, racial features, class features. Make it editable.
-- Fetch spell information from WikiDot
-- Check what happens when there's a subrace name.
+- LAN Version: Switched all hardcoded API URLs to use environment variable VITE_API_URL. Update your .env file accordingly.
+- Changed css layout to use an override of the MUI theme.
+- Added rainbow colours when refreshing the page.

@@ -35,9 +35,9 @@ export default function Login() {
 
         const formDetails = new URLSearchParams();
         formDetails.append('username', username);
-
+        console.log("Window origin", window.location.origin);
         try {
-            const response = await fetch('http://127.0.0.1:8000/auth/token', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/token`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -62,6 +62,8 @@ export default function Login() {
         catch (err) {
             setError('Login failed. Please try again.');
             console.error('Login error:', err);
+            alert.error('Login failed, ' + err.message);
+            setLoading(false);
             return;
         }
 

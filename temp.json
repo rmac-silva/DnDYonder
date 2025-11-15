@@ -1,0 +1,625 @@
+{
+    "id": 1,
+    "name": "Pronkius",
+    "race": {
+        "race": "Dragonborn",
+        "subrace": "",
+        "creature_type": "Humanoid",
+        "size": "Medium",
+        "speed": 30,
+        "armor_proficiencies": [],
+        "weapon_proficiencies": [],
+        "tool_proficiencies": [],
+        "languages": [
+            "Common",
+            "Draconic"
+        ],
+        "race_features": [
+            {
+                "name": "Ability Score Increase",
+                "description": "Your Strength score increases by 2, and your Charisma score increases by 1.",
+                "table": {},
+                "level_requirement": 1,
+                "benefits": []
+            },
+            {
+                "name": "Age",
+                "description": "Young dragonborn grow quickly. They walk hours after hatching, attain the size and development of a 10-year-old human child by the age of 3, and reach adulthood by 15. They live to be around 80.",
+                "table": {},
+                "level_requirement": 1,
+                "benefits": []
+            },
+            {
+                "name": "Alignment",
+                "description": "Dragonborn tend towards extremes, making a conscious choice for one side or the other between Good and Evil (represented by Bahamut and Tiamat, respectively). More side with Bahamut than Tiamat (whose non-dragon followers are mostly kobolds), but villainous dragonborn can be quite terrible indeed. Some rare few choose to devote themselves to lesser dragon deities, such as Chronepsis (Neutral), and fewer still choose to worship Io, the Ninefold Dragon, who is all alignments at once.",
+                "table": {},
+                "level_requirement": 1,
+                "benefits": []
+            },
+            {
+                "name": "Draconic Ancestry",
+                "description": "You are distantly related to a particular kind of dragon. Choose a type of dragon from the below list; this determines the damage and area of your breath weapon, and the type of resistance you gain.",
+                "table": {},
+                "level_requirement": 1,
+                "benefits": []
+            },
+            {
+                "name": "Breath Weapon",
+                "description": "You can use your action to exhale destructive energy. It deals damage in an area according to your ancestry. When you use your breath weapon, all creatures in the area must make a saving throw, the type of which is determined by your ancestry. The DC of this saving throw is 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increase to 3d6 at 6th level, 4d6 at 11th, and 5d6 at 16th level. After using your breath weapon, you cannot use it again until you complete a short or long rest.",
+                "table": {},
+                "level_requirement": 1,
+                "benefits": []
+            },
+            {
+                "name": "Damage Resistance",
+                "description": " You have resistance to the damage type associated with your ancestry.",
+                "table": {},
+                "level_requirement": 1,
+                "benefits": []
+            }
+        ]
+    },
+    "class": {
+        "class_name": "Paladin",
+        "hit_die": "d10",
+        "starting_hitpoints": 10,
+        "hitpoints_per_level": 6,
+        "armor_proficiencies": [
+            "Light Armor",
+            "Medium Armor",
+            "Heavy Armor",
+            "Shields"
+        ],
+        "weapon_proficiencies": [
+            "Simple Weapons",
+            "Martial Weapons"
+        ],
+        "tool_proficiencies": [],
+        "attribute_proficiencies": [
+            "Wisdom",
+            "Charisma"
+        ],
+        "skill_proficiencies": [
+            "Athletics",
+            "Insight"
+        ],
+        "starting_equipment": [],
+        "starting_equipment_choices": [
+            [
+                [
+                    {
+                        "name": "Any Martial Weapon",
+                        "uid": "1762704284719-d0rd1y"
+                    },
+                    {
+                        "name": "Shield",
+                        "uid": "1762704286762-7epv4c"
+                    }
+                ],
+                [
+                    {
+                        "name": "Any Martial Weapon",
+                        "uid": "1762704288708-ll2euk"
+                    },
+                    {
+                        "name": "Any Martial Weapon",
+                        "uid": "1762704289493-dem28k"
+                    }
+                ]
+            ],
+            [
+                [
+                    {
+                        "name": "Javelin",
+                        "uid": "1762704293597-b4d2j1"
+                    },
+                    {
+                        "name": "Javelin",
+                        "uid": "1762704294285-j9xjuy"
+                    },
+                    {
+                        "name": "Javelin",
+                        "uid": "1762704294821-dua3a1"
+                    },
+                    {
+                        "name": "Javelin",
+                        "uid": "1762704295334-ozjhyf"
+                    },
+                    {
+                        "name": "Javelin",
+                        "uid": "1762704295816-n3utfv"
+                    }
+                ],
+                [
+                    {
+                        "name": "Any Simple Weapon",
+                        "uid": "1762704298609-h4z8jf"
+                    }
+                ]
+            ],
+            [
+                [
+                    {
+                        "name": "Priest's pack",
+                        "uid": "1762704303416-013xle"
+                    }
+                ],
+                [
+                    {
+                        "name": "Explorer's pack",
+                        "uid": "1762704305856-cjuvx3"
+                    }
+                ]
+            ]
+        ],
+        "class_features": [
+            {
+                "name": "Divine Sense",
+                "description": "The presence of strong evil registers on your senses like a noxious odor, and powerful good rings like heavenly music in your ears. As an action, you can open your awareness to detect such forces. Until the end of your next turn, you know the location of any celestial, fiend, or undead within 60 feet of you that is not behind total cover. You know the type (celestial, fiend, or undead) of any being whose presence you sense, but not its identity (the vampire Count Strahd von Zarovich, for instance). Within the same radius, you also detect the presence of any place or object that has been consecrated or desecrated, as with the Hallow spell.\nYou can use this feature a number of times equal to 1 + your Charisma modifier. When you finish a long rest, you regain all expended uses.",
+                "tables": [],
+                "level_requirement": "1",
+                "benefits": []
+            },
+            {
+                "name": "Lay on Hands",
+                "description": "Your blessed touch can heal wounds. You have a pool of healing power that replenishes when you take a long rest. With that pool, you can restore a total number of hit points equal to your paladin level x 5.\nAs an action, you can touch a creature and draw power from the pool to restore a number of hit points to that creature, up to the maximum amount remaining in your pool.\nAlternatively, you can expend 5 hit points from your pool of healing to cure the target of one disease or neutralize one poison affecting it. You can cure multiple diseases and neutralize multiple poisons with a single use of Lay on Hands, expending hit points separately for each one.\nThis feature has no effect on undead and constructs.",
+                "tables": [],
+                "level_requirement": "1",
+                "benefits": []
+            },
+            {
+                "name": "Fighting Style",
+                "description": "Starting at 2nd level, you adopt a particular style of fighting as your specialty. Choose one of the following options. You can't take a Fighting Style option more than once, even if you later get to choose again.\nBlessed Warrior. You learn two cantrips of your choice from the cleric spell list . They count as paladin spells for you, and Charisma is your spellcasting ability for them. Whenever you gain a level in this class, you can replace one of these cantrips with another cantrip from the cleric spell list .\nBlind Fighting. You have blindsight with a range of 10 feet. Within that range, you can effectively see anything that isn't behind total cover, even if you're blinded or in darkness. Moreover, you can see an invisible creature within that range, unless the creature successfully hides from you.\nDefense. While you are wearing armor, you gain a +1 bonus to AC.\nDueling. When you are wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to damage rolls with that weapon.\nGreat Weapon Fighting. When you roll a 1 or 2 on a damage die for an attack you make with a melee weapon that you are wielding with two hands, you can reroll the die and must use the new roll, even if the new roll is a 1 or a 2. The weapon must have the two-handed or versatile property for you to gain this benefit.\nInterception. When a creature you can see hits a target, other than you, within 5 feet of you with an attack, you can use your reaction to reduce the damage the target takes by 1d10 + your proficiency bonus (to a minimum of 0 damage). You must be wielding a shield or a simple or martial weapon to use this reaction.\nProtection. When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You must be wielding a shield.\nClose Quarters Shooter (UA). When making a ranged attack while you are within 5 feet of a hostile creature, you do not have disadvantage on the attack roll. Your ranged attacks ignore half cover and three-quarters cover against targets within 30 feet of you. You have a +1 bonus to attack rolls on ranged attacks.\nMariner (UA). As long as you are not wearing heavy armor or using a shield, you have a swimming speed and a climbing speed equal to your normal speed, and you gain a +1 bonus to armor class.\nThrown Weapon Fighting (UA). You can draw a weapon that has the thrown property as part of the attack you make with the weapon. In addition, when you hit with a ranged attack using a thrown weapon, you gain a +1 bonus to the damage roll.\nTunnel Fighter (UA). As a bonus action, you can enter a defensive stance that lasts until the start of your next turn. While in your defensive stance, you can make opportunity attacks without using your reaction, and you can use your reaction to make a melee attack against a creature that moves more than 5 feet while within your reach.\nUnarmed Fighting (UA). Your unarmed strikes can deal bludgeoning damage equal to 1d6 + your Strength modifier. If you strike with two free hands, the d6 becomes a d8. When you successfully start a grapple, you can deal 1d4 bludgeoning damage to the grappled creature. Until the grapple ends, you can also deal this damage to the creature whenever you hit it with a melee attack.",
+                "tables": [],
+                "level_requirement": 2,
+                "benefits": []
+            },
+            {
+                "name": "Spellcasting",
+                "description": "By 2nd level, you have learned to draw on divine magic through meditation and prayer to cast spells as a cleric does.\n\nPreparing and Casting Spells\nThe Paladin table shows how many spell slots you have to cast your paladin spells. To cast one of your paladin spells of 1st level or higher, you must expend a slot of the spell's level or higher. You regain all expended spell slots when you finish a long rest.\n\nSpellcasting Ability\nCharisma is your spellcasting ability for your paladin spells, since their power derives from the strength of your convictions. You use your Charisma whenever a spell refers to your spellcasting ability. In addition, you use your Charisma modifier when setting the saving throw DC for a paladin spell you cast and when making an attack roll with one.\n\nSpellcasting Focus\nYou can use a holy symbol as a spellcasting focus for your paladin spells.",
+                "tables": [],
+                "level_requirement": 2,
+                "benefits": []
+            },
+            {
+                "name": "Divine Smite",
+                "description": "Starting at 2nd level, when you hit a creature with a melee weapon attack, you can expend one spell slot to deal radiant damage to the target, in addition to the weapon's damage. The extra damage is 2d8 for a 1st-level spell slot, plus 1d8 for each spell level higher than 1st, to a maximum of 5d8. The damage increases by 1d8 if the target is an undead or a fiend, to a maximum of 6d8.",
+                "tables": [],
+                "level_requirement": 2,
+                "benefits": []
+            },
+            {
+                "name": "Divine Health",
+                "description": "By 3rd level, the divine magic flowing through you makes you immune to disease.",
+                "tables": [],
+                "level_requirement": 3,
+                "benefits": []
+            },
+            {
+                "name": "Sacred Oath",
+                "description": "When you reach 3rd level, you swear the oath that binds you as a paladin forever. Up to this time you have been in a preparatory stage, committed to the path but not yet sworn to it. Your choice grants you features at 3rd level and again at 7th, 15th, and 20th level. Those features include oath spells and the Channel Divinity feature.\n\nOath Spells\nEach oath has a list of associated spells. You gain access to these spells at the levels specified in the oath description. Once you gain access to an oath spell, you always have it prepared. Oath spells don't count against the number of spells you can prepare each day.\n\nChannel Divinity\nYour oath allows you to channel divine energy to fuel magical effects. Each Channel Divinity option provided by your oath explains how to use it.",
+                "tables": [
+                    {
+                        "table_header": [
+                            "Oath ",
+                            " Source"
+                        ],
+                        "table_rows": [
+                            [
+                                "Ancients ",
+                                " Player's Handbook"
+                            ],
+                            [
+                                "Conquest ",
+                                " Xanathar's Guide to Everything"
+                            ],
+                            [
+                                "Crown ",
+                                " Sword Coast Adventurer's Guide"
+                            ],
+                            [
+                                "Devotion ",
+                                " Player's Handbook"
+                            ],
+                            [
+                                "Glory ",
+                                " Mythic Odysseys of Theros ",
+                                "Tasha's Cauldron of Everything"
+                            ],
+                            [
+                                "Redemption ",
+                                " Xanathar's Guide to Everything"
+                            ],
+                            [
+                                "Vengeance ",
+                                " Player's Handbook"
+                            ],
+                            [
+                                "Watchers ",
+                                " Tasha's Cauldron of Everything"
+                            ],
+                            [
+                                "Oathbreaker ",
+                                " Dungeon Master\u2019s Guide"
+                            ],
+                            "Archived Unearthed Arcana",
+                            [
+                                "Treachery ",
+                                " Unearthed Arcana 26 - Paladin"
+                            ],
+                            [
+                                "Redemption ",
+                                " Unearthed Arcana 35 - A Trio of Subclasses"
+                            ],
+                            [
+                                "Watchers ",
+                                " Unearthed Arcana 67 - Subclasses, Part 1"
+                            ],
+                            [
+                                "Heroism ",
+                                " Unearthed Arcana 62 - Bard and Paladin"
+                            ]
+                        ],
+                        "num_columns": 2
+                    }
+                ],
+                "level_requirement": 3,
+                "benefits": []
+            },
+            {
+                "name": "Harness Divine Power (Optional)",
+                "description": "Also at 3rd level, you can expend a use of your Channel Divinity to fuel your spells. As a bonus action, you touch your holy symbol, utter a prayer, and regain one expended spell slot, the level of which can be no higher than half your proficiency bonus (rounded up). The number of times you can use this feature is based on the level you've reached in this class: 3rd level, once; 7th level, twice; and 15th level, thrice. You regain all expended uses when you finish a long rest.",
+                "tables": [],
+                "level_requirement": 3,
+                "benefits": []
+            },
+            {
+                "name": "Ability Score Improvement",
+                "description": "When you reach 4th level, and again at 8th, 12th, 16th, and 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can't increase an ability score above 20 using this feature.",
+                "tables": [],
+                "level_requirement": 4,
+                "benefits": []
+            },
+            {
+                "name": "Martial Versatility (Optional)",
+                "description": "Whenever you reach a level in this class that grants the Ability Score Improvement feature, you can replace a fighting style you know with another fighting style available to paladins. This replacement represents a shift of focus in your martial practice.",
+                "tables": [],
+                "level_requirement": "4",
+                "benefits": []
+            },
+            {
+                "name": "Extra Attack",
+                "description": "Beginning at 5th level, you can attack twice, instead of once, whenever you take the Attack action on your turn.",
+                "tables": [],
+                "level_requirement": 5,
+                "benefits": []
+            },
+            {
+                "name": "Aura of Protection",
+                "description": "Starting at 6th level, whenever you or a friendly creature within 10 feet of you must make a saving throw, the creature gains a bonus to the saving throw equal to your Charisma modifier (with a minimum bonus of +1). You must be conscious to grant this bonus.\nAt 18th level, the range of this aura increases to 30 feet.",
+                "tables": [],
+                "level_requirement": 6,
+                "benefits": []
+            },
+            {
+                "name": "Aura of Courage",
+                "description": "Starting at 10th level, you and friendly creatures within 10 feet of you can't be frightened while you are conscious.\nAt 18th level, the range of this aura increases to 30 feet.",
+                "tables": [],
+                "level_requirement": 10,
+                "benefits": []
+            },
+            {
+                "name": "Improved Divine Smite",
+                "description": "By 11th level, you are so suffused with righteous might that all your melee weapon strikes carry divine power with them. Whenever you hit a creature with a melee weapon, the creature takes an extra 1d8 radiant damage.",
+                "tables": [],
+                "level_requirement": 11,
+                "benefits": []
+            },
+            {
+                "name": "Cleansing Touch",
+                "description": "Beginning at 14th level, you can use your action to end one spell on yourself or on one willing creature that you touch.\nYou can use this feature a number of times equal to your Charisma modifier (a minimum of once). You regain expended uses when you finish a long rest.",
+                "tables": [],
+                "level_requirement": 14,
+                "benefits": []
+            }
+        ],
+        "spellcasting": {
+            "level": "2",
+            "spell_slots": {},
+            "spells_known": [],
+            "spellcasting_ability": ""
+        },
+        "subclass": {
+            "selected": false,
+            "name": "Sacred Oath",
+            "description": "When you reach 3rd level, you swear the oath that binds you as a paladin forever. Up to this time you have been in a preparatory stage, committed to the path but not yet sworn to it. Your choice grants you features at 3rd level and again at 7th, 15th, and 20th level. Those features include oath spells and the Channel Divinity feature.",
+            "level": "3",
+            "features": []
+        },
+        "num_skill_proficiencies": "2"
+    },
+    "background": {
+        "background": "",
+        "skill_proficiency": [],
+        "tool_proficiency": [],
+        "starting_equipment": [],
+        "background_features": []
+    },
+    "attributes": {
+        "Strength": {
+            "name": "Strength",
+            "value": 10,
+            "skills": [
+                {
+                    "name": "Saving Throw",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": null,
+                    "has_expertise": false,
+                    "locked": false
+                },
+                {
+                    "name": "Athletics",
+                    "value": 2,
+                    "proficient": true,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": true
+                }
+            ]
+        },
+        "Dexterity": {
+            "name": "Dexterity",
+            "value": 10,
+            "skills": [
+                {
+                    "name": "Saving Throw",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": null,
+                    "has_expertise": false,
+                    "locked": false
+                },
+                {
+                    "name": "Acrobatics",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "Sleight of Hand",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "Stealth",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                }
+            ]
+        },
+        "Constitution": {
+            "name": "Constitution",
+            "value": 10,
+            "skills": [
+                {
+                    "name": "Saving Throw",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": null,
+                    "has_expertise": false,
+                    "locked": false
+                }
+            ]
+        },
+        "Intelligence": {
+            "name": "Intelligence",
+            "value": 10,
+            "skills": [
+                {
+                    "name": "Saving Throw",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": null,
+                    "has_expertise": false,
+                    "locked": false
+                },
+                {
+                    "name": "Arcana",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "History",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "Investigation",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "Nature",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "Religion",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                }
+            ]
+        },
+        "Wisdom": {
+            "name": "Wisdom",
+            "value": 10,
+            "skills": [
+                {
+                    "name": "Saving Throw",
+                    "value": 2,
+                    "proficient": true,
+                    "expertise": null,
+                    "has_expertise": false,
+                    "locked": true
+                },
+                {
+                    "name": "Animal Handling",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "Insight",
+                    "value": 2,
+                    "proficient": true,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": true
+                },
+                {
+                    "name": "Medicine",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "Perception",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "Survival",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                }
+            ]
+        },
+        "Charisma": {
+            "name": "Charisma",
+            "value": 10,
+            "skills": [
+                {
+                    "name": "Saving Throw",
+                    "value": 2,
+                    "proficient": true,
+                    "expertise": null,
+                    "has_expertise": false,
+                    "locked": true
+                },
+                {
+                    "name": "Deception",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "Intimidation",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "Performance",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                },
+                {
+                    "name": "Persuasion",
+                    "value": 0,
+                    "proficient": false,
+                    "expertise": false,
+                    "has_expertise": true,
+                    "locked": false
+                }
+            ]
+        }
+    },
+    "stats": {
+        "level": 1,
+        "proficiency_bonus": 2,
+        "armor_class": 10,
+        "armor_class_temp": 0,
+        "initiative_bonus": 0,
+        "speed": 30,
+        "max_hp": 10,
+        "current_hp": 10,
+        "temporary_hp": 0,
+        "hit_dice": "1d6",
+        "max_hit_dice": 1,
+        "current_hit_dice": 0,
+        "death_saves_success": 0,
+        "death_saves_failure": 0
+    },
+    "misc": {
+        "proficiencies": [],
+        "trackers": [],
+        "inventory": [
+            {
+                "name": "Any Martial Weapon (2)"
+            },
+            {
+                "name": "Javelin (5)"
+            },
+            {
+                "name": "Priest's pack"
+            }
+        ],
+        "attacks": []
+    },
+    "char_info": {
+        "age": "",
+        "height": "",
+        "weight": "",
+        "distinguishing_marks": "",
+        "eyes": "",
+        "skin": "",
+        "hair": "",
+        "scars": "",
+        "backstory": "",
+        "personality_traits": "",
+        "ideals": "",
+        "bonds": "",
+        "flaws": ""
+    }
+}

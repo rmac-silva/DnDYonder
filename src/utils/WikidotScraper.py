@@ -195,6 +195,7 @@ class WikidotScraper:
 
             merged_content["content"] = "\n".join(merged_content["content"])
 
+        print(formatted_res)
         return formatted_res
 
     def dump_json(self, filepath: str):

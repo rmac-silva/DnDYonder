@@ -61,10 +61,26 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
         is_ritual: false
     });
 
+    const wipeSpellData = () => {
+        setNewSpell({
+        name: "",
+        description: "",
+
+        level: -1,
+        casting_time: "",
+        range: "",
+        components: "",
+        duration: "",
+
+        school: "None",
+        is_ritual: false
+    })
+    }
+
     useEffect(() => {
         const getSpells = async () => {
             try {
-                const res = await fetch('http://127.0.0.1:8000/info/spells');
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/info/spells`);
                 if (!res.ok) {
                     const err = await res.json().catch(() => ({ detail: 'Unknown' }));
                     throw new Error(`HTTP ${res.status} - ${err.detail}`);
@@ -118,7 +134,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
         try {
             // Sanitize the string for URL (replace spaces with underscores)
             var spell_name = newSpell.name.trim().replace(/\s+/g, '_');
-            const res = await fetch(`http://127.0.0.1:8000/wikidot/spell/${spell_name}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/wikidot/spell/${spell_name}`, {
                 method: 'GET',
             });
 
@@ -158,16 +174,14 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
             return;
         }
 
-        // For now just log; you can POST to backend here and refresh spells afterwards
         console.log('Creating spell:', newSpell);
 
-        // POST to backend
         const payload = {
             'spell': newSpell,
             'token': localStorage.getItem('authToken'),
         }
-        const res = await fetch('http://127.0.0.1:8000/info/spells', {
-            method: 'POST', // or PUT depending on your API
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/info/spells`, {
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
         });
@@ -175,31 +189,56 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
         if (!res.ok) {
             alert(`Failed to save spell. Server responded with status ${res.status}.`);
             throw new Error(`Save failed: ${res.status}`);
-            
         }
 
-        // close dialog
         setCreatingNewSpell(false);
 
-        // Refresh spells list
-        setFetchedSpells([...fetchedSpells, [{ s_name: newSpell.name, s_content: JSON.stringify(newSpell) }]]);
+        // ✅ Create new array reference
+        const updatedSpells = [...(draft.class.spellcasting.spells_known || []), newSpell];
+        setDraft({
+            ...draft,
+            class: {
+                ...draft.class,
+                spellcasting: {
+                    ...draft.class.spellcasting,
+                    spells_known: updatedSpells
+                }
+            }
+        });
+        
+        // Update fetched spells list for the dropdown
+        setFetchedSpells([...fetchedSpells, { s_name: newSpell.name, s_content: newSpell }]);
+        
+        wipeSpellData();
         setForceRefresh(true);
-        draft.class.spellcasting.spells_known.push(newSpell);
-        setDraft({ ...draft });
-
+        onAdd(true);
     };
 
     function handleSelectingSpell(event) {
         const selectedSpellName = event.target.value;
-        // console.log('Selected spell:', selectedSpellName);
+
+        if(selectedSpellName === "" || selectedSpellName === null || selectedSpellName === undefined) {
+            console.log("Selected invalid spell or none.")
+            return;
+        }
 
         if (selectedSpellName === "new") {
             // Logic to add a new spell
             setCreatingNewSpell(true);
         } else {
+            console.log("Selected existing spell:", selectedSpellName);
             const selectedSpell = fetchedSpells.find(spell => spell.s_name === selectedSpellName);
-            draft.class.spellcasting.spells_known.push(selectedSpell.s_content);
-            setDraft({ ...draft });
+
+            //Check if the selected spell is already in the draft
+            const alreadyAdded = draft.class.spellcasting.spells_known.find(s => s.name === selectedSpell.s_name);
+
+            if (!alreadyAdded) {
+                console.log("Adding spell to draft:", selectedSpell);
+                draft.class.spellcasting.spells_known.push(selectedSpell.s_content);
+                setDraft({ ...draft });
+            } else {
+                alert("This spell is already on your spell list.");
+            }
         }
         onAdd(true);
         setSelectValue('');
@@ -211,7 +250,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
 
     return (
         <>
-            <FormControl fullWidth variant="standard" margin="normal" sx={{ maxWidth: 350 }} className=''>
+            <FormControl fullWidth variant="standard" margin="normal" sx={{ maxWidth: 350, marginLeft:5 }} className=''>
                 {/* Autocomplete replaces Select but keeps existing logic/values */}
                 <Autocomplete
                     freeSolo={false}

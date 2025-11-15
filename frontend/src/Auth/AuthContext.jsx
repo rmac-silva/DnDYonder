@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/auth/verify_token/${encodeURIComponent(token)}`,
+        `${import.meta.env.VITE_API_URL}/auth/verify_token/${encodeURIComponent(token)}`,
         { method: "GET" }
       );
 

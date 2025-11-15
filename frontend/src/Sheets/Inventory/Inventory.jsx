@@ -87,10 +87,17 @@ function Inventory({draft, setDraft}) {
             <div className="grid  w-full  text-lg grid-cols-2 gap-y-2 mt-4">
             
             {itemLines.map( (item, index) => (
-                <div key={index} className="flex w-full items-center ">
-
-                <InventoryItem index={index}  itemName={item.name} onItemNameChange={handleInventoryChange} />
-                        <CancelIcon className=" mr-6 -ml-1  !text-red-600 cursor-pointer" fontSize="medium" onClick={() => handleRemoveItem(index)}></CancelIcon>
+                <div
+                    key={index}
+                    className="flex w-full items-center justify-between group relative ml-5 "
+                    style={{ minHeight: 40 }}
+                >
+                    <InventoryItem index={index} itemName={item.name} onItemNameChange={handleInventoryChange} />
+                    <CancelIcon
+                        className="!text-red-600 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200 -ml-1 mr-4"
+                        fontSize="small"
+                        onClick={() => handleRemoveItem(index)}
+                    />
                 </div>
             ))} 
                 

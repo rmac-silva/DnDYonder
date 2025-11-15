@@ -3,31 +3,11 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import { useTheme } from '@mui/material/styles';
 
 export default function MiscProfs({ draft = {}, setDraft }) {
-  // Instead of "Loading" the proficiencies, when selecting the class these will just be added to the variable draft.misc.proficiencies.
-  //This prevents overwriting user input, leaving it to the player to define and manage the old proficiencies if they change class.
-  // const tool = draft.class?.tool_proficiencies || [];
-  // const weaponRaw = draft.class?.weapon_proficiencies || [];
-
-   // exclusions for weapon list
-  // const exclusions = new Set(['simple weapons', 'martial weapons']);
-
-  // const normalize = (s) => String(s ?? '').trim();
-
-  // const weaponFiltered = weaponRaw
-  //   .map(normalize) //Turn all to lowercase
-  //   .filter((s) => s.length > 0 && !exclusions.has(s.toLowerCase())); //Exclude all empty and simple/martial weapon proficiencie
+  const theme = useTheme();
   
-
-   // Merge + dedupe (case-insensitive, preserve original casing from first occurrence)
-  // const merged = [...tool, ...weaponFiltered];
-  
-
-  // const placeholderText =
-  //   merged.length > 0 ? merged.join('\n') : 'No additional proficiencies. You can add your own here.';
-
-  // local editable value (starts empty so placeholder is visible)
   const [proficiencies, setProficiencies] = useState('');
 
   const handleChange = () => {
@@ -67,6 +47,19 @@ export default function MiscProfs({ draft = {}, setDraft }) {
           onChange={(e) => {setProficiencies(e.target.value);}}
           onBlur={handleChange}
           variant="outlined"
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: theme.palette.baseColor.main,
+              },
+              '&:hover fieldset': {
+                borderColor: theme.palette.primary.main,
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: theme.palette.primary.main,
+              },
+            },
+          }}
         />
       </Paper>
     </Box>

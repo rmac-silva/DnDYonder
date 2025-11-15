@@ -75,7 +75,7 @@ function GetSheet() {
         setLoading(true);
         setError(null);
         try {
-            const res = await fetch('http://127.0.0.1:8000/sheets/new');
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/sheets/new`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
 
@@ -107,7 +107,7 @@ function GetSheet() {
         setError(null);
         try {
             // console.log(`Fetching sheet for ${hashedemail} with ID ${sheetid}`);
-            const res = await fetch(`http://127.0.0.1:8000/sheets/${authUsername}/${sheetid}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/sheets/${authUsername}/${sheetid}`);
             if (!res.ok) {
                 const data = await res.json();
                 throw new Error(`HTTP ${res.status} - ${data.detail}`);
@@ -290,17 +290,17 @@ function GetSheet() {
                                 </div>
 
                                 {/* Character Traits etc... Spellcasting if applicable*/}
-                                <div className=' w-full flex space-x-2 flex-wrap' >
-                                    <div className= {`  flex flex-col items-center space-y-2  ${draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) ? 'w-23/100' : 'w-49/100'}`}>
+                                <div className=' w-full flex space-x-2 flex-wrap items-stretch' >
+                                    <div className= {`  flex flex-col items-center space-y-2 self-stretch ${draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) ? 'w-23/100' : 'w-49/100'}`}>
                                         <Backstory draft={draft} setDraft={updateDraft} />
                                     </div>
                                     {draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) &&
-                                        <div className=' bg-white rounded shadow p-2 flex flex-col items-center space-y-2 min-w-230 max-w-230 h-full'>
+                                        <div className=' bg-white rounded shadow p-2 flex flex-col items-center space-y-2 min-w-230 max-w-230 self-stretch'>
                                             <Spellcasting draft={draft} setDraft={updateDraft} />
                                             <SpellList draft={draft} setDraft={updateDraft} />
                                         </div>
                                     }
-                                    <div className= {` flex flex-col items-center space-y-2 ${draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) ? 'w-23/100' : 'w-49/100'}`}>
+                                    <div className= {` flex flex-col items-center space-y-2 self-stretch ${draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) ? 'w-23/100' : 'w-49/100'}`}>
                                         <PersonalityTraits draft={draft} setDraft={updateDraft} />
                                         
                                     </div>

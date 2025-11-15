@@ -77,9 +77,9 @@ class CharacterClass():
         self.skill_proficiency = [Skills(skill) for skill in data.get("skill_proficiency", [])]
         self.num_skill_proficiencies = data.get("num_skill_proficiencies", 0)
         self.starting_equipment = [Item(**item) for item in data.get("starting_equipment", [])]
-        self.starting_equipment_choices = [ItemChoice(**choice) for choice in data.get("starting_equipment_choices", [])]
+        self.starting_equipment_choices = [ItemChoice(choice) for choice in data.get("starting_equipment_choices", [])]
         
-        self.class_features = [ClassFeature(**feature) for feature in data.get("class_features", [])]
+        self.class_features = [ ClassFeature().load_from_dict(feature) for feature in data.get("class_features", []) ]
         self.spellcasting = data.get("spellcasting", False)
         self.subclass = data.get("subclass", False)
     

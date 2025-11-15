@@ -1,14 +1,13 @@
 import {React,useState} from 'react';
+import { Box, useTheme } from '@mui/material';
 
 function PlayerStats({draft, setDraft}) {
-
+    const theme = useTheme();
     const [maxHP, setMaxHP] = useState(draft.stats.max_hp);
     const [currentHP, setCurrentHP] = useState(draft.stats.current_hp);
     const [tempHP, setTempHP] = useState(draft.stats.temporary_hp);
-
     const [ac,setAC] = useState(parseInt(draft.stats.armor_class));
     const [tempAC,setTempAC] = useState(parseInt(draft.stats.armor_class_temp));
-
     const[iniBonus,setIniBonus] = useState(parseInt(draft.stats.initiative_bonus));
     const[speed,setSpeed] = useState(parseInt(draft.stats.speed));
 
@@ -26,101 +25,180 @@ function PlayerStats({draft, setDraft}) {
 
     return (
         <>
-            {/* Top row: AC, Initiative, Speed */}
             <div className="flex w-full items-start space-x-12 justify-center mb-16 mt-1">
                 <div className='flex flex-col items-center'>
                     <div className="relative bg-white inline-block">
-                    <label htmlFor='ac-input' className="absolute left-11 text-2xl font-semibold">AC</label>
-                    <input
-                        type="text"
-                        placeholder={"AC"}
-                        id='ac-input'
-                        value={parseInt(ac)}
-                        onChange={(e) => {setAC(parseInt(e.target.value))}}
-                        onBlur={(e) => {draft.stats.armor_class = parseInt(e.target.value); setDraft({...draft})}}
-                        className="w-30 h-30 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
-                    />
-                    <input
-                        type="text"
-                        placeholder={"T. AC"}
-                        id='temp-ac-input'
-                        value={parseInt(tempAC)}
-                        onChange={(e) => {setTempAC(parseInt(e.target.value))}}
-                        onBlur={(e) => {draft.stats.armor_class_temp = parseInt(e.target.value); setDraft({...draft})}}
-                        className="w-18 h-18 absolute -bottom-6 -right-8 text-center bg-zinc-100 border-2 border-gray-400 text-2xl font-semibold rounded focus-visible:outline-none"
-                    />
+                        <label htmlFor='ac-input' className="absolute left-11 text-2xl font-semibold">AC</label>
+                        <Box
+                            component="input"
+                            type="text"
+                            placeholder={"AC"}
+                            id='ac-input'
+                            value={parseInt(ac)}
+                            onChange={(e) => {setAC(parseInt(e.target.value))}}
+                            onBlur={(e) => {draft.stats.armor_class = parseInt(e.target.value); setDraft({...draft})}}
+                            className="w-30 h-30 text-center text-5xl font-semibold rounded focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                            sx={{
+                                border: `2px solid ${theme.palette.baseColor.main}`,
+                                '&:hover': {
+                                    borderColor: theme.palette.primary.main,
+                                },
+                                '&:focus': {
+                                    borderColor: theme.palette.primary.main,
+                                },
+                                transition: 'border-color 0.2s ease',
+                            }}
+                        />
+                        <Box
+                            component="input"
+                            type="text"
+                            placeholder={"T. AC"}
+                            id='temp-ac-input'
+                            value={parseInt(tempAC)}
+                            onChange={(e) => {setTempAC(parseInt(e.target.value))}}
+                            onBlur={(e) => {draft.stats.armor_class_temp = parseInt(e.target.value); setDraft({...draft})}}
+                            className="w-14 h-14 absolute -bottom-5 -right-5 text-center bg-zinc-50 text-2xl font-semibold rounded focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                            sx={{
+                                border: `2px solid ${theme.palette.baseColor.main}`,
+                                '&:hover': {
+                                    borderColor: theme.palette.primary.main,
+                                },
+                                '&:focus': {
+                                    borderColor: theme.palette.primary.main,
+                                },
+                                transition: 'border-color 0.2s ease',
+                            }}
+                        />
                     </div>
                 </div>
 
                 <div className='flex bg-white flex-col items-center'>
                     <label htmlFor='ini-input' className="absolute text-2xl font-semibold">Initiative</label>
-                    <input
+                    <Box
+                        component="input"
                         type="text"
                         placeholder={"Ini."}
                         id='ini-input'
                         value={parseInt(iniBonus)}
                         onChange={(e) => {setIniBonus(parseInt(e.target.value))}}
                         onBlur={(e) => {draft.stats.initiative_bonus = parseInt(e.target.value); setDraft({...draft})}}
-                        className="w-30 h-30 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
+                        className="w-30 h-30 text-center text-5xl font-semibold rounded focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                        sx={{
+                            border: `2px solid ${theme.palette.baseColor.main}`,
+                            '&:hover': {
+                                borderColor: theme.palette.primary.main,
+                            },
+                            '&:focus': {
+                                    borderColor: theme.palette.primary.main,
+                                },
+                            transition: 'border-color 0.2s ease',
+                        }}
                     />
                 </div>
 
                 <div className='flex bg-white flex-col items-center'>
                     <label htmlFor='spd-input' className="absolute text-2xl font-semibold">Speed</label>
-                    <input
+                    <Box
+                        component="input"
                         type="text"
                         placeholder={"Spd."}
                         id='spd-input'
                         value={parseInt(speed)}
                         onChange={(e) => {setSpeed(parseInt(e.target.value))}}
                         onBlur={(e) => {draft.stats.speed = parseInt(e.target.value); setDraft({...draft})}}
-                        className="w-30 h-30 text-center border-2 border-gray-400 text-5xl font-semibold rounded focus-visible:outline-none"
+                        className="w-30 h-30 text-center text-5xl font-semibold rounded focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                        sx={{
+                            border: `2px solid ${theme.palette.baseColor.main}`,
+                            '&:hover': {
+                                borderColor: theme.palette.primary.main,
+                            },
+                            '&:focus': {
+                                    borderColor: theme.palette.primary.main,
+                                },
+                            transition: 'border-color 0.2s ease',
+                        }}
                     />
                 </div>
-
             </div>
 
-            {/*HP & Temporary Hitpoints*/}
             <div className="flex items-start space-x-6 justify-center mb-8">
-                
-                {/*HP*/}
-                <div className="relative  inline-block">
-                    <label htmlFor="hp-current" className="absolute left-18 top-1  z-20 text-2xl font-semibold">Current HP</label>
-
-                    <input
+                <div className="relative inline-block">
+                    <label htmlFor="hp-current" className="absolute left-18 top-1 z-20 text-2xl font-semibold">Current HP</label>
+                    <Box
+                        component="input"
                         id="hp-current"
                         value={currentHP}
                         onChange={(e) => setCurrentHP(e.target.value)}
                         onBlur={() => {draft.stats.current_hp = parseInt(currentHP); setDraft({...draft})}}
                         type="text"
                         placeholder="HP"
-                        className="w-52 h-36 text-center border-2 bg-white border-gray-400 text-5xl font-semibold rounded-2xl focus-visible:outline-none"
+                        className="w-52 h-36 text-center bg-white text-5xl font-semibold rounded-2xl focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                        sx={{
+                            border: `2px solid ${theme.palette.baseColor.main}`,
+                            '&:hover': {
+                                borderColor: theme.palette.primary.main,
+                            },
+                            '&:focus': {
+                                    borderColor: theme.palette.primary.main,
+                                },
+                            transition: 'border-color 0.2s ease',
+                        }}
                     />
-
-<label htmlFor="hp-max" className="absolute -left-6 -top-5 z-20 text-xl font-semibold">Max HP</label>
-                    <input
+                    <label htmlFor="hp-max" className="absolute -left-5 -top-5 z-20 text-xl font-semibold">Max HP</label>
+                    <Box
+                        component="input"
                         id="hp-max"
                         type="text"
                         placeholder="Max HP"
-                        
-                        defaultValue={GetMaxHP()}
+                        value={GetMaxHP()}
                         onChange={(e) => setMaxHP(parseInt(e.target.value))}
                         onBlur={() => {draft.stats.max_hp = parseInt(maxHP); setDraft({...draft})}}
-                        className="absolute -top-5 -left-7 w-20 h-22 text-center border-2 border-gray-400 bg-zinc-100 text-2xl font-semibold rounded z-10 focus-visible:outline-none"
+                        className="absolute -top-5 -left-7 w-22 h-22 text-center bg-zinc-50 text-2xl font-semibold rounded z-10 focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                        sx={{
+                            border: `2px solid ${theme.palette.baseColor.main}`,
+                            '&:hover': {
+                                borderColor: theme.palette.primary.main,
+                            },
+                            '&:focus': {
+                                    borderColor: theme.palette.primary.main,
+                                },
+                            transition: 'border-color 0.2s ease',
+                        }}
                     />
                 </div>
-                {/*Temporary HP*/}
+
                 <div className="relative inline-block">
-                <input
+                    <Box
+                        component="input"
                         id="temp-hp-current"
                         type="text"
                         value={parseInt(tempHP)}
                         onChange={(e) => setTempHP(parseInt(e.target.value))}
                         onBlur={() => {draft.stats.temporary_hp = parseInt(tempHP); setDraft({...draft})}}
                         placeholder="Temp.HP"
-                        className="w-52 h-36 text-pretty text-center bg-white border-2 border-gray-400 text-5xl font-semibold rounded-2xl focus-visible:outline-none"
+                        className="w-52 h-36 text-pretty text-center bg-white text-5xl font-semibold rounded-2xl focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                        sx={{
+                            border: `2px solid ${theme.palette.baseColor.main}`,
+                            '&:hover': {
+                                borderColor: theme.palette.primary.main,
+                            },
+                            '&:focus': {
+                                    borderColor: theme.palette.primary.main,
+                                },
+                            transition: 'border-color 0.2s ease',
+                        }}
                     />
-                    <label htmlFor="temp-hp-current" className="w-28 absolute right-13.5 border-gray-400  border-2 bg-zinc-100 rounded -top-8 z-20 text-pretty text-center text-xl font-semibold">Temporary Hitpoints</label>
+                    <Box
+                        component="label"
+                        htmlFor="temp-hp-current"
+                        className="w-28 absolute right-12.5 rounded -top-5 z-20 text-pretty text-center text-xl pb-1 font-semibold"
+                        sx={{
+                            border: `2px solid ${theme.palette.baseColor.main}`,
+                            backgroundColor: '#fafafa',
+                        }}
+                    >
+                        Temp. HP
+                    </Box>
                 </div>
             </div>
         </>
