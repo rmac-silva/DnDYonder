@@ -14,37 +14,37 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
 
-function CreateNewSheet({onUpdate}) {
+function CreateNewSheet({ onUpdate }) {
   const [isHovered, setIsHovered] = useState(false);
   const [shareLink, setShareLink] = useState("")
   const [shareDialogOpen, setShareDialogOpen] = useState(false)
   const { authUsername } = useAuth();
 
   const handleImport = async (string) => {
-    
+
     //Convert to HTML safe text
-    var shareLinkSafe = string.replace(':','-')
-    var payload = {"username":authUsername};
+    var shareLinkSafe = string.replace(':', '-')
+    var payload = { "username": authUsername };
     try {
-            
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/import/${shareLinkSafe}`, {
-                method: 'POST', // or PUT depending on your API
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
 
-            if (!res.ok) throw new Error(`Import failed: ${res.status}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/import/${shareLinkSafe}`, {
+        method: 'POST', // or PUT depending on your API
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-            //Close the dialog
-            handleCloseShareDialog();
+      if (!res.ok) throw new Error(`Import failed: ${res.status}`);
 
-            //Refresh the page to show the new sheet
-            onUpdate();
+      //Close the dialog
+      handleCloseShareDialog();
 
-        } catch (error) {
-            console.error('delete error', error);
-            throw error;
-        }
+      //Refresh the page to show the new sheet
+      onUpdate();
+
+    } catch (error) {
+      console.error('delete error', error);
+      throw error;
+    }
 
   };
 
@@ -55,9 +55,9 @@ function CreateNewSheet({onUpdate}) {
 
   async function handleInput(e) {
     setShareLink(e.target.value);
-    
+
     var content = e.target.value.split(":");
-    if(content[0].length === 64 && content[1].length > 0) {
+    if (content[0].length === 64 && content[1].length > 0) {
       console.log("Valid share code detected, attempting import...");
       //Try to automatically import the sheet
       await handleImport(e.target.value);
@@ -100,7 +100,7 @@ function CreateNewSheet({onUpdate}) {
             fullWidth
             variant="outlined"
             label="Shareable Link"
-            onChange={(e) => {handleInput(e);}}
+            onChange={(e) => { handleInput(e); }}
           >
 
           </TextField>
@@ -113,8 +113,24 @@ function CreateNewSheet({onUpdate}) {
     </Dialog>
 
     <Box
-      className="group !w-48 !h-62 !mx-4 !rounded-xl !flex !flex-col !items-center !justify-center"
-      style={{ backgroundColor: '#1b1b1b' }}
+      className="group !mx-4 !rounded-xl !flex !flex-col !items-center !justify-center"
+      sx={{
+        width: { xs: '3vw', sm: '20vw', md: '18vw', lg: '10vw' },
+        height: { xs: '20vw', sm: '38vw', md: '24vw', lg: '13.5vw' },
+        minWidth: 130,
+        minHeight: 180,
+        maxWidth: 400,
+        maxHeight: 1000,
+        backgroundColor: '#1b1b1b',
+        marginBottom: 3,
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 3,
+        overflow: 'hidden',
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -142,10 +158,10 @@ function CreateNewSheet({onUpdate}) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
 
-          <Typography variant="h5" component="div" sx={{ fontWeight: 600, mt: 2 }}>
+          <Typography variant="h5" component="div" sx={{ fontWeight: 600, mt: 2, fontSize: { xs: '1.5rem', sm: '1.25rem', md: '1.1rem' } }}>
             New
           </Typography>
-          <Typography variant="h5" component="div" sx={{ fontWeight: 600 }}>
+          <Typography variant="h5" component="div" sx={{ fontWeight: 600, fontSize: { xs: '1.5rem', sm: '1.25rem', md: '1.1rem' } }}>
             Sheet
           </Typography>
         </Box>
@@ -171,7 +187,7 @@ function CreateNewSheet({onUpdate}) {
               width: '100%',
               color: 'white',
               borderColor: 'white',
-
+              fontSize: { xs: '1.1rem', sm: '1rem', md: '0.9rem' },
             }}
           >
             Create New
@@ -185,7 +201,7 @@ function CreateNewSheet({onUpdate}) {
               width: '100%',
               color: 'white',
               borderColor: 'white',
-
+              fontSize: { xs: '1.1rem', sm: '1rem', md: '0.9rem' },
             }}
           >
             Import

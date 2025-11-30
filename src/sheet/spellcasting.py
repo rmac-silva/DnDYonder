@@ -39,3 +39,4 @@ class Spellcasting:
         self.max_level_spellslots = data.get("max_level_spellslots", 9)
         self.spells_known = data.get("spells_known", [])
         self.spellcasting_ability = data.get("spellcasting_ability", None)
+        return self

@@ -35,6 +35,8 @@ const baseColor = base.palette.augmentColor({
 });
 
 
+
+
 const textMain = base.palette.augmentColor({
   color: { main: '#030201' },
   name: 'textMain',
@@ -56,7 +58,7 @@ const theme = createTheme({
     baseColor,
     primary: { main: randomPrimary },
     secondary: { main: '#03DAC6' },
-    
+    error: { main: '#e01f1f' },
     background: {
       default: '#3a3a3a',   // page background
       paper: '#f5f5f5',     // cards/dialogs; change to '#2f2f2f' if you want dark surfaces
@@ -112,6 +114,14 @@ const theme = createTheme({
             backgroundColor: alpha(theme.palette.primary.main, 0.95),
             borderColor: theme.palette.primary.main,
             color: '#000000'
+          },
+        }),
+        outlinedError: ({ theme }) => ({
+          '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.95),
+            borderColor: theme.palette.error.main,
+            color: '#000000'
+
           },
         }),
         textPrimary: ({ theme }) => ({

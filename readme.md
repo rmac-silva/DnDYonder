@@ -3,14 +3,21 @@
 
 # Executing backend
 > cd src
-> fastapi dev main.py --reload
+> python main.py
+    
+
 
 
 # Running frontend
 > cd frontend
-> npm run dev (or npm install if needed)
+> npm run dev -- --host 0.0.0.0
 
 # TODO:
+
+## Mobile Version & Visual Revamp
+- Make the frontend responsive for mobile devices.
+- Make the WikiDot fetching buttons more consistent.
+- Revamp the creation menu style to be more user friendly.
 
 ## Database Management Improvements
 - A way to edit or delete created classes, weapons etc... This has to be done only by admins! We can't let anyone delete anything. 
@@ -20,7 +27,15 @@
 ## Bug Testing
 - Form validate everything, try and create empty items, classes, duplicate entries, SUBCLASSES.
 
+## Improve WikiDot fetching
+- Add a loading spinner when fetching items from WikiDot.
+- Add a fetch for classes.
+
+# RELEASE v 1.0 
+- Host on private server, get a domain name etc...
+
 ## Features to add - Post Release
+- Possibility to export as JSON for backup purposes.
 - Visual overhaul of the class and race feature hovering menu when creating a new character.
 - Button to go to WIKI
 - Sorting / Filtering class/race features.
@@ -31,6 +46,7 @@
 ## Known Issues
 - BUG! There's no feedback when you create an item with no name. Add form validation to item creation. This includes verifying that the item doesn't already exist (itemCache). Not sure if this is still valid.
 - BUG! No feedback when WikiDot item fetching fails.
+- BUG! Can select multiple skill proficiencies when creating a character.
 
 
 # Changelog

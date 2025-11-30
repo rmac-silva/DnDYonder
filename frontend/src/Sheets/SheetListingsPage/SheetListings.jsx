@@ -15,6 +15,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Navbar from '../../Navbar/Navbar.jsx';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { useMediaQuery } from '@mui/material';
 
 const iconColor = "#333333"
 const iconSize = 80
@@ -30,6 +31,9 @@ function SheetListings() {
     const [shareLink, setShareLink] = useState("")
     const [shareDialogOpen, setShareDialogOpen] = useState(false)
     const [updateFlag, setUpdateFlag] = useState(false);
+    const [openedSheetID, setOpenedSheetID] = useState(null);
+    const isMobile = useMediaQuery('(max-width:600px)');
+    const [activeSheetId, setActiveSheetId] = useState(null);
 
     // Return a subtle SVG background per race (default DnD races)
 
@@ -64,6 +68,7 @@ function SheetListings() {
 
     const shareSheet = async (sheetId) => {
         try {
+            setOpenedSheetID(sheetId);
             const res = await fetch(`${import.meta.env.VITE_API_URL}/share/${authUsername}/${sheetId}`, {
                 method: 'GET', // or PUT depending on your API
                 headers: { 'Content-Type': 'application/json' },
@@ -72,8 +77,17 @@ function SheetListings() {
 
             const data = await res.json();
             setShareLink(data);
-            navigator.clipboard.writeText(data  );
-            setCopyNoticeOpen(true);
+            if (data === null || data === undefined || data === "") {
+                throw new Error('Share link is empty');
+            }
+            console.log("Share link:", data);
+            try {
+                await navigator.clipboard.writeText(data);
+                setCopyNoticeOpen(true);
+            } catch (error) {
+                console.warn("Clipboard copy failed:", error);
+            }
+
 
             setShareDialogOpen(true);
 
@@ -81,19 +95,64 @@ function SheetListings() {
 
 
         } catch (error) {
-            console.error('delete error', error);
+            setOpenedSheetID(null);
+            console.error('share error', error);
             throw error;
         }
     }
 
     const handleCloseShareDialog = () => {
         setShareDialogOpen(false);
+        setOpenedSheetID(null);
         setShareLink("");
     }
 
-    const handleCopyLink = () => {
-        navigator.clipboard.writeText(shareLink);
-        setCopyNoticeOpen(true);
+    const handleDownloadSheetAsText = async () => {
+        if (openedSheetID === null) {
+            return;
+        }
+
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/export/txt/${authUsername}/${openedSheetID}`, {
+                method: 'GET', // or PUT depending on your API
+                headers: { 'Content-Type': 'application/json' },
+
+            });
+
+            const data = await res.json();
+            console.log("Downloaded sheet as text:", data);
+
+            //Download the text as a file
+            const element = document.createElement("a");
+            const file = new Blob([data], { type: 'text/plain' });
+            element.href = URL.createObjectURL(file);
+
+            //Find the sheet name for the sheetId
+            const sheet = sheets.find(s => s.id === openedSheetID);
+
+            element.download = `${sheet.name}.txt`;
+            document.body.appendChild(element); // Required for this to work in FireFox
+            element.click();
+            element.remove();
+
+
+
+            if (!res.ok) throw new Error(`Download failed: ${res.status}`);
+
+
+        } catch (error) {
+            console.error('download error', error);
+            throw error;
+        }
+    }
+
+    const handleCopyLink = async () => {
+        try {
+            await navigator.clipboard.writeText(shareLink);
+            setCopyNoticeOpen(true);
+        } catch (error) {
+            console.warn("Clipboard copy failed:", error);
+        }
     }
 
     const getClassIcon = (className) => {
@@ -134,13 +193,15 @@ function SheetListings() {
 
     const [copyNoticeOpen, setCopyNoticeOpen] = useState(false);
     const handleCloseCopyNotice = (_, reason) => {
-    if (reason === 'clickaway') return;
-    setCopyNoticeOpen(false);
-  };
+        if (reason === 'clickaway') return;
+        setCopyNoticeOpen(false);
+    };
 
     useEffect(() => {
+
         // Fetch the sheets from the backend
         const fetchSheets = async () => {
+            setActiveSheetId(null);
             if (authUsername === null) {
                 await checkAuth();
                 return;
@@ -166,7 +227,7 @@ function SheetListings() {
         };
 
         fetchSheets();
-    }, [checkAuth, authUsername,updateFlag]);
+    }, [checkAuth, authUsername, updateFlag]);
 
     function GetCharacterDisplayName(sheet) {
         const raceName = sheet.race.subrace ? `${sheet.race.subrace} ${sheet.race.race}` : sheet.race.race;
@@ -187,118 +248,188 @@ function SheetListings() {
             <Navbar />
 
             <Snackbar
-        open={copyNoticeOpen}
-        autoHideDuration={2000}
-        onClose={handleCloseCopyNotice}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert onClose={handleCloseCopyNotice} severity="success" variant="filled" sx={{ width: '100%' }}>
-          Link copied to clipboard
-        </Alert>
-      </Snackbar>
+                open={copyNoticeOpen}
+                autoHideDuration={2000}
+                onClose={handleCloseCopyNotice}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={handleCloseCopyNotice} severity="success" variant="filled" sx={{ width: '100%' }}>
+                    Link copied to clipboard
+                </Alert>
+            </Snackbar>
 
             <div>
 
-            {shareLink !== ""&& (
-                //A modal or popup to show the share link
+                {shareLink !== "" && (
+                    //A modal or popup to show the share link
 
-                
-                <Dialog 
-                    open={shareDialogOpen} 
-                    onClose={handleCloseShareDialog}
-                    maxWidth="sm"
-                    fullWidth
-                >
-                    <DialogTitle>
-                        Shareable Link
-                        <IconButton
-                            onClick={handleCloseShareDialog}
-                            sx={{
-                                position: 'absolute',
-                                right: 8,
-                                top: 8,
-                                
-                            }}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                    </DialogTitle>
-                    <DialogContent sx={{ backgroundColor: 'white' }}>
-    <Box sx={{ 
-        p: 2, 
-        bgcolor: 'white',
-        color: 'black',
-        borderRadius: 1,
-        wordBreak: 'break-all',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 1,
-    }}>
-        <Typography sx={{ flex: 1 }}>{shareLink}</Typography>
-        <IconButton onClick={handleCopyLink} size="small">
-            <ContentCopyIcon />
-        </IconButton>
-    </Box>
-</DialogContent>
 
-                    <DialogActions>
-                        <Button onClick={handleCloseShareDialog} variant='outlined'>Close</Button>
-                    </DialogActions>
-                </Dialog>
-            )}
+                    <Dialog
+                        open={shareDialogOpen}
+                        onClose={handleCloseShareDialog}
+                        maxWidth="sm"
+                        fullWidth
+                    >
+                        <DialogTitle>
+                            Shareable Link
+                            <IconButton
+                                onClick={handleCloseShareDialog}
+                                sx={{
+                                    position: 'absolute',
+                                    right: 8,
+                                    top: 8,
+
+                                }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </DialogTitle>
+                        <DialogContent sx={{ backgroundColor: 'white' }}>
+                            <Box sx={{
+                                p: 2,
+                                bgcolor: 'white',
+                                color: 'black',
+                                borderRadius: 1,
+                                wordBreak: 'break-all',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                            }}>
+                                <Typography sx={{ flex: 1 }}>{shareLink}</Typography>
+                                {
+                                    <IconButton onClick={handleCopyLink} size="small">
+                                        <ContentCopyIcon />
+                                    </IconButton>
+                                }
+                            </Box>
+                        </DialogContent>
+
+                        <DialogActions>
+                            <Button onClick={handleDownloadSheetAsText} variant='outlined' >Download (TXT)</Button>
+                            <Button onClick={handleCloseShareDialog} variant='outlined' color='error'>Close</Button>
+                        </DialogActions>
+                    </Dialog>
+                )}
 
                 <div className="mt-4 flex flex-wrap space-y-8">
-
-
-                    <CreateNewSheet onUpdate={() => setUpdateFlag(true)}/>
+                    <CreateNewSheet onUpdate={() => setUpdateFlag(true)} />
                     {sheets.length !== 0 && (
                         <>
                             {sheets.map(sheet => (
                                 <div key={sheet.id}>
                                     <Box
-                                        className="group !w-48 !h-62 !mx-4  !rounded-xl !flex !flex-col !items-center !justify-center relative overflow-hidden"
-                                        style={{ backgroundColor: bgCol }}
+                                        className="group !mx-4 !rounded-xl !flex !flex-col !items-center !justify-center relative overflow-hidden"
+                                        sx={{
+                                            width: { xs: '3vw', sm: '20vw', md: '18vw', lg: '10vw' },
+                                            height: { xs: '20vw', sm: '38vw', md: '24vw', lg: '13.5vw' },
+                                            minWidth: 130,
+                                            minHeight: 180,
+                                            maxWidth: 400,
+                                            maxHeight: 1000,
+                                            backgroundColor: bgCol,
+                                            marginBottom: 3,
+                                            position: 'relative',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            borderRadius: 3,
+                                            overflow: 'hidden',
+                                        }}
+
+                                        onMouseLeave={() => {
+                                            if (isMobile) setActiveSheetId(null);
+                                        }}
                                     >
                                         {/* Background icon */}
-                                        <div className={`absolute inset-0 flex items-center justify-center pointer-events-none`} style={{ opacity: iconTransparency }}>
+                                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ opacity: iconTransparency }}>
                                             {getClassIcon(sheet.class?.class_name)}
                                         </div>
 
                                         {/* Foreground button and content */}
-                                        <Button
-                                            component={RouterLink}
-                                            to={`/sheets/${authUsername}/${sheet.id}`}
-                                            sx={{
-                                                position: 'relative',
-                                                zIndex: 1,
-                                                background: 'transparent',
-                                                width: '100%',
-                                                height: '100%',
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                textTransform: 'none',
-                                                p: 0,
-                                                gap: 1,
-                                                color: 'inherit',
-                                            }}
-                                        >
-                                            <Typography variant="h5" component="div" sx={{ fontWeight: 600 }} className='text-white text-xl'>
-                                                {sheet.name}
-                                            </Typography>
-                                            <Typography variant="h6" component="div" sx={{ fontWeight: 500 }} className='text-white'>
-                                                {GetCharacterDisplayName(sheet)}
-                                            </Typography>
-                                        </Button>
+                                        {isMobile ? (
+                                            <Box
+                                                sx={{
+                                                    position: 'relative',
+                                                    zIndex: 1,
+                                                    background: 'transparent',
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    textTransform: 'none',
+                                                    p: 0,
+                                                    gap: 1,
+                                                    color: 'inherit',
+                                                    cursor: 'pointer',
+                                                }}
+                                                onClick={() => {
+                                                    if (activeSheetId === sheet.id) {
+                                                        window.location.href = `/sheets/${authUsername}/${sheet.id}`;
+                                                    } else {
+                                                        setActiveSheetId(sheet.id);
+                                                    }
+                                                }}
+                                            >
+                                                <Typography variant="h5" component="div" sx={{ fontWeight: 600, fontSize: { xs: '1.5rem', sm: '1.25rem', md: '1.1rem' } }} className='text-white'>
+                                                    {sheet.name}
+                                                </Typography>
+                                                <Typography variant="h6" component="div" sx={{ fontWeight: 500, fontSize: { xs: '1.1rem', sm: '1rem', md: '0.9rem' } }} className='text-white'>
+                                                    {GetCharacterDisplayName(sheet)}
+                                                </Typography>
+                                            </Box>
+                                        ) : (
+                                            <Button
+                                                component={RouterLink}
+                                                to={`/sheets/${authUsername}/${sheet.id}`}
+                                                sx={{
+                                                    position: 'relative',
+                                                    zIndex: 1,
+                                                    background: 'transparent',
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    textTransform: 'none',
+                                                    p: 0,
+                                                    gap: 1,
+                                                    color: 'inherit',
+                                                }}
+                                            >
+                                                <Typography variant="h5" component="div" sx={{ fontWeight: 600, fontSize: { xs: '1.5rem', sm: '1.25rem', md: '1.1rem' } }} className='text-white'>
+                                                    {sheet.name}
+                                                </Typography>
+                                                <Typography variant="h6" component="div" sx={{ fontWeight: 500, fontSize: { xs: '1.1rem', sm: '1rem', md: '0.9rem' } }} className='text-white'>
+                                                    {GetCharacterDisplayName(sheet)}
+                                                </Typography>
+                                            </Button>
+                                        )}
 
+
+                                        {/* Action icons: show on hover (desktop) or tap (mobile) */}
                                         <i
-                                            className="fa fa-share  absolute top-4 left-4 cursor-pointer text-white hover:text-blue-400 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                            onClick={() => shareSheet(sheet.id)}
+                                            className={`fa fa-share absolute top-4 left-4 cursor-pointer text-white hover:text-blue-400 z-10 transition-opacity duration-300 ${isMobile
+                                                ? (activeSheetId === sheet.id ? 'opacity-100' : 'opacity-0')
+                                                : 'opacity-0 group-hover:opacity-100'
+                                                }`}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                shareSheet(sheet.id);
+                                            }}
                                         ></i>
                                         <i
-                                            className="fa-solid fa-trash absolute top-4 right-4 cursor-pointer text-white hover:text-red-500 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                            onClick={() => deleteSheet(sheet.id)}
+                                            className={`fa-solid fa-trash absolute top-4 right-4 cursor-pointer text-white hover:text-red-500 z-10 transition-opacity duration-300 ${isMobile
+                                                ? (activeSheetId === sheet.id ? 'opacity-100' : 'opacity-0')
+                                                : 'opacity-0 group-hover:opacity-100'
+                                                }`}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                deleteSheet(sheet.id);
+                                            }}
                                         ></i>
                                     </Box>
                                 </div>

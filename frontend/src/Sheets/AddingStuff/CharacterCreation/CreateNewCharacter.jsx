@@ -17,11 +17,11 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
-import ClassSelect from './Class/ClassSelect.jsx';
-import RaceSelect from './Race/RaceSelect.jsx';
-import SkillProfSelection from './CharacterCreation/SkillProficiencySelection.jsx';
-import StartingEquipmentSelection from './CharacterCreation/StartingEquipmentSelection.jsx';
-import FeatureList from './Lists/FeatureList.jsx';
+import ClassSelect from './ClassSelect.jsx';
+import RaceSelect from '../Race/RaceSelect.jsx';
+import SkillProfSelection from './SkillProficiencySelection.jsx';
+import StartingEquipmentSelection from './StartingEquipmentSelection.jsx';
+import FeatureList from '../../Lists/FeatureList.jsx';
 
 function CreateNewCharacter({ isOpen, onClose, onSubmit, draft, setDraft }) {
 

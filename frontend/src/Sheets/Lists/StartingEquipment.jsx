@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddItem from '../AddingStuff/AddItem';
-import ItemCache from '../Inventory/ItemCache';
+import ItemCache from '../MiddleColumn/Inventory/ItemCache';
 
 const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
   const [newItemDialogOpen, setNewItemDialogOpen] = useState(false);

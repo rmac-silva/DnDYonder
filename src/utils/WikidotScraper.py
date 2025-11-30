@@ -158,10 +158,13 @@ class WikidotScraper:
         """Search for strings like 1st or 5th or 29th in the content and return as an integer."""
         import re
 
-        match = re.search(r"(\d+)(st|nd|rd|th)(?: level|-level)", content)
-        if match:
-            return int(match.group(1))
-        else:
+        try:
+            match = re.search(r"(\d+)(st|nd|rd|th)(?: level|-level)", content)
+            if match:
+                return int(match.group(1))
+            else:
+                return 0
+        except:
             return 0
 
     def format_results(self):
@@ -170,9 +173,13 @@ class WikidotScraper:
         seen_subtitles = set()
 
         for key, value in self.results.items():
+            print(value)
             merged_content = {}
             merged_content["title"] = key
-            merged_content["level_required"] = self.fetch_level_required(value[0]["content"])
+            try:
+                merged_content["level_required"] = self.fetch_level_required(value[0]["content"])
+            except: 
+                merged_content["level_required"] = 0
             merged_content["content"] = []
             merged_content["tables"] = []
 

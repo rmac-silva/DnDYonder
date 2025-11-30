@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import ItemCache from '../Inventory/ItemCache';
+import ItemCache from '../MiddleColumn/Inventory/ItemCache';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import AddItem from '../AddingStuff/AddItem';

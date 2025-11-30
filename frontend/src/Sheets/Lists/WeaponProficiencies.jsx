@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
-import ItemCache from '../Inventory/ItemCache';
+import ItemCache from '../MiddleColumn/Inventory/ItemCache';
 import AddItem from '../AddingStuff/AddItem';
 
 const GetWeaponProficiencies = ({ value = [], onChange }) => {

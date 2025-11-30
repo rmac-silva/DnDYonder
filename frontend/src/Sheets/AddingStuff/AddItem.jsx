@@ -18,7 +18,7 @@ import FormControl from '@mui/material/FormControl';
 import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
-import ItemCache from '../Inventory/ItemCache';
+import ItemCache from '../MiddleColumn/Inventory/ItemCache';
 import CachedIcon from '@mui/icons-material/Cached';
 import Tooltip from '@mui/material/Tooltip';
 

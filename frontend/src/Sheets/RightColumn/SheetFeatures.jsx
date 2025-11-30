@@ -8,10 +8,10 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
-import AddFeatureDialog from './Lists/AddFeatureDialog.jsx';
-import SwipeableFeatureAccordion from './Lists/SwipeableFeatureAccordion.jsx';
+import AddFeatureDialog from '../Lists/AddFeatureDialog.jsx';
+import SwipeableFeatureAccordion from '../Lists/SwipeableFeatureAccordion.jsx';
 
-function SubclassInfo({ draft, setDraft }) {
+function SheetFeatures({ draft, setDraft }) {
   const [sheetFeatures, setSheetFeatures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [addDialogOpen, setAddDialogOpen] = useState(false); // new
@@ -123,4 +123,4 @@ function SubclassInfo({ draft, setDraft }) {
     </div>
   );
 }
-export default SubclassInfo;
+export default SheetFeatures;

@@ -27,3 +27,4 @@ class Subclass:
         self.level = data.get("level", 1)
         self.features = [ClassFeature(**feature) for feature in data.get("features", [])]
         self.selected = data.get("selected", False)
+        return self

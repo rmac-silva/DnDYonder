@@ -7,35 +7,32 @@ import { initSheetManager, setDraftGlobal, isSheetSaved, saveSheet } from './She
 import Navbar from '../Navbar/Navbar.jsx';
 
 //Left column
-import PlayerStats from './Stats/PlayerStats.jsx';
+import PlayerStats from './MiddleColumn/Stats/PlayerStats.jsx';
 
 //Middle column
-import HitDice from './Stats/HitDice.jsx';
-import DeathSaves from './Stats/DeathSaves.jsx';
-import PlayerAttacks from './Stats/PlayerAttacks.jsx';
-import Inventory from './Inventory/Inventory.jsx';
-import Trackers from './Lists/Trackers.jsx';
+import HitDice from './MiddleColumn/Stats/HitDice.jsx';
+import DeathSaves from './MiddleColumn/Stats/DeathSaves.jsx';
+import PlayerAttacks from './MiddleColumn/Stats/PlayerAttacks.jsx';
+import Inventory from './MiddleColumn/Inventory/Inventory.jsx';
+import Trackers from './MiddleColumn/Trackers.jsx';
 
 import SheetHeader from './SheetHeader.jsx';
-import SheetLeftColumn from './SheetColumnLeft.jsx';
+import SheetLeftColumn from './LeftColumn/SheetColumnLeft.jsx';
 
-import SubclassInfo from './SubclassInfo.jsx';
-import SheetFeatures from './SheetFeatures.jsx';
+import SubclassInfo from './RightColumn/SubclassInfo.jsx';
+import SheetFeatures from './RightColumn/SheetFeatures.jsx';
 
-import CreateNewCharacter from './CreateNewCharacter.jsx';
+import CreateNewCharacter from './AddingStuff/CharacterCreation/CreateNewCharacter.jsx';
 
 //Sheet 2
-import Spellcasting from './Spellcasting/Spellcasting.jsx';
-import SpellList from './Spellcasting/SpellList.jsx';
+import Spellcasting from './Backsheet/Spellcasting/Spellcasting.jsx';
+import SpellList from './Backsheet/Spellcasting/SpellList.jsx';
 
-import CharacterInfo from './CharacterInfo/CharacterInfo.jsx';
-import Backstory from './CharacterInfo/Backstory.jsx';
-import PersonalityTraits from './CharacterInfo/PersonalityTraits.jsx';
+import CharacterInfo from './Backsheet/CharacterInfo/CharacterInfo.jsx';
+import Backstory from './Backsheet/CharacterInfo/Backstory.jsx';
+import PersonalityTraits from './Backsheet/CharacterInfo/PersonalityTraits.jsx';
 
 function GetSheet() {
-
-
-
 
     const ABILITY_SKILL_MAP = {
         "Athletics": "Strength",

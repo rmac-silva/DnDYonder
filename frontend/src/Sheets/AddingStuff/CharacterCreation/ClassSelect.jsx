@@ -23,13 +23,13 @@ import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-import GetArmorProficiencies from '../Lists/ArmorProficiencies';
-import GetWeaponProficiencies from '../Lists/WeaponProficiencies';
-import GetToolProficiencies from '../Lists/ToolProficiencies';
-import GetAttributeProficiencies from '../Lists/AttributeProficiencies';
-import GetSkillProficiencies from '../Lists/SkillProficiencies';
-import GetStartingEquipment from '../Lists/StartingEquipment';
-import GetClassFeats from '../Lists/ClassFeature';
+import GetArmorProficiencies from '../../Lists/ArmorProficiencies';
+import GetWeaponProficiencies from '../../Lists/WeaponProficiencies';
+import GetToolProficiencies from '../../Lists/ToolProficiencies';
+import GetAttributeProficiencies from '../../Lists/AttributeProficiencies';
+import GetSkillProficiencies from '../../Lists/SkillProficiencies';
+import GetStartingEquipment from '../../Lists/StartingEquipment';
+import GetClassFeats from '../../Lists/ClassFeature';
 
 const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   const [loading, setLoading] = useState(true);

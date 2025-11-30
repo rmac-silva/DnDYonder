@@ -3,13 +3,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 import os
+import ssl
 from dotenv import load_dotenv
+import uvicorn
 
 from auth.jwt import JWTManager
 from utils.infoManager import InfoManager
 from sheet.sheet import CharacterSheet
 from utils.db_manager import DatabaseManager
 from utils.WikidotScraper import WikidotScraper
+from utils.sheet_converter_to_text import ExportAsText
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -36,6 +39,9 @@ jwt_manager = JWTManager(db, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES)
 info_manager = InfoManager(db)
 
 app = FastAPI()
+
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -334,5 +340,29 @@ def get_wikidot_spell_info(spell_name: str):
 
 #endregion
 
+#region - Export & Download
+@app.get("/export/txt/{username}/{sheet_id}")
+def export_sheet_txt(username: str, sheet_id: int):
+    """Returns a .txt representation of the character sheet
 
+    Args:
+        username (str): the username
+        sheet_id (int): the id of the sheet to convert
 
+    Raises:
+        HTTPException: If the sheet does not exist, a 404 will be raised
+
+    Returns:
+        str: The character sheet in a text format
+    """
+    res = db.retrieve_character_sheet(username, sheet_id)
+    if res[0] is False:
+        raise HTTPException(status_code=404, detail=res[1])
+    else:
+        if(type(res[1]) is dict):
+            
+            return ExportAsText(res[1])
+        
+        
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="192.168.1.71", port=8000,ssl_keyfile='./certs/localhost-key.pem', ssl_certfile='./certs/localhost.pem', reload=True)

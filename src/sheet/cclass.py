@@ -2,7 +2,7 @@ from typing import List
 from items.item import Item, ItemChoice
 from sheet.spellcasting import Spellcasting
 from sheet.subclass import Subclass
-from utils.enums import ArmorType, WeaponType, ToolTypes, Attributes, Skills
+from utils.enums import ArmorType, ToolTypes, Attributes, Skills
 from misc.feature import ClassFeature
 
 class CharacterClass():
@@ -19,7 +19,7 @@ class CharacterClass():
         
         #Proficiencies
         self.armor_proficiencies : List[ArmorType] = []
-        self.weapon_proficiencies : List[WeaponType] = []
+        self.weapon_proficiencies : List[str] = []
         self.tool_proficiencies : List[ToolTypes] = []
         
         #Proficiency in Saving Throws / Skills
@@ -50,7 +50,7 @@ class CharacterClass():
             "starting_hitpoints": self.starting_hitpoints,
             "next_hitpoints": self.next_hitpoints,
             "armor_proficiencies": [ap.value for ap in self.armor_proficiencies],
-            "weapon_proficiencies": [wp.value for wp in self.weapon_proficiencies],
+            "weapon_proficiencies": [wp for wp in self.weapon_proficiencies],
             "tool_proficiencies": [tp.value for tp in self.tool_proficiencies],
             "attribute_proficiency": [attr.value for attr in self.attribute_proficiency],
             "skill_proficiency": [skill.value for skill in self.skill_proficiency],
@@ -58,8 +58,8 @@ class CharacterClass():
             "starting_equipment": [item.jsonify() for item in self.starting_equipment],
             "starting_equipment_choices": [choice.jsonify() for choice in self.starting_equipment_choices],
             "class_features": [feature.jsonify() for feature in self.class_features],
-            "spellcasting": self.spellcasting.jsonify(),
-            "subclass": self.subclass.jsonify()
+            "spellcasting": self.spellcasting.jsonify() if self.spellcasting is not None else Spellcasting().jsonify(),
+            "subclass": self.subclass.jsonify() if self.subclass is not None else Subclass().jsonify()
         }
         
     def load_from_dict(self, data: dict):
@@ -70,7 +70,7 @@ class CharacterClass():
         self.next_hitpoints = data.get("next_hitpoints", 0)
         
         self.armor_proficiencies = [ArmorType(ap) for ap in data.get("armor_proficiencies", [])]
-        self.weapon_proficiencies = [WeaponType(wp) for wp in data.get("weapon_proficiencies", [])]
+        self.weapon_proficiencies = [str(wp) for wp in data.get("weapon_proficiencies", [])]
         self.tool_proficiencies = [ToolTypes(tp) for tp in data.get("tool_proficiencies", [])]
         
         self.attribute_proficiency = [Attributes(attr) for attr in data.get("attribute_proficiency", [])]
@@ -80,8 +80,8 @@ class CharacterClass():
         self.starting_equipment_choices = [ItemChoice(choice) for choice in data.get("starting_equipment_choices", [])]
         
         self.class_features = [ ClassFeature().load_from_dict(feature) for feature in data.get("class_features", []) ]
-        self.spellcasting = data.get("spellcasting", False)
-        self.subclass = data.get("subclass", False)
+        self.spellcasting = Spellcasting().load_from_dict(data.get("spellcasting", {}))
+        self.subclass = Subclass().load_from_dict(data.get("subclass", {}))
     
     def get_features(self) -> List[dict]:
         return [feature.__dict__ for feature in self.class_features]

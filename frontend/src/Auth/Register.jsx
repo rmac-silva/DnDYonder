@@ -74,19 +74,29 @@ export default function Register() {
     return (
         <>
             <Navbar />
-
-            {/* Full-width container that centers the card horizontally */}
             <div className="w-full flex justify-center mt-8 px-4">
-                {/* Centered form card with a fixed width so the whole card is centered on the page */}
                 <div
                     className="bg-zinc-200 rounded-md p-8 flex flex-col items-start"
-                    style={{ width: 900 }} // fixed card width keeps it centered reliably
+                    style={{
+                        width: '90vw',
+                        maxWidth: '80%',
+                        minWidth: 0,
+                        boxSizing: 'border-box'
+                    }}
                 >
-                    {/* Header (centered within the card) */}
-                    <div className="text-4xl font-bold text-gray-800 mb-6 self-center">Register</div>
+                    <div
+                        className="font-bold text-gray-800 self-center"
+                        style={{
+                            fontSize: '3rem',
+                            marginBottom: '2vw',
+                            textAlign: 'center',
+                            width: '100%'
+                        }}
+                    >
+                        Register
+                    </div>
                     {error && <div className="text-red-600 mb-4">{error}</div>}
-                    {/* Email Field (starts at same X as password input) */}
-                    <div style={{ width: 800 }} className="mb-4">
+                    <div style={{ width: '100%' }} className="mb-4">
                         <TextField
                             className='!w-full'
                             required
@@ -103,15 +113,18 @@ export default function Register() {
                             }}
                         />
                     </div>
-
-                    {/* Login Button - centered */}
                     <div className="w-full flex justify-center">
                         <Button
-                        loading={loading}
-                        onClick={registerUser}
+                            loading={loading}
+                            onClick={registerUser}
                             variant="contained"
                             className="!bg-blue-500 !text-white !px-6 !py-2 !text-lg !font-semibold !rounded-md hover:!bg-blue-700"
-
+                            sx={{
+                                fontSize: { xs: '4vw', sm: '1.125rem' },
+                                width: '60vw',
+                                maxWidth: 250,
+                                minWidth: 120
+                            }}
                         >
                             Register
                         </Button>

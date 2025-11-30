@@ -15,7 +15,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
-import GetClassFeats from "./Lists/ClassFeature";
+import GetClassFeats from "../Lists/ClassFeature";
 
 
 function SubclassSelect({ draft, setDraft }) {

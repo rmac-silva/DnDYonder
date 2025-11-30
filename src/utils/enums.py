@@ -6,9 +6,8 @@ class ArmorType(Enum):
     HEAVY = "Heavy Armor"
     SHIELD = "Shields"
 
-class WeaponType(Enum):
-    SIMPLE = "Simple Weapons"
-    MARTIAL = "Martial Weapons"
+
+    
 
 class Attributes(Enum):
     STR = "Strength"

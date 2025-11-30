@@ -24,13 +24,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 
 
-import GetArmorProficiencies from '../Lists/ArmorProficiencies';
-import GetWeaponProficiencies from '../Lists/WeaponProficiencies';
-import GetToolProficiencies from '../Lists/ToolProficiencies';
-import GetAttributeProficiencies from '../Lists/AttributeProficiencies';
-import GetSkillProficiencies from '../Lists/SkillProficiencies';
-import GetStartingEquipment from '../Lists/StartingEquipment';
-import GetClassFeats from '../Lists/ClassFeature';
+import GetArmorProficiencies from '../../Lists/ArmorProficiencies';
+import GetWeaponProficiencies from '../../Lists/WeaponProficiencies';
+import GetToolProficiencies from '../../Lists/ToolProficiencies';
+import GetClassFeats from '../../Lists/ClassFeature';
 
 const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
     const [loading, setLoading] = useState(true);
@@ -260,7 +257,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                 <Select
                     labelId="race-select-label"
                     id="race-select"
-                    value={sheet.race.subrace !== '' ? sheet.race.subrace + " " + sheet.race.race : sheet.race.race || ''}
+                    value={(sheet.race.subrace !== null && sheet.race.subrace !== '') ? sheet.race.subrace + " " + sheet.race.race : sheet.race.race || ''}
                     onChange={handleChangingRace}
                     disabled={loading || disabled}
                 >
