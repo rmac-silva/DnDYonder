@@ -84,7 +84,7 @@ function Inventory({draft, setDraft}) {
             <h2 className="text-4xl font-bold mb-2">Inventory</h2>
             <h1 className="text-md font-medium ">Double click to edit</h1>
             {/* Button to add a new blank item */}
-            <div className="grid  w-full  text-lg grid-cols-2 gap-y-2 mt-4">
+            <div className="grid w-full text-lg grid-cols-1 md:grid-cols-2 gap-y-2 mt-4">
             
             {itemLines.map( (item, index) => (
                 <div

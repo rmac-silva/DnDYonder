@@ -14,10 +14,12 @@
 
 # TODO:
 
-## Mobile Version & Visual Revamp
-- Make the frontend responsive for mobile devices.
-- Make the WikiDot fetching buttons more consistent.
-- Revamp the creation menu style to be more user friendly.
+## Visual Revamp
+- Revamp the creation menus to be more user friendly.
+
+## Improve WikiDot fetching
+- Add a loading spinner when fetching items from WikiDot.
+- Add a fetch for classes.
 
 ## Database Management Improvements
 - A way to edit or delete created classes, weapons etc... This has to be done only by admins! We can't let anyone delete anything. 
@@ -26,10 +28,6 @@
 
 ## Bug Testing
 - Form validate everything, try and create empty items, classes, duplicate entries, SUBCLASSES.
-
-## Improve WikiDot fetching
-- Add a loading spinner when fetching items from WikiDot.
-- Add a fetch for classes.
 
 # RELEASE v 1.0 
 - Host on private server, get a domain name etc...
@@ -50,6 +48,9 @@
 
 
 # Changelog
-- LAN Version: Switched all hardcoded API URLs to use environment variable VITE_API_URL. Update your .env file accordingly.
-- Changed css layout to use an override of the MUI theme.
-- Added rainbow colours when refreshing the page.
+- Added HTTPS
+- Changed how the backend was run, now run main.py from src folder.
+
+## Mobile Version & Visual Revamp
+- Make the frontend responsive for mobile devices.
+- Make the WikiDot fetching buttons more consistent.

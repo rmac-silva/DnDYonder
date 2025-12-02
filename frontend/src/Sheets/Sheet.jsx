@@ -5,6 +5,7 @@ import { useAuth } from '../Auth/AuthContext.jsx';
 import { initSheetManager, setDraftGlobal, isSheetSaved, saveSheet } from './SheetManager.js';
 
 import Navbar from '../Navbar/Navbar.jsx';
+import Box from '@mui/material/Box';
 
 //Left column
 import PlayerStats from './MiddleColumn/Stats/PlayerStats.jsx';
@@ -226,52 +227,72 @@ function GetSheet() {
 
     return (
         <div>
-            {/* Using beforeunload handler above instead of Prompt (Prompt removed in react-router-dom v6) */}
             <Navbar />
-
             {creatingNewSheet &&
                 <CreateNewCharacter isOpen={creatingNewSheet} onClose={cancelCharacterCreation} onSubmit={saveNewCharacter} draft={draft} setDraft={updateDraft} />
             }
-            {
-                !creatingNewSheet &&
-                <div className='flex'>
-
-
+            {!creatingNewSheet &&
+                <Box
+                    sx={{
+                        width: '100%',
+                        maxWidth: '100%',
+                        margin: '0 auto',
+                        minHeight: '100vh',
+                        boxSizing: 'border-box',
+                    }}
+                >
                     <div className='flex-col w-full'>
-
                         {/* Sheet Page 1 */}
                         <div className='flex w-full'>
-                            <div className="mt-4 p-4 bg-zinc-200 mx-5 justify-self-center rounded w-full text-gray-700">
+                            <div className="mx-1 p-4 bg-zinc-200 justify-self-center rounded w-full text-gray-700">
                                 {/* Header */}
                                 <SheetHeader draft={draft} setDraft={updateDraft} nameVar={nameVar} setNameVar={setNameVar} />
 
                                 {/* Three Columns */}
-                                <div className="flex mt-6">
-
+                                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                                     {/* First Column - Stats */}
-                                    <SheetLeftColumn draft={draft} setDraft={updateDraft} />
+                                    <div className="w-full min-w-0">
+                                        <SheetLeftColumn draft={draft} setDraft={updateDraft} />
+                                    </div>
 
                                     {/* Second Column - Health, Attacks, etc. */}
-                                    <div className="w-1/3 bg-white mx-4 p-4 rounded shadow">
-                                        <div className=' p-4 flex flex-col'>
-
-                                            <PlayerStats draft={draft} setDraft={updateDraft}  />
-                                            <div className='flex justify-center'>
+                                    <div className="w-full min-w-0 bg-white p-4 rounded shadow">
+                                        <div className="p-4 flex flex-col gap-4 min-w-0 max-w-full overflow-hidden">
+                                            <div className="w-full min-w-0">
+                                                <PlayerStats draft={draft} setDraft={updateDraft} />
+                                            </div>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex', //Col on medium and below, row on large and up
+                                                    flexDirection: { xs: 'column', lg: 'row' },
+                                                    justifyContent: { xs: 'flex-start', sm: 'center' },
+                                                    alignItems: {xs: 'center', sm: 'flex-start' },
+                                                    flexWrap:{xl: 'nowrap', lg: 'wrap'} , // keep side-by-side
+                                                    gap: { xs: 1.5, sm: 2 },
+                                                    width: '100%',
+                                                    minWidth: 0,
+                                                     
+                                                }}
+                                            >
                                                 <HitDice draft={draft} setDraft={updateDraft} />
                                                 <DeathSaves draft={draft} setDraft={updateDraft} />
+                                            </Box>
+                                            <div className="w-full min-w-0">
+                                                <PlayerAttacks draft={draft} setDraft={updateDraft} />
                                             </div>
-                                            <PlayerAttacks draft={draft} setDraft={updateDraft} />
-                                            <Inventory draft={draft} setDraft={updateDraft} />
-                                            <Trackers draft={draft} setDraft={updateDraft} />
+                                            <div className="w-full min-w-0">
+                                                <Inventory draft={draft} setDraft={updateDraft} />
+                                            </div>
+                                            <div className="w-full min-w-0">
+                                                <Trackers draft={draft} setDraft={updateDraft} />
+                                            </div>
                                         </div>
                                     </div>
 
                                     {/* Third Column - Traits and Features */}
-                                    <div className=" bg-white flex flex-col p-4 w-38/100 rounded shadow">
-                                        {/* placeholder for traits and features */}
+                                    <div className="w-full min-w-0 bg-white flex flex-col p-4 rounded shadow">
                                         <SubclassInfo draft={draft} setDraft={updateDraft} />
                                         <SheetFeatures draft={draft} setDraft={updateDraft} />
-
                                     </div>
                                 </div>
                             </div>
@@ -279,38 +300,42 @@ function GetSheet() {
 
                         {/* Sheet Page 2 */}
                         <div className='flex w-full'>
-                            <div className="mt-4 p-4 bg-zinc-200 mx-5 justify-self-center flex flex-col rounded w-full  text-gray-700">
-
-                                {/* Header */}
+                            <div className="mt-4 p-4 bg-zinc-200 mx-1 sm:mx-5 justify-self-center flex flex-col rounded w-full text-gray-700">
                                 <div className='flex items-center justify-center gap-4 '>
                                     <CharacterInfo draft={draft} setDraft={updateDraft} nameVar={nameVar} setNameVar={setNameVar}/>
                                 </div>
 
-                                {/* Character Traits etc... Spellcasting if applicable*/}
-                                <div className=' w-full flex space-x-2 flex-wrap items-stretch' >
-                                    <div className= {`  flex flex-col items-center space-y-2 self-stretch ${draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) ? 'w-23/100' : 'w-49/100'}`}>
+                                {/* Responsive grid for backsheet components:
+                                    - 1 column on xs
+                                    - 2 columns on md
+                                    - 3 columns on lg and up
+                                */}
+                                <div className='w-full grid gap-4 mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-[.5fr_1fr_.5fr] '>
+                                    {/* Backstory cell */}
+                                    <div className='w-full min-w-0 flex flex-col items-center space-y-2'>
                                         <Backstory draft={draft} setDraft={updateDraft} />
                                     </div>
+
+                                    {/* Spellcasting + SpellList: only render if available; ensure it can't force viewport wider */}
                                     {draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) &&
-                                        <div className=' bg-white rounded shadow p-2 flex flex-col items-center space-y-2 min-w-230 max-w-230 self-stretch'>
-                                            <Spellcasting draft={draft} setDraft={updateDraft} />
-                                            <SpellList draft={draft} setDraft={updateDraft} />
+                                        <div className='w-full min-w-0'>
+                                            <div className='bg-white rounded shadow p-2 flex flex-col items-center space-y-2 w-full min-w-0 max-w-full overflow-hidden'>
+                                                <Spellcasting draft={draft} setDraft={updateDraft} />
+                                                <SpellList draft={draft} setDraft={updateDraft} />
+                                            </div>
                                         </div>
                                     }
-                                    <div className= {` flex flex-col items-center space-y-2 self-stretch ${draft.stats.level >= (draft.class.spellcasting?.level ?? Infinity) ? 'w-23/100' : 'w-49/100'}`}>
-                                        <PersonalityTraits draft={draft} setDraft={updateDraft} />
-                                        
-                                    </div>
 
+                                    {/* Personality / Traits cell */}
+                                    <div className='w-full min-w-0 flex flex-col items-center space-y-2'>
+                                        <PersonalityTraits draft={draft} setDraft={updateDraft} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
-                </div>
+                </Box>
             }
-
         </div>
     );
 }

@@ -76,6 +76,16 @@ function getSchoolGradients(schoolRaw) {
 function SpellList({ draft, setDraft }) {
   const [sortedSpells, setSortedSpells] = useState([]);
   const [forceRefresh, setForceRefresh] = useState(false);
+  const [onMobile, setOnMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setOnMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Prefer spells_known; fall back to other keys only if empty/absent
   const getSpellSource = () => {
@@ -147,137 +157,208 @@ function SpellList({ draft, setDraft }) {
         return s.casting_time.split(',')[0];
     }
 
+    const columnTemplates = {
+      xs: 'minmax(90px,1.4fr) minmax(50px,0.5fr) minmax(60px,0.7fr) minmax(75px,0.8fr) minmax(85px,1fr)',
+      sm: 'minmax(110px,1.5fr) minmax(60px,0.6fr) minmax(75px,0.8fr) minmax(95px,0.9fr) minmax(105px,1.1fr)',
+      md: 'minmax(130px,1.5fr) minmax(65px,0.6fr) minmax(85px,0.8fr) minmax(110px,0.9fr) minmax(120px,1.1fr)',
+      lg: 'minmax(150px,1.5fr) minmax(70px,0.6fr) minmax(90px,0.8fr) minmax(120px,0.9fr) minmax(140px,1.1fr)',
+      xl: '1.5fr 0.6fr 0.80fr 0.9fr 1.1fr'
+    };
+    // NEW: linear spacing scale (xl is baseline)
+    const spacingScale = {
+      px:        { xs: 2, sm: 2, md: 2, lg: 2, xl: 2 },
+      pyHeader:  { xs: 0.50, sm: 0.55, md: 0.70, lg: 0.85, xl: 1 },
+      pyRow:     { xs: 0.40, sm: 0.50, md: 0.55, lg: 0.65, xl: 0.75 },
+      gap:       { xs: 0.25, sm: 0.40, md: 0.55, lg: 0.70, xl: 0.75 },
+      minHeight: { xs: '38px', sm: '40px', md: '44px', lg: '46px', xl: '48px' }
+    };
+
     return (
         <Box sx={{ width: '100%', mt: 6, display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'stretch' }}>
-            {/* Add new spell UI */}
-
-
-            {/* Header */}
+            {/* Horizontal scroll container (mobile only) */}
             <Box
                 sx={{
-                    display: 'grid',
-                    gridTemplateColumns: '1.5fr 0.6fr 0.80fr 0.9fr 1.1fr',
-                    px: 2,
-                    py: 1,
-                    borderBottom: '1px solid #ddd',
-                    fontSize: 13,
-                    fontWeight: 600,
-                    letterSpacing: '.5px',
-                    textTransform: 'uppercase',
-                    color: '#111',
-                    alignItems: 'center'
+                    width: '100%',
+                    overflowX: onMobile ? 'auto' : 'visible',
+                    WebkitOverflowScrolling: 'touch',
                 }}
             >
-                <span>Name</span>
-                <span className=''>Time</span>
-                <span className=''>Range</span>
-                <span className=''>School</span>
-                <span className=''>Components</span>
-            </Box>
-
-            {sortedSpells.length === 0 && (
-                <Typography variant="body2" sx={{ opacity: .7, px: 2, py: 1 }}>
-                    No spells added.
-                </Typography>
-            )}
-
-            {sortedSpells.map((spell, i) => {
-                const grads = getSchoolGradients(getSchool(spell));
-                return (
-                    <Accordion
-                        key={`${spell.id ?? spell.name}-${i}`}
-                        disableGutters
+                {/* Fixed inner width so header/rows can scroll horizontally on small screens */}
+                <Box sx={{ minWidth: onMobile ? 720 : 'auto' }}>
+                    {/* Header */}
+                    <Box
                         sx={{
-                            '&:before': { display: 'none' },
-                            boxShadow: 'none',
-                            borderBottom: '1px solid #eee',
-                            borderRadius: 0
+                            display: 'grid',
+                            gridTemplateColumns: {
+                              xs: columnTemplates.xs,
+                              sm: columnTemplates.sm,
+                              md: columnTemplates.md,
+                              lg: columnTemplates.lg,
+                              xl: columnTemplates.xl
+                            },
+                            px: spacingScale.px,
+                            py: spacingScale.pyHeader,
+                            borderBottom: '1px solid #ddd',
+                            fontSize: { xs: 10.5, sm: 11.25, md: 12.25, xl: 15 },
+                            fontWeight: 600,
+                            letterSpacing: '.5px',
+                            textTransform: 'uppercase',
+                            color: '#111',
+                            alignItems: 'center',
+                            gap: spacingScale.gap
                         }}
                     >
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            sx={{
-                                px: 2,
-                                py: 1,
-                                minHeight: '48px',
-                                transition: 'background 0.4s ease',
-                                background: grads.collapsed,
-                                '& .MuiAccordionSummary-content': { margin: 0, width: '100%' },
-                                '&.Mui-expanded': { background: grads.expanded },
-                                '&:hover': { background: grads.hover }
-                            }}
-                        >
-                            <Box
+                        <span>Name</span>
+                        <span>Time</span>
+                        <span>Range</span>
+                        <span>School</span>
+                        <span>Components</span>
+                    </Box>
+
+                    {sortedSpells.length === 0 && (
+                        <Typography variant="body2" sx={{ opacity: .7, px: 2, py: 1 }}>
+                            No spells added.
+                        </Typography>
+                    )}
+
+                    {sortedSpells.map((spell, i) => {
+                        const grads = getSchoolGradients(getSchool(spell));
+                        return (
+                            <Accordion
+                                key={`${spell.id ?? spell.name}-${i}`}
+                                disableGutters
                                 sx={{
-                                    display: 'grid',
-                                    alignItems: 'center',
+                                    '&:before': { display: 'none' },
+                                    boxShadow: 'none',
+                                    borderBottom: '1px solid #eee',
+                                    borderRadius: 0,
                                     width: '100%',
-                                    gridTemplateColumns: 'minmax(160px,1.5fr) minmax(70px,0.7fr) minmax(90px,0.8fr) minmax(120px,1fr) minmax(140px,1fr)',
-                                    fontSize: 14
                                 }}
                             >
-                                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                    <span style={{ fontWeight: 600 }}>
-                                        {spell.name}
-                                    </span>
-                                    <span style={{ fontSize: 12, opacity: .75 }}>
-                                        {spell.level === 0 ? 'Cantrip' : `Level ${spell.level}`}
-                                    </span>
-                                </Box>
-                                <span>{getCastTime(spell) || '—'}</span>
-                                <span>{spell.range || '—'}</span>
-                                <span>{getSchool(spell)}</span>
-                                <span style={{ fontSize: 13,marginRight:4 }}>{spell.components || '—'}</span>
-                            </Box>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ px: 2, py: 1 }}>
-                            <Typography
-                                variant="body2"
-                                sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5 }}
-                            >
-                                {spell.description || 'No description.'}
-                            </Typography>
-                            <Box display={"flex"}>
-
-                                <Typography
-                                    variant="body2"
-                                    className='!text-xs font-normal '
-                                    sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5, mr: 0.5 }}
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon sx={{ fontSize: { xs: 16, sm: 18, md: 20, xl: 22 } }} />}
+                                    sx={{
+                                        px: spacingScale.px,
+                                        py: spacingScale.pyRow,
+                                        minHeight: spacingScale.minHeight,
+                                        transition: 'background 0.4s ease',
+                                        background: grads.collapsed,
+                                        '& .MuiAccordionSummary-content': { margin: 0, width: '100%' },
+                                        '&.Mui-expanded': { background: grads.expanded },
+                                        '&:hover': { background: grads.hover },
+                                        // remove inner scroll; outer container handles it
+                                        overflow: 'visible',
+                                    }}
                                 >
-                                    {"Cast time:"}
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    className='!text-xs font-normal !text-neutral-600'
-                                    sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5 }}
-                                >
-                                    {spell.casting_time || 'No description.'}
-                                </Typography>
-                            </Box>
-                            <Button
-                                variant="outlined"
-                                color="error"
-                                size="small"
-                                sx={{
-                                    textTransform: 'none',
-                                    borderWidth: 1.5,
-                                    '&:hover': {
-                                        backgroundColor: (t) => t.palette.error.main,
-                                        color: (t) => t.palette.error.contrastText,
-                                        borderColor: (t) => t.palette.error.main
-                                    }
-                                }}
-                                onClick={() => handleDeleteSpell(spell)}
-                            >
-                                Delete
-                            </Button>
-                        </AccordionDetails>
-                    </Accordion>
+                                    <Box
+                                        sx={{
+                                            display: 'grid',
+                                            alignItems: 'center',
+                                            width: '100%',
+                                            gridTemplateColumns: {
+                                              xs: columnTemplates.xs,
+                                              sm: columnTemplates.sm,
+                                              md: columnTemplates.md,
+                                              lg: columnTemplates.lg,
+                                              xl: columnTemplates.xl
+                                            },
+                                            fontSize: { xs: 12, sm: 11.5, md: 12.5, xl: 15 },
+                                            gap: spacingScale.gap,
+                                            overflow: 'hidden',
+                                        }}
+                                    >
+                                        <Box sx={{ display: 'flex', flexDirection: 'column', minWidth: 0, rowGap: { xs: 0.15, sm: 0.2, md: 0.25 } }}>
+                                            <span style={{ fontWeight: 600, lineHeight: 1.05, fontSize: 'inherit', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                {spell.name}
+                                            </span>
+                                            
+                                            <Box sx={{ fontSize : { xs: 10, sm: 11, md: 12, xl: 14 }}} className='!text-neutral-600 !font-normal !italic '>
+                                                {spell.level === 0 ? 'Cantrip' : `Level ${spell.level}`}
+                                            </Box>
+                                        </Box>
+                                        <span style={{ whiteSpace: 'nowrap', lineHeight: 1 }}>{getCastTime(spell) || '—'}</span>
+                                        <span style={{ whiteSpace: 'nowrap', lineHeight: 1 }}>{spell.range || '—'}</span>
+                                        <span style={{ whiteSpace: 'nowrap', lineHeight: 1 }}>{getSchool(spell)}</span>
+                                        <span style={{ fontSize: '0.68rem', marginRight: 4, whiteSpace: 'nowrap', lineHeight: 1 }}>{spell.components || '—'}</span>
+                                    </Box>
+                                </AccordionSummary>
+                                <AccordionDetails sx={{ px: 2, py: 1 }}>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5 }}
+                                    >
+                                        {spell.description || 'No description.'}
+                                    </Typography>
+                                    <Box display={"flex"}>
 
-                );
-            })}
-            <Box sx={{ mb: 1.5 }}>
-                <AddNewSpell draft={draft} setDraft={setDraft} onAdd={handleAddSpell} />
+                                        <Typography
+                                            variant="body2"
+                                            className='!text-xs font-normal '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5, mr: 0.5 }}
+                                        >
+                                            {"Cast time:"}
+                                        </Typography>
+                                        <Typography
+                                            variant="body2"
+                                            className='!text-xs font-normal !text-neutral-600'
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5 }}
+                                        >
+                                            {spell.casting_time || 'No description.'}
+                                        </Typography>
+                                    </Box>
+                                    <Box display={"flex"}>
+                                        <Typography
+                                            variant="body2"
+                                            className='!text-xs font-normal '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5, mr: 0.5 }}
+                                        >
+                                            {"Components:"}
+                                        </Typography>
+                                        <Typography
+                                            variant="body2"
+                                            className='!text-xs font-normal !text-neutral-600'
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5 }}
+                                        >
+                                            {spell.components || '—'}
+                                        </Typography>
+                                    </Box>
+                                    <Button
+                                        variant="outlined"
+                                        color="error"
+                                        size="small"
+                                        sx={{
+                                            textTransform: 'none',
+                                            borderWidth: 1.5,
+                                            '&:hover': {
+                                                backgroundColor: (t) => t.palette.error.main,
+                                                color: (t) => t.palette.error.contrastText,
+                                                borderColor: (t) => t.palette.error.main
+                                            }
+                                        }}
+                                        onClick={() => handleDeleteSpell(spell)}
+                                    >
+                                        Delete
+                                    </Button>
+                                </AccordionDetails>
+                            </Accordion>
+                        );
+                    })}
+                </Box>
+            </Box>
+
+            <Box
+                sx={{
+                    mb: 1.5,
+                    width: '100%',
+                    maxWidth: '100%',
+                    px: { xs: 1.25, sm: 0 },
+                    overflowX: onMobile ? 'auto' : 'visible',
+                    WebkitOverflowScrolling: 'touch'
+                }}
+            >
+                <Box sx={{ width: '90%', maxWidth: '90%' }}>
+                    <AddNewSpell draft={draft} setDraft={setDraft} onAdd={handleAddSpell} />
+                </Box>
             </Box>
         </Box>
     );

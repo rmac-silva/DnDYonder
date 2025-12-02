@@ -106,23 +106,27 @@ function Spellcasting({ draft, setDraft }) {
                 icon={<CircleOutlinedIcon />}
                 checkedIcon={<AdjustIcon />}
                 disabled={index + 1 > maxSpellLevel}
-                size="small"
+                size='small'
                 checked={draft.class.spellcasting.spell_slots[index + 1][i]}
                 onChange={() => ToggleSpellcastingSlot(index + 1, i)}
                 sx={{
                     padding: 0,
                     marginBottom: 0.2,
                     marginRight: -1,
+                    fontSize: { xs: '1.5rem', md: '2rem' },
                     color: grey400,
                     "&.Mui-checked": {
-                        color: theme.palette.primary.main,
+                        color: theme.palette.baseColor.main,
                     },
                 }}
             />);
         }
 
         return (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{
+                display: 'flex', alignItems: 'center', flexWrap: { xs: 'wrap', sm: 'wrap', md: 'nowrap' }, gap: { xs: 0.5, md: 1 },
+                width: { md: '50px' }
+            }}>
                 {markers}
             </Box>
         );
@@ -135,20 +139,20 @@ function Spellcasting({ draft, setDraft }) {
     return (
         <div className='w-full flex flex-col items-center'>
             <div className='text-4xl font-semibold mb-2 mt-2' >Spellcasting</div>
-                <div className='flex flex-row  justify-center space-x-4 w-full'>
+            <div className='flex flex-row  justify-center space-x-4 w-full'>
 
-            <Link className='!text-md !font-semibold !mb-4 !mr-4 ' href={`https://dnd5e.wikidot.com/spells:${draft.class.class_name.toLowerCase()}`}>Class Spells</Link>
-            <Link className='!text-md !font-semibold !mb-4 !ml-4' href={`https://dnd5e.wikidot.com/spells`}>All Spells</Link>
+                <Link className='!text-md !font-semibold !mb-4 !mr-4 ' href={`https://dnd5e.wikidot.com/spells:${draft.class.class_name.toLowerCase()}`}>Class Spells</Link>
+                <Link className='!text-md !font-semibold !mb-4 !ml-4' href={`https://dnd5e.wikidot.com/spells`}>All Spells</Link>
             </div>
 
-            
-            <div className='flex justify-start w-full'>
+
+            <div className='flex flex-col lg:flex-row justify-start w-full'>
                 {/* Modifier, Spellcasting Ability, and Max Spell Slot Level */}
                 <div className="relative flex flex-col w-auto items-center justify-center top-10">
                     {/* Input that specifies the max level of the spell slot */}
                     <div className="flex space-x-2 mt-2 justify-center items-center w-full ml-6 mr-2">
                         <div className='items-center flex flex-col'>
-                            <label className="absolute text-lg font-semibold">Spellcasting Lvl.</label>
+                            <label className="absolute text-[.9rem] md:text-lg font-semibold">Spellcasting Lvl.</label>
                             <TextField
                                 type="number"
                                 variant="outlined"
@@ -156,14 +160,15 @@ function Spellcasting({ draft, setDraft }) {
                                     htmlInput: {
                                         max: 9,
                                         min: 1,
-                                        style: { textAlign: 'center' }
+                                        style: { textAlign: 'center' },
+
                                     }
                                 }}
                                 value={maxSpellLevel}
                                 onChange={(e) => setMaxSpellLevel(e.target.value)}
                                 onBlur={(e) => { draft.class.spellcasting.max_level_spellslots = e.target.value; setDraft({ ...draft }) }}
                                 sx={{
-                                    width: '9rem',
+                                    width: { xs: '110px', sm: '120px', md: '140px', lg: '150px' },
                                     '& .MuiOutlinedInput-root': {
                                         height: '6rem',
                                         fontSize: '2.25rem',
@@ -173,7 +178,7 @@ function Spellcasting({ draft, setDraft }) {
                         </div>
 
                         <div className='items-center flex flex-col'>
-                            <label className="absolute text-lg font-semibold">Spellcasting Ability</label>
+                            <label className="absolute text-[.9rem] mt-1 md:text-lg font-semibold">Spellcasting Ability</label>
                             <TextField
                                 type="text"
                                 variant="outlined"
@@ -187,7 +192,8 @@ function Spellcasting({ draft, setDraft }) {
                                     }
                                 }}
                                 sx={{
-                                    width: '12rem',
+                                    width: { xs: '150px', sm: '160px', md: '170px', lg: '180px' },
+
                                     '& .MuiOutlinedInput-root': {
                                         height: '6rem',
                                         fontSize: '2.25rem',
@@ -253,12 +259,12 @@ function Spellcasting({ draft, setDraft }) {
                 </div>
 
                 {/* The spell slots, with levels 1 to 9 will go here. With dots to represent the maximum spell slots known */}
-                <div className='flex flex-col w-full items-center space-y-2'>
+                <div className='flex flex-col w-full items-center space-y-2 mt-12 lg:mt-0'>
                     <div className='text-2xl'> Spell Slots</div>
-                    <Box className='grid w-full grid-cols-3 place-items-center mt-2'>
+                    <Box className='grid w-full grid-cols-3 place-items-center '>
                         {Array.from({ length: 9 }, (_, index) => (
-                            <Box 
-                                key={index} 
+                            <Box
+                                key={index}
                                 className='flex w-42 px-4 py-2 rounded items-center space-x-4 mb-2 ml-1'
                                 sx={{
                                     border: `1px solid ${theme.palette.baseColor.main}`,
@@ -266,11 +272,15 @@ function Spellcasting({ draft, setDraft }) {
                                         borderColor: theme.palette.primary.main,
                                     },
                                     transition: 'border-color 0.2s ease',
+                                    width: { xs: '90%', sm: '90%', md: '90%' }
                                 }}
                             >
                                 <div
-                                    className={index + 1 > maxSpellLevel ? 'disabled font-light' : 'font-medium'}
-                                    style={{ minWidth: 38, textAlign: 'left' }}
+                                    className={`${index + 1 > maxSpellLevel ? 'disabled font-light' : 'font-medium'}  sm:text-[.8rem] md:text-[.75rem] lg:text-[1rem] text-left`}
+                                    style={{
+                                        textAlign: 'left',
+                                        marginRight: '2px'
+                                    }}
                                 >
                                     Lvl. {index + 1}
                                 </div>

@@ -12,6 +12,7 @@ function InventoryItem({ itemName, index, onItemNameChange }) {
 
     //Item hovering
     const [popoverOpen, setPopoverOpen] = useState(false);
+    const [onMobile, setOnMobile] = useState(false);
 
     const handlePopoverOpen = () => {
         setPopoverOpen(true);
@@ -22,6 +23,12 @@ function InventoryItem({ itemName, index, onItemNameChange }) {
     };
 
     useEffect(() => {
+        if (window.innerWidth <= 768) {
+            setOnMobile(true);
+        } else {
+            setOnMobile(false);
+        }
+
         setLoading(true);
         const itemData = getItem(itemName.split("(")[0].trim());
         if (itemData) {
@@ -73,7 +80,7 @@ function InventoryItem({ itemName, index, onItemNameChange }) {
                             },
                         }}
             />
-            {itemData &&
+            {itemData && !onMobile &&
                 <Popover
                     id={`item-${index}`}
                     sx={{ pointerEvents: 'none', maxWidth: '80vw' }}

@@ -16,7 +16,7 @@ function SheetDrawer() {
     };
 
     return ( <div className="-ml-8">
-        <Button onClick={toggleDrawer(true)}><MenuIcon color="action"/></Button>
+        <Button onClick={toggleDrawer(true)} ><MenuIcon className=" !text-3xl !w-15 !h-8" color="baseColor"/></Button>
         <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
             <div
             className="w-full"

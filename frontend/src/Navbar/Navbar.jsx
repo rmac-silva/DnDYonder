@@ -38,11 +38,11 @@ function Navbar() {
 
     return (
         <>
-        <AppBar position="relative" color="primary" elevation={1} sx={{ width: '100vw', left: 0 }}>
+        <AppBar position="relative" color="primary" elevation={1} sx={{ width: '100%', left: 0, marginBottom: '16px' }}>
             <Container
                 maxWidth={false} // <-- disables default maxWidth
                 sx={{
-                    width: '100vw', // <-- stretches container to viewport width
+                    width: '100%', // <-- stretches container to viewport width
                     minWidth: 0,
                     paddingLeft: { xs: '2vw', sm: '15px' },
                     paddingRight: { xs: '2vw', sm: '25px' },
@@ -66,14 +66,14 @@ function Navbar() {
                     }}
                 >
                     {/* Left side: Logo and navigation */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: '2vw', sm: '16px' } }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: '2vw', sm: '16px' }, overflow: 'hidden', whiteSpace: 'nowrap' }}>
                         {atSheetsPage && <SheetDrawer />}
                         <Typography
                             component={RouterLink}
                             to="/"
                             sx={{
                                 fontWeight: 500,
-                                fontSize: { xs: '7vw', sm: '2.5rem' },
+                                fontSize: { xs: '28px', sm: '2.5rem' },
                                 textDecoration: 'none',
                                 color: 'textMain.main',
                                 '&:hover': { color: 'textHover.main' },
@@ -89,11 +89,11 @@ function Navbar() {
                             onClick={() => handleNavigate('/')}
                             sx={{
                                 fontWeight: 600,
-                                fontSize: { xs: '4vw', sm: '1.125rem' },
+                                fontSize: { xs: '16px', sm: '1.125rem' },
                                 textTransform: 'none',
                                 color: atHomePage ? 'textHighlights.main' : 'textMain.main',
                                 '&:hover': { color: 'textHover.main' },
-                                minWidth: { xs: '18vw', sm: 'auto' },
+                                minWidth: { xs: '64px', sm: 'auto' },
                             }}
                         >
                             Home
@@ -103,11 +103,11 @@ function Navbar() {
                                 onClick={() => handleNavigate(`/Sheets/${authUsername}`)}
                                 sx={{
                                     fontWeight: 600,
-                                    fontSize: { xs: '4vw', sm: '1.125rem' },
+                                    fontSize: { xs: '16px', sm: '1.125rem' },
                                     textTransform: 'none',
                                     color: atSheetsPage ? 'textHighlights.main' : 'textMain.main',
                                     '&:hover': { color: 'textHover.main' },
-                                    minWidth: { xs: '18vw', sm: 'auto' },
+                                    minWidth: { xs: '64px', sm: 'auto' },
                                 }}
                             >
                                 Sheets
@@ -115,18 +115,18 @@ function Navbar() {
                         }
                     </Box>
                     {/* Right side: Login/Logout */}
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', overflow: 'hidden', whiteSpace: 'nowrap', gap: { xs: '2vw', sm: '16px' } }}>
                         {!isLoggedIn &&
                             <Button
                                 component={RouterLink}
                                 to="/login"
                                 sx={{
                                     fontWeight: 600,
-                                    fontSize: { xs: '4vw', sm: '1.125rem' },
+                                    fontSize: { xs: '16px', sm: '1.125rem' },
                                     textTransform: 'none',
                                     color: atLoginPage ? 'textHighlights.main' : 'textMain.main',
                                     '&:hover': { color: 'textHover.main' },
-                                    minWidth: { xs: '18vw', sm: 'auto' },
+                                    minWidth: { xs: '64px', sm: 'auto' },
                                 }}
                             >
                                 Login
@@ -138,11 +138,11 @@ function Navbar() {
                                 type="button"
                                 sx={{
                                     fontWeight: 600,
-                                    fontSize: { xs: '4vw', sm: '1.125rem' },
+                                    fontSize: { xs: '16px', sm: '1.125rem' },
                                     textTransform: 'none',
                                     color: atLoginPage ? 'textHighlights.main' : 'textMain.main',
                                     '&:hover': { color: 'textHover.main' },
-                                    minWidth: { xs: '18vw', sm: 'auto' },
+                                    minWidth: { xs: '64px', sm: 'auto' },
                                 }}
                             >
                                 Logout
@@ -152,7 +152,7 @@ function Navbar() {
                 </Toolbar>
             </Container>
         </AppBar>
-        <Toolbar sx={{ minHeight: { xs: '56px', sm: '64px' } }} />
+        
         </>
     );
 }

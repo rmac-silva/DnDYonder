@@ -250,26 +250,30 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
 
     return (
         <>
-            <FormControl fullWidth variant="standard" margin="normal" sx={{ maxWidth: 350, marginLeft:5 }} className=''>
-                {/* Autocomplete replaces Select but keeps existing logic/values */}
+            <FormControl
+                fullWidth
+                variant="standard"
+                margin="normal"
+                sx={{
+                    width: '100%',
+                    maxWidth: '100%',
+                    ml: { xs: 0, sm: 0, md: 5 } // keep desktop spacing only
+                }}
+                className=''
+            >
                 <Autocomplete
-                    freeSolo={false}
+                    fullWidth
                     clearOnEscape
                     disableClearable={false}
                     options={["", "new", ...fetchedSpells.map(s => String(s.s_name))]}
                     value={selectValue}
                     onChange={(_, newValue) => {
-                        // keep existing handler signature by synthesizing an event-like object
                         handleSelectingSpell({ target: { value: newValue ?? "" } });
-                    }}
-                    getOptionLabel={(opt) => {
-                        if (opt === "") return "— Select —";
-                        if (opt === "new") return "Create New Spell…";
-                        return String(opt);
                     }}
                     renderInput={(params) => (
                         <TextField
                             {...params}
+                            fullWidth
                             label="Add a spell..."
                             placeholder=""
                         />

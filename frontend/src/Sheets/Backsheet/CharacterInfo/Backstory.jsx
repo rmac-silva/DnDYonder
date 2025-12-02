@@ -6,17 +6,21 @@ function Backstory({ draft, setDraft }) {
 
     return (
         <div className="flex flex-col items-center w-full bg-white rounded shadow p-4 h-full">
-            <div className="text-4xl font-semibold">
+            <div className="font-semibold text-2xl sm:text-3xl md:text-4xl">
                 Backstory
             </div>
 
-            <div className='w-full justify-center flex  mt-2 px-4'>
-
-                <TextField className='!mt-2 border-2 !w-full !px-2' sx={{ minWidth: 400, maxWidth: 800 }} value={backstory} rows={28} multiline onChange={(e) => setBackstory(e.target.value)} onBlur={(e) => { draft.char_info.backstory = e.target.value; setDraft({ ...draft }); }} />
+            <div className='w-full justify-center flex mt-2 px-4'>
+                <TextField
+                    className='!mt-2 !w-full'
+                    sx={{ width: '100%', maxWidth: '100%' }}
+                    value={backstory}
+                    rows={28}
+                    multiline
+                    onChange={(e) => setBackstory(e.target.value)}
+                    onBlur={(e) => { draft.char_info.backstory = e.target.value; setDraft({ ...draft }); }}
+                />
             </div>
-
-
-
         </div>
     )
 }
