@@ -22,6 +22,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
+import { Paper, Divider, Grid, Stack } from '@mui/material';
 
 
 import GetArmorProficiencies from '../../Lists/ArmorProficiencies';
@@ -282,33 +283,39 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                 </DialogTitle>
 
                 <DialogContent dividers>
-                    {/* Large input for the race name */}
-                    <TextField
-                        required
-                        fullWidth
-                        label="Race Name"
-                        variant="outlined"
-                        placeholder='Dwarf'
-                        error={errorField === 'race'}
-                        value={newRace.race}
-                        onChange={(e) => setNewRace((s) => ({ ...s, race: e.target.value }))}
-                        margin="normal"
-                    />
-                    <TextField
-                        fullWidth
-                        label="Subrace Name"
-                        variant="outlined"
-                        placeholder='Mountain'
-                        value={newRace.subrace}
-                        onChange={(e) => setNewRace((s) => ({ ...s, subrace: e.target.value }))}
-                        margin="normal"
-                    />
+                    <Stack spacing={2}>
+                      {/* Basics */}
+                      <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+                        <Typography variant="h6" sx={{ mb: 1 }}>Basics</Typography>
+                        <Divider sx={{ mb: 2 }} />
+                        <Grid container spacing={2}>
+                          <Grid item xs={12} md={6}>
+                            <TextField
+                              required
+                              fullWidth
+                              label="Race Name"
+                              variant="outlined"
+                              placeholder="Dwarf"
+                              error={errorField === 'race'}
+                              value={newRace.race}
+                              onChange={(e) => setNewRace((s) => ({ ...s, race: e.target.value }))}
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <TextField
+                              fullWidth
+                              label="Subrace Name"
+                              variant="outlined"
+                              placeholder="Mountain"
+                              value={newRace.subrace}
+                              onChange={(e) => setNewRace((s) => ({ ...s, subrace: e.target.value }))}
+                            />
+                          </Grid>
 
-                    {/* Row: Hit Dice select + two small text fields */}
-                    <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
-                        <FormControl sx={{ minWidth: 160 }}>
-                            <InputLabel id="creature_type-label">Creature Type</InputLabel>
-                            <Select
+                          <Grid item xs={12} md={4}>
+                            <FormControl fullWidth sx={{ minWidth: 180 }}>
+                              <InputLabel id="creature_type-label">Creature Type</InputLabel>
+                              <Select
                                 required
                                 error={errorField === 'creature_type'}
                                 labelId="creature_type-label"
@@ -316,7 +323,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                                 value={newRace.creature_type}
                                 label="Creature Type"
                                 onChange={(e) => setNewRace((s) => ({ ...s, creature_type: e.target.value }))}
-                            >
+                              >
                                 <MenuItem value="Humanoid">Humanoid</MenuItem>
                                 <MenuItem value="Aberration">Aberration</MenuItem>
                                 <MenuItem value="Beast">Beast</MenuItem>
@@ -331,101 +338,86 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                                 <MenuItem value="Ooze">Ooze</MenuItem>
                                 <MenuItem value="Plant">Plant</MenuItem>
                                 <MenuItem value="Undead">Undead</MenuItem>
-                            </Select>
-                        </FormControl>
+                              </Select>
+                            </FormControl>
+                          </Grid>
 
-                        <FormControl sx={{ minWidth: 160 }}>
-                            <InputLabel id="size-label">Size</InputLabel>
-                            <Select
+                          <Grid item xs={12} md={4}>
+                            <FormControl fullWidth sx={{ minWidth: 180 }}>
+                              <InputLabel id="size-label">Size</InputLabel>
+                              <Select
                                 required
                                 labelId="size-label"
                                 id="size"
                                 error={errorField === 'size'}
                                 value={newRace.size}
-                                label="Creature Type"
+                                label="Size"
                                 onChange={(e) => setNewRace((s) => ({ ...s, size: e.target.value }))}
-                            >
+                              >
                                 <MenuItem value="Tiny">Tiny</MenuItem>
                                 <MenuItem value="Small">Small</MenuItem>
                                 <MenuItem value="Medium">Medium</MenuItem>
                                 <MenuItem value="Large">Large</MenuItem>
                                 <MenuItem value="Huge">Huge</MenuItem>
                                 <MenuItem value="Gargantuan">Gargantuan</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <FormControl sx={{ maxWidth: 80 }} >
+                              </Select>
+                            </FormControl>
+                          </Grid>
 
+                          <Grid item xs={12} md={4}>
                             <TextField
-                                slotProps={{ htmlInput: { required: true, style: { textAlign: 'center', fontSize: 'large' } } }}
-                                label="Speed (ft)"
-                                variant="outlined"
-                                value={newRace.speed}
-                                onChange={(e) => setNewRace((s) => ({ ...s, speed: e.target.value }))}
-                                size="medium"
+                              fullWidth
+                              label="Speed (ft)"
+                              variant="outlined"
+                              value={newRace.speed}
+                              onChange={(e) => setNewRace((s) => ({ ...s, speed: e.target.value }))}
+                              InputLabelProps={{ shrink: true }}
                             />
-                        </FormControl>
+                          </Grid>
+                        </Grid>
+                      </Paper>
 
-                        {/* <FormControl sx={{ minWidth: 160 }}>
-                            <InputLabel id="size-label">Languages</InputLabel>
-                            <Select
-                                required
-                                labelId="size-label"
-                                id="size"
-                                value={newRace.languages}
-                                label="Creature Type"
-                                onChange={(_, newValue) => {setLanguages(newValue);}}
-                            >
-                                <MenuItem value="Common">Common</MenuItem>
-                                <MenuItem value="Dwarvish">Dwarvish</MenuItem>
-                                <MenuItem value="Elvish">Elvish</MenuItem>
-                                <MenuItem value="Giant">Giant</MenuItem>
-                                <MenuItem value="Gnomish">Gnomish</MenuItem>
-                                <MenuItem value="Goblin">Goblin</MenuItem>
-                                <MenuItem value="Halfling">Halfling</MenuItem>
-                                <MenuItem value="Orc">Orc</MenuItem>
-                                <MenuItem value="Abyssal">Abyssal</MenuItem>
-                                <MenuItem value="Celestial">Celestial</MenuItem>
-                                <MenuItem value="Draconic">Draconic</MenuItem>
-                                <MenuItem value="Deep Speech">Deep Speech</MenuItem>
-                                <MenuItem value="Infernal">Infernal</MenuItem>
-                                <MenuItem value="Primordial">Primordial</MenuItem>
-                                <MenuItem value="Sylvan">Sylvan</MenuItem>
-                                <MenuItem value="Undercommon">Undercommon</MenuItem>
-                                
-                            </Select>
-                        </FormControl> */}
-                        <FormControl sx={{ minWidth: 360 }}>
-                                
-                                            <Autocomplete
-                                              multiple
-                                              options={languages}
-                                              value={newRace.languages}
-                                              onChange={(_, newValue) => {setLanguages(newValue);}}
-                                              disableClearable={false}
+                      {/* Proficiencies */}
+                      <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+                        <Typography variant="h6" sx={{ mb: 1 }}>Proficiencies</Typography>
+                        <Divider sx={{ mb: 2 }} />
+                        <Grid container spacing={2}>
+                          <Grid item xs={12} md={4}>
+                            <GetWeaponProficiencies value={newRace.weapon_proficiencies} onChange={setWeaponProficiencies} />
+                          </Grid>
+                          <Grid item xs={12} md={4}>
+                            <GetArmorProficiencies value={newRace.armor_proficiencies} onChange={setArmorProficiencies} />
+                          </Grid>
+                          <Grid item xs={12} md={4}>
+                            <GetToolProficiencies value={newRace.tool_proficiencies} onChange={setToolProficiencies} />
+                          </Grid>
+                        </Grid>
+                      </Paper>
 
-                                            renderInput={(params) => <TextField {...params} label="Languages" placeholder="Search languages..." />}
-                                            filterSelectedOptions
-                                            />
-                                          </FormControl>
-                    </Box>
+                      {/* Languages */}
+                      <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+                        <Typography variant="h6" sx={{ mb: 1 }}>Languages</Typography>
+                        <Divider sx={{ mb: 2 }} />
+                        <Autocomplete
+                          multiple
+                          options={languages}
+                          value={newRace.languages}
+                          onChange={(_, newValue) => { setLanguages(newValue); }}
+                          renderInput={(params) => <TextField {...params} label="Languages" placeholder="Search languages..." />}
+                          filterSelectedOptions
+                        />
+                      </Paper>
 
-                    {/* Multi-select Autocompletes (searchable) */}
-
-                    <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
-
-                        <GetWeaponProficiencies value={newRace.weapon_proficiencies} onChange={setWeaponProficiencies} />
-
-                        <GetArmorProficiencies value={newRace.armor_proficiencies} onChange={setArmorProficiencies} />
-
-                        <GetToolProficiencies value={newRace.tool_proficiencies} onChange={setToolProficiencies} />
-                    </Box>
-
-                    <Box mt={2}>
+                      {/* Race Features */}
+                      <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 }, mb: 4 }}>
+                        <Typography variant="h6" sx={{ mb: 1 }}>Race Features</Typography>
+                        <Divider sx={{ mb: 2 }} />
                         <GetClassFeats onChange={setRaceFeats} label={"Race"} />
-                    </Box>
+                      </Paper>
+                    </Stack>
                 </DialogContent>
 
-                <DialogActions>
+                <DialogActions sx={{ mt: 2 }}>
                     <Button onClick={handleDialogClose}>Cancel</Button>
                     <Button onClick={handleCreateClass} variant="contained" color="primary">
                         Create

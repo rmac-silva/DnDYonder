@@ -289,19 +289,56 @@ function SpellList({ draft, setDraft }) {
                                     >
                                         {spell.description || 'No description.'}
                                     </Typography>
+
+
+                                    {/* Smaller details */}
                                     <Box display={"flex"}>
 
                                         <Typography
                                             variant="body2"
                                             className='!text-xs font-normal '
-                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5, mr: 0.5 }}
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mr: 0.5 }}
+                                        >
+                                            {"Range:"}
+                                        </Typography>
+                                        <Typography
+                                            variant="body2"
+                                            className='!text-xs font-normal !text-neutral-600'
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: .5}}
+                                        >
+                                            {spell.range || 'No range.'}
+                                        </Typography>
+                                    </Box>
+                                    <Box display={"flex"}>
+
+                                        <Typography
+                                            variant="body2"
+                                            className='!text-xs font-normal '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mr: 0.5 }}
+                                        >
+                                            {"School:"}
+                                        </Typography>
+                                        <Typography
+                                            variant="body2"
+                                            className='!text-xs font-normal !text-neutral-600'
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: .5}}
+                                        >
+                                            {spell.school || 'No school.'}
+                                        </Typography>
+                                    </Box>
+                                    <Box display={"flex"}>
+
+                                        <Typography
+                                            variant="body2"
+                                            className='!text-xs font-normal '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mr: 0.5 }}
                                         >
                                             {"Cast time:"}
                                         </Typography>
                                         <Typography
                                             variant="body2"
                                             className='!text-xs font-normal !text-neutral-600'
-                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5 }}
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: .5 }}
                                         >
                                             {spell.casting_time || 'No description.'}
                                         </Typography>

@@ -13,14 +13,6 @@
 > npm run dev -- --host 0.0.0.0
 
 # TODO:
-
-## Visual Revamp
-- Revamp the creation menus to be more user friendly.
-
-## Improve WikiDot fetching
-- Add a loading spinner when fetching items from WikiDot.
-- Add a fetch for classes.
-
 ## Database Management Improvements
 - A way to edit or delete created classes, weapons etc... This has to be done only by admins! We can't let anyone delete anything. 
   Create a backend admin user and only allow that user to perform these actions. Only show the delete button if the user is an admin, checked at login.
@@ -44,13 +36,15 @@
 ## Known Issues
 - BUG! There's no feedback when you create an item with no name. Add form validation to item creation. This includes verifying that the item doesn't already exist (itemCache). Not sure if this is still valid.
 - BUG! No feedback when WikiDot item fetching fails.
+- BUG! Starting equipment selection is buggy. If you select equipment, then change class, then change back, the previously selected equipment is still selected and adds on top of the new class equipment.
 - BUG! Can select multiple skill proficiencies when creating a character.
 
 
 # Changelog
-- Added HTTPS
-- Changed how the backend was run, now run main.py from src folder.
+## Visual Revamp
+- Revamp the creation menus to be more user friendly.
 
-## Mobile Version & Visual Revamp
-- Make the frontend responsive for mobile devices.
-- Make the WikiDot fetching buttons more consistent.
+## Improve WikiDot fetching
+- Add a loading spinner when fetching items from WikiDot.
+- Add a fetch for classes.
+

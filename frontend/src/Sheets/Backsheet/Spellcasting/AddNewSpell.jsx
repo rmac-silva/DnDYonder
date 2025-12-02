@@ -17,6 +17,9 @@ import Checkbox from '@mui/material/Checkbox';
 import Autocomplete from '@mui/material/Autocomplete';
 import Tooltip from '@mui/material/Tooltip';
 import CachedIcon from '@mui/icons-material/Cached';
+import Paper from '@mui/material/Paper';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
 
 function AddNewSpell({ draft, setDraft, onAdd }) {
 
@@ -222,7 +225,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
             return;
         }
 
-        if (selectedSpellName === "new") {
+        if (selectedSpellName === "< New Spell >") {
             // Logic to add a new spell
             setCreatingNewSpell(true);
         } else {
@@ -265,7 +268,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                     fullWidth
                     clearOnEscape
                     disableClearable={false}
-                    options={["", "new", ...fetchedSpells.map(s => String(s.s_name))]}
+                    options={["", "< New Spell >", ...fetchedSpells.map(s => String(s.s_name))]}
                     value={selectValue}
                     onChange={(_, newValue) => {
                         handleSelectingSpell({ target: { value: newValue ?? "" } });
@@ -282,154 +285,162 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
             </FormControl>
 
             <Dialog open={creatingNewSpell} onClose={handleDialogClose} fullWidth maxWidth="xl">
+              <DialogTitle>
+                <Box display="flex" alignItems="center" justifyContent="space-between">
+                  <Typography variant="h6">Create New Spell</Typography>
+                  <IconButton aria-label="close" onClick={handleDialogClose} size="large">
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
+              </DialogTitle>
 
-                <DialogTitle>
-                    <Box display="flex" alignItems="center" justifyContent="space-between">
-                        <Typography variant="h6">Create New Spell</Typography>
-                        <IconButton aria-label="close" onClick={handleDialogClose} size="large">
-                            <CloseIcon />
-                        </IconButton>
+              <DialogContent dividers>
+                <Stack spacing={2}>
+                  {/* Basics */}
+                  <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+                    <Typography variant="h6" sx={{ mb: 1 }}>Basics</Typography>
+                    <Divider sx={{ mb: 2 }} />
+                    <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
+                      <TextField
+                        required
+                        sx={{ minWidth: 280, flex: 1 }}
+                        label="Spell Name"
+                        variant="outlined"
+                        value={newSpell.name}
+                        onChange={(e) => setNewSpell((s) => ({ ...s, name: e.target.value }))}
+                      />
+                      <TextField
+                        required
+                        sx={{ minWidth: 180 }}
+                        label="Casting Time"
+                        variant="outlined"
+                        value={newSpell.casting_time}
+                        onChange={(e) => setNewSpell((s) => ({ ...s, casting_time: e.target.value }))}
+                      />
+                      <FormControl sx={{ minWidth: 180 }}>
+                        <Select
+                          labelId="spell-level-label"
+                          id="spell-level"
+                          required
+                          value={newSpell.level}
+                          onChange={(e) => setNewSpell((s) => ({ ...s, level: e.target.value }))}
+                        >
+                          <MenuItem value={-1}>— Spell Level —</MenuItem>
+                          <MenuItem value={0}>Cantrip (0)</MenuItem>
+                          <MenuItem value={1}>1st Level</MenuItem>
+                          <MenuItem value={2}>2nd Level</MenuItem>
+                          <MenuItem value={3}>3rd Level</MenuItem>
+                          <MenuItem value={4}>4th Level</MenuItem>
+                          <MenuItem value={5}>5th Level</MenuItem>
+                          <MenuItem value={6}>6th Level</MenuItem>
+                          <MenuItem value={7}>7th Level</MenuItem>
+                          <MenuItem value={8}>8th Level</MenuItem>
+                          <MenuItem value={9}>9th Level</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <FormControl sx={{ minWidth: 200 }}>
+                        <Select
+                          labelId="spell-school-label"
+                          id="spell-school"
+                          required
+                          value={newSpell.school || 'None'}
+                          onChange={(e) => setNewSpell((s) => ({ ...s, school: e.target.value }))}
+                        >
+                          <MenuItem value={"None"}>— Magic School —</MenuItem>
+                          <MenuItem value={"Abjuration"}>Abjuration</MenuItem>
+                          <MenuItem value={"Conjuration"}>Conjuration</MenuItem>
+                          <MenuItem value={"Divination"}>Divination</MenuItem>
+                          <MenuItem value={"Enchantment"}>Enchantment</MenuItem>
+                          <MenuItem value={"Evocation"}>Evocation</MenuItem>
+                          <MenuItem value={"Illusion"}>Illusion</MenuItem>
+                          <MenuItem value={"Necromancy"}>Necromancy</MenuItem>
+                          <MenuItem value={"Transmutation"}>Transmutation</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Box>
-                </DialogTitle>
-                <DialogContent dividers>
-                    <Box display="flex" flexDirection="column" alignItems="left" gap={0} >
+                  </Paper>
 
-                        <Box display={"flex"} flexDirection={"row"} alignItems={"center"} gap={2}>
-
-                            <TextField
-                                fullWidth
-                                required
-                                sx={{ ml: 2, maxWidth: 400 }}
-                                label="Spell Name"
-                                variant="outlined"
-                                value={newSpell.name}
-                                onChange={(e) => setNewSpell((s) => ({ ...s, name: e.target.value }))}
-                                margin="normal"
-                            />
-
-                            <TextField
-                                fullWidth
-                                required
-                                sx={{ maxWidth: 200 }}
-                                label="Casting Time"
-                                variant="outlined"
-                                value={newSpell.casting_time}
-                                onChange={(e) => setNewSpell((s) => ({ ...s, casting_time: e.target.value }))}
-                                margin="normal"
-                            />
-
-
-
-                            <Select
-                                labelId="spell-level-label"
-                                id="spell-level"
-                                required
-
-                                sx={{ minWidth: 200, maxHeight: 50 }}
-                                value={newSpell.level}
-                                onChange={(e) => setNewSpell((s) => ({ ...s, level: e.target.value }))}
-
-                            >
-                                <MenuItem value={-1}>— Spell Level —</MenuItem>
-                                <MenuItem value={0}>Cantrip (0)</MenuItem>
-                                <MenuItem value={1}>1st Level</MenuItem>
-                                <MenuItem value={2}>2nd Level</MenuItem>
-                                <MenuItem value={3}>3rd Level</MenuItem>
-                                <MenuItem value={4}>4th Level</MenuItem>
-                                <MenuItem value={5}>5th Level</MenuItem>
-                                <MenuItem value={6}>6th Level</MenuItem>
-                                <MenuItem value={7}>7th Level</MenuItem>
-                                <MenuItem value={8}>8th Level</MenuItem>
-                                <MenuItem value={9}>9th Level</MenuItem>
-                            </Select>
-                            <Select
-                                labelId="spell-level-label"
-                                id="spell-level"
-                                required
-
-                                sx={{ minWidth: 200, maxHeight: 50 }}
-                                value={newSpell.school || ""}
-                                onChange={(e) => setNewSpell((s) => ({ ...s, school: e.target.value }))}
-                            >
-                                <MenuItem value={"None"}>— Magic School —</MenuItem>
-                                <MenuItem value={"Abjuration"}>Abjuration</MenuItem>
-                                <MenuItem value={"Conjuration"}>Conjuration</MenuItem>
-                                <MenuItem value={"Divination"}>Divination</MenuItem>
-                                <MenuItem value={"Enchantment"}>Enchantment</MenuItem>
-                                <MenuItem value={"Evocation"}>Evocation</MenuItem>
-                                <MenuItem value={"Illusion"}>Illusion</MenuItem>
-                                <MenuItem value={"Necromancy"}>Necromancy</MenuItem>
-                                <MenuItem value={"Transmutation"}>Transmutation</MenuItem>
-                            </Select>
-
-                            <Tooltip title="Fetches item information from Wikidot" arrow>
-                                                                        <CachedIcon 
-                                                                            onClick={handleWikidotFetch} 
-                                                                            className={`cursor-pointer ${loadingWikidotData ? 'animate-spin text-gray-400' : 'text-black hover:text-gray-600'}`} 
-                                                                            
-                                                                        />
-                                                                    </Tooltip>
-
+                  {/* Details */}
+                  <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+                    <Typography variant="h6" sx={{ mb: 1 }}>Details</Typography>
+                    <Divider sx={{ mb: 2 }} />
+                    <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
+                      <TextField
+                        required
+                        sx={{ minWidth: 260, flex: 1 }}
+                        label="Components"
+                        variant="outlined"
+                        value={newSpell.components}
+                        onChange={(e) => setNewSpell((s) => ({ ...s, components: e.target.value }))}
+                      />
+                      <TextField
+                        required
+                        sx={{ minWidth: 140 }}
+                        label="Range"
+                        variant="outlined"
+                        value={newSpell.range}
+                        onChange={(e) => setNewSpell((s) => ({ ...s, range: e.target.value }))}
+                      />
+                      <TextField
+                        required
+                        sx={{ minWidth: 200 }}
+                        label="Duration"
+                        variant="outlined"
+                        value={newSpell.duration}
+                        onChange={(e) => setNewSpell((s) => ({ ...s, duration: e.target.value }))}
+                      />
+                      <FormControl sx={{ minWidth: 140 }}>
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <Typography variant="body2">Ritual</Typography>
+                          <Checkbox
+                            checked={newSpell.is_ritual}
+                            onChange={(e) => setNewSpell((s) => ({ ...s, is_ritual: e.target.checked }))}
+                          />
                         </Box>
-
-                        <Box display={"flex"} flexDirection={"row"} alignItems={"center"} gap={2}>
-                            <TextField
-                                fullWidth
-                                required
-                                sx={{ ml: 2, maxWidth: 350 }}
-                                label="Components"
-                                variant="outlined"
-                                value={newSpell.components}
-                                onChange={(e) => setNewSpell((s) => ({ ...s, components: e.target.value }))}
-                                margin="normal"
-                            />
-                            <TextField
-                                fullWidth
-                                required
-                                sx={{ maxWidth: 150 }}
-                                label="Range"
-                                variant="outlined"
-                                value={newSpell.range}
-                                onChange={(e) => setNewSpell((s) => ({ ...s, range: e.target.value }))}
-                                margin="normal"
-                            />
-                            <TextField
-                                fullWidth
-                                required
-                                sx={{ maxWidth: 250 }}
-                                label="Duration"
-                                variant="outlined"
-                                value={newSpell.duration}
-                                onChange={(e) => setNewSpell((s) => ({ ...s, duration: e.target.value }))}
-                                margin="normal"
-                            />
-                            {/* A label saying Is Ritual */}
-                            <Typography required variant="body1">Is Ritual:</Typography>
-                            <Checkbox required checked={newSpell.is_ritual} onChange={(e) => setNewSpell((s) => ({ ...s, is_ritual: e.target.checked }))} sx={{ ml: -2 }} />
-                        </Box>
-
-                        <TextField
-                            fullWidth
-                            required
-                            sx={{ ml: 2, maxWidth: 1000 }}
-                            label="Spell Description"
-                            variant="outlined"
-                            value={newSpell.description}
-                            onChange={(e) => setNewSpell((s) => ({ ...s, description: e.target.value }))}
-                            margin="normal"
-                            multiline
-                            rows={Math.min(10, Math.max(3, Math.floor(newSpell.description.length / 100)))} //Number of rows depending on description length
-                        />
+                      </FormControl>
                     </Box>
-                </DialogContent>
+                  </Paper>
 
-                <DialogActions>
-                          <Button onClick={handleDialogClose}>Cancel</Button>
-                          <Button onClick={handleCreateSpell} variant="contained" color="primary">
-                            Create
-                          </Button>
-                </DialogActions>
+                  {/* Description */}
+                  <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+                    <Typography variant="h6" sx={{ mb: 1 }}>Description</Typography>
+                    <Divider sx={{ mb: 2 }} />
+                    <TextField
+                      fullWidth
+                      required
+                      label="Spell Description"
+                      variant="outlined"
+                      value={newSpell.description}
+                      onChange={(e) => setNewSpell((s) => ({ ...s, description: e.target.value }))}
+                      multiline
+                      rows={Math.min(10, Math.max(3, Math.floor(newSpell.description.length / 100)))}
+                    />
+                  </Paper>
+                </Stack>
+              </DialogContent>
 
+              <DialogActions>
+                <Tooltip title="Fetches spell information from Wikidot" arrow>
+                  <span>
+                    <Button
+                      onClick={handleWikidotFetch}
+                      variant="outlined"
+                      color="secondary"
+                      startIcon={<CachedIcon />}
+                      disabled={loadingWikidotData || !newSpell.name.trim()}
+                    >
+                      Fetch from Wikidot
+                    </Button>
+                  </span>
+                </Tooltip>
+
+                <Button onClick={handleDialogClose} variant="contained" color="error">
+                  Cancel
+                </Button>
+                <Button onClick={handleCreateSpell} variant="contained" color="primary">
+                  Create
+                </Button>
+              </DialogActions>
             </Dialog>
         </>
     )

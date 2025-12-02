@@ -298,6 +298,7 @@ def get_class_feats( playerClass : str):
 
 @app.post("/info/save_item")
 def save_new_item(item: dict):
+    print("Saving new item:", item)
     username = jwt_manager.fetch_username_from_token(item.get('token', False))
     
     if username[0] is False:

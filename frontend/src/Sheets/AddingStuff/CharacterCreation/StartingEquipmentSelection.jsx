@@ -102,6 +102,7 @@ function StartingEquipmentSelection({ sheet, setSheet, onValid, selectedItems, s
         
     }
 
+
     return (<>
         <div className='flex-col mt-4'>
             <div className='mt-2 mb-2 font-semibold text-2xl'>

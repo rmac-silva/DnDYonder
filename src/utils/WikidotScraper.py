@@ -2,6 +2,19 @@ import requests
 from bs4 import BeautifulSoup
 import pprint as pp
 
+WORDS = {
+    "zero": 0,
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+}
 
 class WikidotScraper:
 
@@ -167,13 +180,105 @@ class WikidotScraper:
         except:
             return 0
 
+    def fetch_misc_class_info(self, content : str):
+        """Fetches misc class info like hit die, primary ability, saving throws etc... from the content string.
+        
+        Expected content:
+            Hit Points
+            Hit Dice: 1d10 per ranger level Hit Points at 1st Level: 10 + your Constitution modifier Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per ranger level after 1st
+            Proficiencies
+            Armor: Light armor, medium armor, shields Weapons: Simple weapons, martial weapons Tools: None Saving Throws: Strength, Dexterity Skills: Choose three from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival
+            Equipment
+            You start with the following equipment, in addition to the equipment granted by your background:
+        """
+        import re
+
+        misc_info = {}
+
+        try:
+            
+            hit_die_match = re.search(r"Hit Dice:\s\S\S\S(?:\S|.)", content)
+            if hit_die_match:
+                misc_info["hit_die"] = int(hit_die_match.group().split("Hit Dice:")[1].strip().split("d")[1])
+        except:
+            pass
+
+        try:
+            saving_throws_match = re.search(r"Saving Throws:.*Skills", content)
+            if saving_throws_match:
+                saving_throws = saving_throws_match.group().split("Saving Throws:")[1].split("Skills")[0].strip()
+                
+                misc_info["saving_throws"] = saving_throws.split(",")
+        except:
+            pass
+
+        try:
+            skills = re.search(r"Choose\s(\w*\S)\sfrom(.*)", content)
+            if skills:
+                # Remove the word "and" from the skills list
+                skills_list_cleaned = skills.group(2).replace(" and ", "")
+                misc_info["skills_list"] = skills_list_cleaned.split(",")
+                misc_info["num_skills_to_choose"] = WORDS[str(skills.group(1)).strip()]
+        except:
+            pass
+        
+        try:
+            valid_profs = ["Light Armor", "Medium Armor", "Heavy Armor", "Shields"]
+            armor_proficiencies_match = re.search(r"Armor:(.*)Weapons", content)
+            if armor_proficiencies_match:
+                #Turn into list and capitalize each word, so "light armor, medium armor, shields" becomes ["Light Armor", "Medium Armor", "Shields"]
+                misc_info["armor_proficiencies"] = [ap.strip().title() for ap in armor_proficiencies_match.group(1).split(",")]
+                misc_info["armor_proficiencies"] = []
+                
+                for armor in armor_proficiencies_match.group(1).split(","):
+                    name = armor.strip().title()
+                    if name in valid_profs:
+                        misc_info["armor_proficiencies"].append(name)
+                    elif name.startswith("Shield"):
+                        misc_info["armor_proficiencies"].append("Shields")
+                        
+        except:
+            pass
+        
+        try:
+            baseline_profs = ["Simple Weapons", "Martial Weapons"]
+            weapon_proficiencies_match = re.search(r"Weapons:(.*)Tools", content)
+            if weapon_proficiencies_match:
+                misc_info["weapon_proficiencies"] = []
+                # Remove the s at the end, so Daggers becomes Dagger
+                for weapon in weapon_proficiencies_match.group(1).split(","):
+                    name = weapon.strip().title()    
+                    
+                    if(name not in baseline_profs and name.endswith("s")):
+                        misc_info["weapon_proficiencies"].append(name[:-1])
+                    else:
+                        misc_info["weapon_proficiencies"].append(name)
+                    
+                
+        except:
+            pass
+        
+        try:
+            tool_proficiencies_match = re.search(r"Tools:(.*)Saving Throws", content)
+            if tool_proficiencies_match:
+                #Ignore "None"
+                if tool_proficiencies_match.group(1).strip().lower() == "none":
+                    misc_info["tool_proficiencies"] = []
+                else:
+                    misc_info["tool_proficiencies"] = [ap.strip().title() for ap in tool_proficiencies_match.group(1).split(",")]
+        except:
+            pass
+        
+        
+        
+        return misc_info
+    
     def format_results(self):
         formatted_res = {}
 
         seen_subtitles = set()
 
         for key, value in self.results.items():
-            print(value)
             merged_content = {}
             merged_content["title"] = key
             try:
@@ -186,7 +291,7 @@ class WikidotScraper:
             for item in value:
                 try:
                     if item["table"]:
-                        print("Table item:", item, "\n\n")
+                        
                         merged_content["tables"].append({"table_header": item["content"][0], "table_rows": item["content"][1:], "num_columns": item["num_columns"]})
                         formatted_res[key] = merged_content
                     elif item["subtitle"] != "" and not item["table"] and item["subtitle"] not in seen_subtitles:
@@ -202,7 +307,11 @@ class WikidotScraper:
 
             merged_content["content"] = "\n".join(merged_content["content"])
 
-        print(formatted_res)
+        class_info = "\n".join(formatted_res["Class Features"]["content"].split("\n\n")[1:])
+        misc_info = self.fetch_misc_class_info(class_info)
+        
+        formatted_res["misc_class_info"] = {'title': 'Class Features', 'content': misc_info, 'level_required': 0, 'tables': []}
+        
         return formatted_res
 
     def dump_json(self, filepath: str):

@@ -171,8 +171,8 @@ const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
   return (<div className='w-full mt-4'>
     <div className='font-semibold text-2xl'>Starting Equipment</div>
     <div style={{ marginBottom: 12 }} className='flex flex-row w-full justify-center'>
-      <Button variant="contained" size="medium" onClick={openFixedPicker} sx={{ mr: 1 }}>Add Fixed Starting Equipment</Button>
-      <Button variant="contained" size="medium" onClick={addChoiceGroup}>Add Starting Equipment Choice</Button>
+      <Button variant="outlined" color='success' size="medium" onClick={openFixedPicker} sx={{ mr: 1 }}>Add Fixed Starting Equipment</Button>
+      <Button variant="outlined" color='success' size="medium" onClick={addChoiceGroup}>Add Starting Equipment Choice</Button>
     </div>
 
     {/* Fixed picker */}
@@ -192,8 +192,8 @@ const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
           renderInput={(params) => <TextField {...params} label="Select fixed starting equipment" placeholder="" />}
         />
         <div style={{ marginTop: 8 }}>
-          <Button variant="contained" size="small" onClick={confirmAddFixed} sx={{ mr: 1 }}>Add Selected</Button>
-          <Button variant="outlined" size="small" onClick={cancelFixedPicker}>Cancel</Button>
+          <Button variant="outlined" color='success' size="small" onClick={confirmAddFixed} sx={{ mr: 1 }}>Add Selected</Button>
+          <Button variant="outlined" color='error' size="small" onClick={cancelFixedPicker}>Cancel</Button>
         </div>
       </FormControl>
     )}
@@ -219,8 +219,8 @@ const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>Choice group #{gi + 1}</div>
             <div>
-              <Button size="small" color="success" onClick={() => addOptionToGroup(gi)} sx={{ mr: 1 }}>+ Choice</Button>
-              <Button size="small" color="error" onClick={() => removeChoiceGroup(gi)}>Remove Group</Button>
+              <Button size="small" color="success" variant='outlined' onClick={() => addOptionToGroup(gi)} sx={{ mr: 1 }}>+ Choice</Button>
+              <Button size="small" color="error" variant='outlined' onClick={() => removeChoiceGroup(gi)}>Remove Group</Button>
             </div>
           </div>
 
@@ -272,7 +272,7 @@ const GetStartingEquipment = ({ newClass = {}, setNewClass }) => {
                       ))}
                     </div>
 
-                    <Button size="small" color="error" onClick={() => removeOptionFromGroup(gi, oi)} sx={{ ml: 1 }}>Remove Option</Button>
+                    <Button size="small" color="error" variant="outlined" onClick={() => removeOptionFromGroup(gi, oi)} sx={{ ml: 1 }}>Remove Option</Button>
                   </div>
                 </div>
               );

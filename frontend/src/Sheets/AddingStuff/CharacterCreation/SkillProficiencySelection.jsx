@@ -72,11 +72,11 @@ function SkillProfSelection({sheet,setSheet, onValid, selectedSkills, setSelecte
             <div className='mt-2 mb-2 font-semibold text-2xl'>
                 Select {sheet.class.num_skill_proficiencies} skill proficiencies:
             </div>
-            <div className='flex flex-row !space-x-2'>
+            <div className='flex flex-wrap gap-2 '>
 
             {sheet.class?.skill_proficiencies.map(prof => (
                 
-                <Button key={prof}  variant={selectedSkills.includes(prof) ? 'contained' : 'outlined'} onClick={() => handleSkillToggle(prof)}>{prof}</Button>
+                <Button key={prof}  variant={selectedSkills.includes(prof) ? 'contained' : 'outlined'} onClick={() => handleSkillToggle(prof)} size="small">{prof}</Button>
             ))}
             </div>
         </div>

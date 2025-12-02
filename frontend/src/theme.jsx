@@ -57,8 +57,9 @@ const theme = createTheme({
     mode: 'light',
     baseColor,
     primary: { main: randomPrimary },
-    secondary: { main: '#03DAC6' },
+    secondary: { main: '#0372da' },
     error: { main: '#e01f1f' },
+    success: { main: '#4caf50' },
     background: {
       default: '#3a3a3a',   // page background
       paper: '#f5f5f5',     // cards/dialogs; change to '#2f2f2f' if you want dark surfaces
@@ -123,6 +124,13 @@ const theme = createTheme({
             color: '#000000'
 
           },
+        }),
+        outlinedSuccess: ({ theme }) => ({
+          '&:hover': {
+            backgroundColor: alpha(theme.palette.success.main, 0.95),
+            borderColor: theme.palette.success.main,
+            color: '#000000'
+          }
         }),
         textPrimary: ({ theme }) => ({
           

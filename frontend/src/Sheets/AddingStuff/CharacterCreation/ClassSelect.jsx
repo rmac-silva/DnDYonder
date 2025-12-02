@@ -5,7 +5,7 @@ TODO: Allow the user to create a class if needed
 */
 
 import React, { useState, useEffect, memo } from 'react';
-
+import CachedIcon from '@mui/icons-material/Cached';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
@@ -31,8 +31,17 @@ import GetSkillProficiencies from '../../Lists/SkillProficiencies';
 import GetStartingEquipment from '../../Lists/StartingEquipment';
 import GetClassFeats from '../../Lists/ClassFeature';
 
+import { getItem, ForceCacheRefresh } from '../../MiddleColumn/Inventory/ItemCache';
+
+// NEW: layout helpers
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
+
 const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   const [loading, setLoading] = useState(true);
+  const [loadingWikidotData, setLoadingWikidotData] = useState(false);
   const [fetchedClasses, setFetchedClasses] = useState([]);
   const [forceRefresh, setForceRefresh] = useState(false);
   const [creatingNewClass, setCreatingNewClass] = useState(false);
@@ -146,12 +155,18 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   }, [forceRefresh]);
 
   const handleChangingClass = (e) => {
+
+    //Wipe the selected starting equipment and skill proficiencies from the sheet first
+    
+    
+
     const val = e.target.value;
     if (val === 'new') {
       // open dialog for creating a class
       setCreatingNewClass(true);
       return;
     }
+    console.log("Selected class, sheet is now:", sheet);
     // find class and pass to parent if provided
 
     const cls = fetchedClasses.find((c) => String(c.c_name) === String(val));
@@ -172,6 +187,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
     setNewClass({ ...newClass });
   }
+
   const setWeaponProficiencies = (value) => {
     newClass.weapon_proficiencies = value;
 
@@ -180,26 +196,31 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     //Refresh starting equipment options
     setForceRefresh(true);
   }
+
   const setAttributeProficiencies = (value) => {
     newClass.attribute_proficiencies = value;
     // console.log("New attribute proficiencies", newClass.attribute_proficiencies);
     setNewClass({ ...newClass });
   }
+
   const setSkillProficiencies = (value) => {
     newClass.skill_proficiencies = value;
 
     setNewClass({ ...newClass });
   }
+
   const setNumSkillProficiencies = (value) => {
     newClass.num_skill_proficiencies = value;
 
     setNewClass({ ...newClass });
   }
+
   const setToolProficiencies = (value) => {
     newClass.tool_proficiencies = value;
     // console.log("New tool proficiencies", newClass.tool_proficiencies);
     setNewClass({ ...newClass });
   }
+
   const setClassFeats = (value) => {
     newClass.class_features = value;
     setNewClass({ ...newClass });
@@ -239,13 +260,8 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
   const handleDialogClose = () => {
     setCreatingNewClass(false);
-
-
-
     // reset newClass state if desired
     WipeNewClassData(setNewClass);
-
-
   };
 
   function ValidateForm() {
@@ -293,7 +309,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
       if (!confirmNoClassFeatures) {
         return false;
       }
-    } else if(newClass.class_features.length > 0) {
+    } else if (newClass.class_features.length > 0) {
       //Check that all class features have a required level
       for (let feat of newClass.class_features) {
         if (feat.level_requirement === undefined || feat.level_requirement < 1) {
@@ -350,7 +366,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
 
 
-  const ClassNameInput = memo(function ClassNameInput({ initial = '', onCommit,error }) {
+  const ClassNameInput = memo(function ClassNameInput({ initial = '', onCommit, error }) {
     // local state lives inside this small component — typing won't re-render parent
     const [value, setValue] = useState(initial);
 
@@ -365,11 +381,169 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
         variant="outlined"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        onBlur={() => onCommit(value)}      // only commit to parent on blur
-        margin="normal"
+        onBlur={() => onCommit(value)}
+        margin="none"            // centered with the row
       />
     );
   });
+
+  async function handleWikidotData(data) {
+    console.log("Wikidot data received:", data);
+
+    if (data === null || Object.keys(data).length === 0) {
+      alert("No data found on Wikidot for this class" + ". If it is an Unearthed Arcana, try adding 'UA' to the name: {YOUR NAME} UA");
+      return;
+    }
+
+    var ignored_keys = ['Class Features', 'Spellcasting', 'misc_class_info']
+
+    var new_class_features = [];
+    for (const [key, value] of Object.entries(data)) {
+
+      if (key === "misc_class_info") {
+
+        var misc_info = value.content;
+
+        newClass.hit_die = misc_info.hit_die ? `d${misc_info.hit_die}` : newClass.hit_die;
+        setHitDice(newClass.hit_die);
+        newClass.num_skill_proficiencies = misc_info.num_skills_to_choose ? parseInt(misc_info.num_skills_to_choose) : newClass.num_skill_proficiencies;
+
+        newClass.attribute_proficiencies = misc_info.saving_throws ? misc_info.saving_throws : newClass.attribute_proficiencies;
+
+        newClass.skill_proficiencies = misc_info.skills_list ? misc_info.skills_list : newClass.skill_proficiencies;
+
+        newClass.weapon_proficiencies = misc_info.weapon_proficiencies ? misc_info.weapon_proficiencies : newClass.weapon_proficiencies;
+
+        newClass.armor_proficiencies = misc_info.armor_proficiencies ? misc_info.armor_proficiencies : newClass.armor_proficiencies;
+
+        newClass.tool_proficiencies = misc_info.tool_proficiencies ? misc_info.tool_proficiencies : newClass.tool_proficiencies;
+      }
+
+      if (ignored_keys.includes(key)) {
+        continue;
+      }
+
+      var content = value.content || "";
+      if (value.table) {
+        //Append some text informing there's a table that will be shown later
+        content += "\n\n[Table data available, it will be shown in the sheet.]";
+      }
+
+      //Iterate through the weapon and tool proficiencies, and check for items that are not defined in the item cache.
+      
+      for (let prof of data.misc_class_info.content.weapon_proficiencies) {
+          if (getItem(prof) === undefined) {
+            var item = {
+              name: prof,
+              type: "Weapon",
+              description: "Fetched from Wikidot. Please edit details.",
+              weight: 0,
+              cost: 0,
+              features: [],
+              range : "",
+              attacks:  [],
+            };
+            await saveNewItem(item);
+          }
+        }
+
+      for (let prof of data.misc_class_info.content.tool_proficiencies) {
+          if (getItem(prof) === undefined) {
+            item = {
+              name: prof,
+              type: "Tool",
+              description: "Fetched from Wikidot. Please edit details.",
+              weight: 0,
+              cost: 0,
+              features: [],
+            };
+            await saveNewItem(item);
+          }
+        }
+      
+
+      
+
+      var new_feature = {
+        name: key,
+        description: content,
+        tables: value.tables || [],
+        level_requirement: value.level_required || newClass.level,
+        benefits: []
+      };
+      new_class_features.push(new_feature);
+    }
+    // immutably set the new features array so React re-renders
+    newClass.class_features = [...new_class_features];
+    setNewClass({ ...newClass });
+  }
+
+  async function saveNewItem(item) {
+    const payload = {
+      'item': item,
+      'type': item.type,
+      'token': localStorage.getItem('authToken'),
+    }
+
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/info/save_item`, {
+      method: 'POST', // or PUT depending on your API
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      
+      throw new Error(`Save failed: ${res.status} - ${errorData.detail || 'Unknown error'}`);
+    } else {
+      ForceCacheRefresh();//Update the cache after adding a new item
+    }
+  }
+
+  async function handleWikidotFetch() {
+    try {
+
+      setLoadingWikidotData(true);
+
+
+      await fetchWikidotClassData(newClass.class_name);
+
+
+
+    } catch (error) {
+      console.error("Error during Wikidot fetch:", error);
+      setLoadingWikidotData(false);
+    }
+  }
+
+
+  async function fetchWikidotClassData(className) {
+
+    if (className === '') {
+      alert('Please provide a class name to fetch from Wikidot.');
+      setLoadingWikidotData(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/wikidot/class/${newClass.class_name}`, {
+        method: 'GET',
+      });
+
+      if (!res.ok) {
+        throw new Error(`Wikidot fetch failed: ${res.status}`);
+      }
+
+      const data = await res.json();
+      await handleWikidotData(data);
+
+      setLoadingWikidotData(false);
+    } catch (error) {
+      console.error("Error fetching from Wikidot:", error);
+      setLoadingWikidotData(false);
+    }
+
+  }
 
   return (
     <>
@@ -403,210 +577,310 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
         </DialogTitle>
 
         <DialogContent dividers>
-          {/* Large input for the class name */}
-          <ClassNameInput
-            initial={localClassName}
-            //Red outline when error in class name
-            error={errorField === 'class_name'}
-            onCommit={(v) => {
-              // update both localClassName and newClass exactly once (on blur)
-              setLocalClassName(v);
-              setNewClass(prev => ({ ...prev, class_name: v }));
-            }}
-          />
+          {/* RESTRUCTURED: Standard sections with Paper + headers */}
+          <Stack spacing={2}>
+            {/* Warning before Basics */}
+            <Typography  className='text-lg !font-semibold'>
+              Tip: Fill in Spellcasting, Subclass details, and Starting Equipment before fetching from Wikidot as it slows down the website a lot.
+            </Typography>
 
-          {/* Row: Hit Dice select + two small text fields */}
-          <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
-            <FormControl sx={{ minWidth: 140 }}>
-              <InputLabel id="hit-die-label">Hit Dice</InputLabel>
-              <Select
-                error={errorField === 'hit_die'}
-                labelId="hit-die-label"
-                id="hit-die"
-                value={newClass.hit_die}
-                label="Hit Dice"
-                onChange={(e) => {setHitDice(e.target.value);}}
-              >
-                <MenuItem value="none">—</MenuItem>
-                <MenuItem value="d6">D6</MenuItem>
-                <MenuItem value="d8">D8</MenuItem>
-                <MenuItem value="d10">D10</MenuItem>
-                <MenuItem value="d12">D12</MenuItem>
-              </Select>
-            </FormControl>
-
-            <TextField
-              type='number'
-              label="Starting HP"
-              variant="outlined"
-              //Make this field read-only, as it is calculated based on hit die
-              InputProps={{
-                readOnly: true,
-              }}
-              value={newClass.starting_hitpoints}
-              size="small"
-            />
-
-            <TextField
-              type='number'
-              label="HP / Level"
-              variant="outlined"
-              InputProps={{
-                readOnly: true,
-              }}
-              value={newClass.hitpoints_per_level}
-              size="small"
-            />
-          </Box>
-
-          {/* Multi-select Autocompletes (searchable) */}
-
-          <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
-
-            <GetWeaponProficiencies value={newClass.weapon_proficiencies} onChange={setWeaponProficiencies} />
-
-            <GetArmorProficiencies value={newClass.armor_proficiencies} onChange={setArmorProficiencies} />
-
-            <GetToolProficiencies value={newClass.tool_proficiencies} onChange={setToolProficiencies} />
-          </Box>
-
-
-          <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
-            <GetAttributeProficiencies value={newClass.attribute_proficiencies} onChange={setAttributeProficiencies} error={errorField === 'attribute_proficiencies'} />
-            <GetSkillProficiencies value={newClass.skill_proficiencies} onChange={setSkillProficiencies} error={errorField === 'skill_proficiencies'} />
-
-            {/* A text field for number of skill proficiencies to choose from: */}
-            <TextField
-              className='w-30'
-              type='number'
-              error={errorField === 'num_skill_proficiencies'}
-              label="Nr. Choices"
-              variant="outlined"
-              value={newClass.num_skill_proficiencies}
-              onChange={(e) => setNumSkillProficiencies(e.target.value)}
-              size="medium"
-            />
-
-            <Box display="flex" flexDirection="column" gap={1}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={hasSpellcasting}
-                    onChange={(e) => setHasSpellcasting(e.target.checked)}
+            {/* Basics */}
+            <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>Basics</Typography>
+              <Divider sx={{ mb: 2 }} />
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  {/* Class Name */}
+                  <ClassNameInput
+                    initial={localClassName}
+                    error={errorField === 'class_name'}
+                    onCommit={(v) => {
+                      setLocalClassName(v);
+                      setNewClass(prev => ({ ...prev, class_name: v }));
+                    }}
                   />
-                }
-                label="Has Spellcasting?"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={hasSubclass}
-                    onChange={(e) => setHasSubclass(e.target.checked)}
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  {/* Hit dice + HP */}
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    spacing={2}
+                    alignItems="center"
+                  // removed mt to align vertically with Class Name
+                  >
+                    <FormControl sx={{ minWidth: 140 }}>
+                      {/* ...existing Hit Dice Select (unchanged handlers/props)... */}
+                      <InputLabel id="hit-die-label">Hit Dice</InputLabel>
+                      <Select
+                        error={errorField === 'hit_die'}
+                        labelId="hit-die-label"
+                        id="hit-die"
+                        value={newClass.hit_die}
+                        label="Hit Dice"
+                        onChange={(e) => { setHitDice(e.target.value); }}
+                      >
+                        <MenuItem value="none">—</MenuItem>
+                        <MenuItem value="d6">D6</MenuItem>
+                        <MenuItem value="d8">D8</MenuItem>
+                        <MenuItem value="d10">D10</MenuItem>
+                        <MenuItem value="d12">D12</MenuItem>
+                      </Select>
+                    </FormControl>
+
+                    <TextField
+                      type='text'
+                      label="Starting HP"
+                      variant="outlined"
+
+
+                      InputProps={{ readOnly: true }}
+                      value={newClass.starting_hitpoints}
+                      size="small"
+                    />
+                    <TextField
+                      type='text'
+                      label="HP / Level"
+                      variant="outlined"
+
+                      InputProps={{ readOnly: true }}
+                      value={newClass.hitpoints_per_level}
+                      size="small"
+                    />
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12}>
+                  {/* Toggles */}
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={hasSpellcasting}
+                          onChange={(e) => setHasSpellcasting(e.target.checked)}
+                        />
+                      }
+                      label="Has Spellcasting?"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={hasSubclass}
+                          onChange={(e) => setHasSubclass(e.target.checked)}
+                        />
+                      }
+                      label="Has Subclass?"
+                    />
+                  </Stack>
+                </Grid>
+              </Grid>
+            </Paper>
+
+            {/* Proficiencies */}
+            <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>Proficiencies</Typography>
+              <Divider sx={{ mb: 2 }} />
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={4}>
+                  <GetWeaponProficiencies value={newClass.weapon_proficiencies} onChange={setWeaponProficiencies} />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <GetArmorProficiencies value={newClass.armor_proficiencies} onChange={setArmorProficiencies} />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <GetToolProficiencies value={newClass.tool_proficiencies} onChange={setToolProficiencies} />
+                </Grid>
+              </Grid>
+            </Paper>
+
+            {/* Saving Throws & Skills */}
+            <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>Saving Throws & Skills</Typography>
+              <Divider sx={{ mb: 2 }} />
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12} md={5}>
+                  <GetAttributeProficiencies value={newClass.attribute_proficiencies} onChange={setAttributeProficiencies} error={errorField === 'attribute_proficiencies'} />
+                </Grid>
+                <Grid item xs={12} md={5}>
+                  <GetSkillProficiencies value={newClass.skill_proficiencies} onChange={setSkillProficiencies} error={errorField === 'skill_proficiencies'} />
+                </Grid>
+                <Grid item xs={12} md={2}>
+                  <TextField
+                    className='w-30'
+                    type="number"
+                    error={errorField === 'num_skill_proficiencies'}
+                    label="Nr. Choices"
+                    variant="outlined"
+                    value={Number.isFinite(Number(newClass.num_skill_proficiencies)) ? Number(newClass.num_skill_proficiencies) : ''}
+
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      setNumSkillProficiencies(v === '' ? '' : Number(v));
+                    }}
+                    size="medium"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}    // ensures floating label
+                    inputProps={{ min: 0 }}
+                    placeholder="0"
                   />
+                </Grid>
+              </Grid>
+            </Paper>
+
+            {/* Spellcasting Details */}
+            {hasSpellcasting && (
+              <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+                <Typography variant="h6" sx={{ mb: 1 }}>Spellcasting Details</Typography>
+                <Divider sx={{ mb: 2 }} />
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={3}>
+                    <TextField
+                      label="Spellcasting Level"
+                      variant="outlined"
+                      type='number'
+                      sx={{ maxWidth: 130 }}
+                      value={newClass.spellcasting.level}
+                      onChange={(e) => setNewClass((s) => ({
+                        ...s,
+                        spellcasting: {
+                          ...s.spellcasting,
+                          level: e.target.value
+                        }
+                      }))}
+                      size="medium"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+              </Paper>
+            )}
+
+            {/* Subclass Details */}
+            {hasSubclass && (
+              <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 }, width: '100%' }} >
+                <Typography variant="h6" sx={{ mb: 1 }}>Subclass Details</Typography>
+                <Divider sx={{ mb: 2 }} />
+                <Grid container spacing={2} sx={{ width: '100%', flexGrow: 1 }} >
+                  <Grid item xs={12} md={12}>
+                    <TextField
+                      label="Subclass Name"
+                      variant="outlined"
+                      value={newClass.subclass.name}
+                      onChange={(e) => setNewClass((s) => ({
+                        ...s,
+                        subclass: {
+                          ...s.subclass,
+                          name: e.target.value
+                        }
+                      }))}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={3}>
+                    <TextField
+                      label="Subclass Level"
+                      variant="outlined"
+                      type='number'
+                      sx={{ maxWidth: 140 }}
+                      value={newClass.subclass.level}
+                      onChange={(e) => setNewClass((s) => ({
+                        ...s,
+                        subclass: {
+                          ...s.subclass,
+                          level: e.target.value
+                        }
+                      }))}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Box display="flex" flexDirection="col" flexWrap="wrap" gap={2} width="100%" sx={{ mt: 2 }}>
+                    <Grid item xs={24} sx={{ width: '80%' }}>
+                      <TextField
+                        className='!w-3/3'
+                        label="Subclass Description"
+                        variant="outlined"
+                        value={newClass.subclass.description}
+                        onChange={(e) => setNewClass((s) => ({
+                          ...s,
+                          subclass: {
+                            ...s.subclass,
+                            description: e.target.value
+                          }
+                        }))}
+                        fullWidth
+                        multiline
+                        minRows={3}
+                      />
+                    </Grid>
+                  </Box>
+                </Grid>
+              </Paper>
+            )}
+
+            {/* Starting Equipment */}
+            <Paper
+              variant="outlined"
+              sx={{
+                p: { xs: 2, md: 3 },
+                // make all inner buttons appear outlined
+                '& .MuiButton-root': {
+                  border: '1px solid',
+                  borderColor: (t) => t.palette.divider,
+                  backgroundColor: 'transparent',
+                  textTransform: 'none'
                 }
-                label="Has Subclass?"
-              />
-            </Box>
-
-
-          </Box>
-
-          {hasSpellcasting &&
-            <>
-              <div className='font-semibold text-xl'>Spellcasting Details:</div>
-              <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
-                <TextField
-                  label="Spellcasting Level"
-                  variant="outlined"
-                  type='number'
-                  sx={{ maxWidth: 130 }}
-                  value={newClass.spellcasting.level}
-                  onChange={(e) => setNewClass((s) => ({
-                    ...s,
-                    spellcasting: {
-                      ...s.spellcasting,
-                      level: e.target.value
-                    }
-                  }))}
-                  size="medium"
+              }}
+            >
+              <Typography variant="h6" sx={{ mb: 1 }}>Starting Equipment</Typography>
+              <Divider sx={{ mb: 2 }} />
+              <Box>
+                <GetStartingEquipment
+                  newClass={newClass}
+                  setNewClass={setNewClass}
+                  allowDuplicates
+                  buttonVariant="outlined"
                 />
               </Box>
-            </>
-          }
+            </Paper>
 
-          {hasSubclass &&
-            <>
-              <div className='font-semibold text-xl'>Subclass Details:</div>
-              <Box display="flex" flexDirection="row" gap={2} mt={2} mb={2}>
-
-                <TextField
-
-                  label="Subclass Name"
-                  variant="outlined"
-                  value={newClass.subclass.name}
-                  onChange={(e) => setNewClass((s) => ({
-                    ...s,
-                    subclass: {
-                      ...s.subclass,
-                      name: e.target.value
-                    }
-                  }))}
-
-                />
-                <TextField
-
-                  label="Subclass Level"
-                  variant="outlined"
-                  type='number'
-                  sx={{ maxWidth: 140 }}
-                  value={newClass.subclass.level}
-                  onChange={(e) => setNewClass((s) => ({
-                    ...s,
-                    subclass: {
-                      ...s.subclass,
-                      level: e.target.value
-                    }
-                  }))}
-
-                />
-
-
-              </Box>
-              <TextField
-                className='!w-2/3'
-                label="Subclass Description"
-                variant="outlined"
-                value={newClass.subclass.description}
-                onChange={(e) => setNewClass((s) => ({
-                  ...s,
-                  subclass: {
-                    ...s.subclass,
-                    description: e.target.value
-                  }
-                }))}
-
+            {/* Class Features */}
+            <Paper
+              variant="outlined"
+              sx={{
+                p: { xs: 2, md: 3 },
+                // Align any CardHeader actions (e.g., delete buttons) to top-right reliably
+                '& .MuiCardHeader-root': {
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  pr: 1
+                },
+                '& .MuiCardHeader-action': {
+                  ml: 'auto',
+                  alignSelf: 'flex-start'
+                },
+                // Avoid forcing absolute positioning so buttons remain visible
+                '& .MuiIconButton-root': {
+                  position: 'static'
+                }
+              }}
+            >
+              <Typography variant="h6" sx={{ mb: 1 }}>Class Features</Typography>
+              <Divider sx={{ mb: 2 }} />
+              <GetClassFeats
+                onChange={setClassFeats}
+                label={"Class"}
+                objectFeatures={newClass.class_features}
+                object={newClass}
               />
-            </>
-          }
-
-          <Box display="flex" gap={2} alignItems="center" mt={2} mb={2}>
-            <GetStartingEquipment newClass={newClass} setNewClass={setNewClass} />
-          </Box>
-
-
-
-
-
-
-          <Box mt={2}>
-            <GetClassFeats onChange={setClassFeats} label={"Class"} objectFeatures={newClass.class_features} object={newClass} />
-          </Box>
+            </Paper>
+          </Stack>
         </DialogContent>
 
         <DialogActions>
 
 
           <Box gap={2} display="flex">
+            
+            <Button onClick={handleWikidotFetch} variant="contained" color="secondary" startIcon={<CachedIcon />} loading={loadingWikidotData}>Fetch from Wikidot</Button>
             <Button onClick={handleDialogClose} variant="contained" color="error">Cancel</Button>
             <Button onClick={handleCreateClass} variant="contained" color="primary">Create</Button>
           </Box>

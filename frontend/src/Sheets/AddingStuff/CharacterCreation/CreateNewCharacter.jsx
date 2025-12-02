@@ -252,7 +252,7 @@ function CreateNewCharacter({ isOpen, onClose, onSubmit, draft, setDraft }) {
                         <div className='font-semibold text-2xl mt-4'>
                             {draft.race.subrace + " " + draft.race.race}
                         </div>
-                        <div className='font-medium text-xl mt-2 pl-2'>
+                        <div className='font-medium text-xl mt-2 mb-4 pl-2'>
 
                             <div className='flex'>
                                 <span className='mr-2'>Size:</span>

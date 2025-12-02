@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { Paper, Typography, Divider, Stack } from '@mui/material';
 
 const AddFeatureDialog = ({ open, onClose, onAdd }) => {
   const [title, setTitle] = useState('');
@@ -35,32 +36,52 @@ const AddFeatureDialog = ({ open, onClose, onAdd }) => {
   };
 
   return (
-    <Dialog open={!!open} onClose={handleCancel} maxWidth="sm" fullWidth>
+    <Dialog open={!!open} onClose={handleCancel} maxWidth="md" fullWidth>
       <DialogTitle>Create Feature</DialogTitle>
-      <DialogContent>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
-          <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} fullWidth />
-          <TextField
-            label="Level Requirement"
-            type="number"
-            value={level}
-            onChange={(e) => setLevel(e.target.value)}
-            inputProps={{ min: 0 }}
-            fullWidth
-          />
-          <TextField
-            label="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            multiline
-            rows={6}
-            fullWidth
-          />
-        </Box>
+      <DialogContent dividers>
+        <Stack spacing={2}>
+          <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+            <Typography variant="h6" sx={{ mb: 1 }}>Basics</Typography>
+            <Divider sx={{ mb: 2 }} />
+            <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
+              <TextField
+                label="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                fullWidth
+                required
+              />
+              <TextField
+                label="Level Requirement"
+                type="number"
+                value={level}
+                onChange={(e) => setLevel(e.target.value)}
+                inputProps={{ min: 0 }}
+                sx={{ minWidth: 160 }}
+                required
+              />
+            </Box>
+          </Paper>
+
+          <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+            <Typography variant="h6" sx={{ mb: 1 }}>Description</Typography>
+            <Divider sx={{ mb: 2 }} />
+            <TextField
+              label="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              multiline
+              rows={6}
+              fullWidth
+            />
+          </Paper>
+        </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel}>Cancel</Button>
-        <Button variant="contained" onClick={handleAdd}>Add Feature</Button>
+        <Button onClick={handleCancel} variant="contained" color="error">Cancel</Button>
+        <Button variant="contained" color="primary" onClick={handleAdd} disabled={!title.trim()}>
+          Add Feature
+        </Button>
       </DialogActions>
     </Dialog>
   );
