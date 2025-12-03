@@ -13,7 +13,7 @@ import { isSheetSaved, saveSheet } from '../Sheets/SheetManager.js';
 function Navbar() {
     const location = useLocation();
     const pathname = location.pathname || '/';
-    const { isLoggedIn, logout, authUsername } = useAuth();
+    const { isLoggedIn, logout, authUsername, isAdmin } = useAuth();
     const navigate = useNavigate();
 
     const handleNavigate = (path) => {
@@ -33,6 +33,7 @@ function Navbar() {
     }
 
     const atSheetsPage = pathname.split("/")[1] === "sheets";
+    const atAdminPage = pathname.split("/")[1] === "admin";
     const atHomePage = pathname === "/";
     const atLoginPage = pathname === "/login";
 
@@ -111,6 +112,21 @@ function Navbar() {
                                 }}
                             >
                                 Sheets
+                            </Button>
+                        }
+                        {isLoggedIn && isAdmin &&
+                            <Button
+                                onClick={() => handleNavigate(`/admin`)}
+                                sx={{
+                                    fontWeight: 600,
+                                    fontSize: { xs: '16px', sm: '1.125rem' },
+                                    textTransform: 'none',
+                                    color: atAdminPage ? 'textHighlights.main' : 'textMain.main',
+                                    '&:hover': { color: 'textHover.main' },
+                                    minWidth: { xs: '64px', sm: 'auto' },
+                                }}
+                            >
+                                Admin
                             </Button>
                         }
                     </Box>

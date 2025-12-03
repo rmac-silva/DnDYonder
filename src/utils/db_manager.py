@@ -74,6 +74,18 @@ class DatabaseManager:
         else:
             return (True, "User authenticated.")
 
+    def check_admin_privileges(self, username: str) -> bool:
+        """Checks if the given user has admin privileges. Returns True if admin, False otherwise."""
+        hashed_username = self.hash(username)
+
+        com = """
+        SELECT is_admin FROM users WHERE username = ?;
+        """
+        res = self.c().execute(com, (hashed_username,)).fetchone()
+        if res is None:
+            return False
+        return res[0] == 1
+    
     # region - Character Sheets
 
     def save_character_sheet(self, username: str, sheet) -> tuple[bool, str | dict]:

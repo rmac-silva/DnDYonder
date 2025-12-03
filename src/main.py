@@ -75,9 +75,19 @@ def login_for_access_token(username: str = Form(...)):
 def verify_token(token: str):
     res = jwt_manager.verify_token(token)
     if res[0]:
-        return {"message": "Token is valid", "username": res[1]}
+        return {"message": "Token is valid", "username": res[1], 'is_admin': res[2]}
     else:
         raise HTTPException(status_code=403, detail=res[1])
+    
+@app.get("/auth/is_admin/{token}")
+def is_admin(token: str):
+    res = jwt_manager.is_admin(token)
+    if res[0]:
+        return {"is_admin": res[1]}
+    else:
+        raise HTTPException(status_code=403, detail=res[1])
+#endregion - Auth
+
 #region - Sheets
 
 @app.get("/sheets/new")
@@ -185,6 +195,20 @@ def save_new_class(data: dict):
     
 
     res = info_manager.save_new_class(data.get('class', {}))
+    if res[0] is False:
+        raise HTTPException(status_code=500, detail=res[1])
+    else:
+        return res[1]
+    
+@app.put("/info/classes")
+def save_class_edit(data: dict):
+    username = jwt_manager.fetch_username_from_token(data.get('token', False))
+    
+    if username[0] is False:
+        raise HTTPException(status_code=403, detail=username[1])
+    
+
+    res = info_manager.save_class_edit(data.get('class', {}))
     if res[0] is False:
         raise HTTPException(status_code=500, detail=res[1])
     else:
@@ -309,6 +333,40 @@ def save_new_item(item: dict):
             raise HTTPException(status_code=500, detail=res[1])
         else:
             return res[1]
+        
+@app.post("/info/edit_item")
+def edit_item(data: dict):
+    print("Editing item:", data)
+    username = jwt_manager.fetch_username_from_token(data.get('token', False))
+    
+    if username[0] is False:
+        raise HTTPException(status_code=403, detail=username[1])
+    else:
+        res = info_manager.edit_item(data.get('item', {}),data.get('type', ''))
+        if res[0] is False:
+            raise HTTPException(status_code=500, detail=res[1])
+        else:
+            return res[1]
+        
+@app.post("/info/delete_item")
+def delete_item(data: dict):
+    name = data.get('itemName', '')
+    token = data.get('token', False)
+    type = data.get('itemType', 'None')
+    
+    if(type == 'None' or name == '' or not token):
+        raise HTTPException(status_code=400, detail="Invalid request parameters")
+
+    username = jwt_manager.fetch_username_from_token(token)
+    
+    if username[0] is False:
+        raise HTTPException(status_code=403, detail=username[1])
+    else:
+        res = info_manager.delete_item(name,type)
+        if res[0] is False:
+            raise HTTPException(status_code=500, detail=res[1])
+        else:
+            return res[1]
 #endregion
 
 #region - WikiDot WebScraping
@@ -364,6 +422,9 @@ def export_sheet_txt(username: str, sheet_id: int):
             
             return ExportAsText(res[1])
         
-        
+#endregion - Export & Download
+
+     
 if __name__ == "__main__":
     uvicorn.run("main:app", host="192.168.1.71", port=8000,ssl_keyfile='./certs/localhost-key.pem', ssl_certfile='./certs/localhost.pem', reload=True)
+    

@@ -14,9 +14,13 @@
 
 # TODO:
 ## Database Management Improvements
-- A way to edit or delete created classes, weapons etc... This has to be done only by admins! We can't let anyone delete anything. 
-  Create a backend admin user and only allow that user to perform these actions. Only show the delete button if the user is an admin, checked at login.
-- Alternatively, create a python terminal for editing and deleting the DB items.
+Enable editing subclasses
+
+## Log
+- Create a log that logs all actions sent to the backend, with timestamps and user info. This is important for debugging and tracking changes.
+
+## Backups
+- Implement a backup system that periodically saves the database, deleting old backups to save space. 
 
 ## Bug Testing
 - Form validate everything, try and create empty items, classes, duplicate entries, SUBCLASSES.
@@ -30,6 +34,7 @@
 - Button to go to WIKI
 - Sorting / Filtering class/race features.
 - A tag system, so you can tag features with stuff like "+2 to dexterity, capped at 20" or "proficiency to stealth" so when creating character.
+
 - Add sharing capabilities for characters.
 - Eventually add macros to roll dice.
 
@@ -41,10 +46,8 @@
 
 
 # Changelog
-## Visual Revamp
-- Revamp the creation menus to be more user friendly.
-
-## Improve WikiDot fetching
-- Add a loading spinner when fetching items from WikiDot.
-- Add a fetch for classes.
+## Database Management Improvements
+- A way to edit or delete created classes, weapons etc... This has to be done only by admins! We can't let anyone delete anything. 
+  Create a backend admin user and only allow that user to perform these actions. Only show the delete button if the user is an admin, checked at login.
+- Alternatively, create a python terminal for editing and deleting the DB items.
 

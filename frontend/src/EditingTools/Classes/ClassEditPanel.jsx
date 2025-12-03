@@ -22,28 +22,28 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import GetArmorProficiencies from '../../Lists/ArmorProficiencies';
-import GetWeaponProficiencies from '../../Lists/WeaponProficiencies';
-import GetToolProficiencies from '../../Lists/ToolProficiencies';
-import GetAttributeProficiencies from '../../Lists/AttributeProficiencies';
-import GetSkillProficiencies from '../../Lists/SkillProficiencies';
-import GetStartingEquipment from '../../Lists/StartingEquipment';
-import GetClassFeats from '../../Lists/ClassFeature';
+import GetArmorProficiencies from '../../Sheets/Lists/ArmorProficiencies';
+import GetWeaponProficiencies from '../../Sheets/Lists/WeaponProficiencies';
+import GetToolProficiencies from '../../Sheets/Lists/ToolProficiencies';
+import GetAttributeProficiencies from '../../Sheets/Lists/AttributeProficiencies';
+import GetSkillProficiencies from '../../Sheets/Lists/SkillProficiencies';
+import GetStartingEquipment from '../../Sheets/Lists/StartingEquipment';
+import GetClassFeats from '../../Sheets/Lists/ClassFeature';
 
-import { getItem, ForceCacheRefresh } from '../../MiddleColumn/Inventory/ItemCache';
+import { getItem, ForceCacheRefresh } from '../../Sheets/MiddleColumn/Inventory/ItemCache';
 
 // NEW: layout helpers
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
+const ClassEdit = ({ sheet, setSheet, selectClass, disabled, open, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [loadingWikidotData, setLoadingWikidotData] = useState(false);
   const [fetchedClasses, setFetchedClasses] = useState([]);
@@ -90,7 +90,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
   //Error setters
   const [errorField, setErrorField] = useState('');
-  const [featuresOpen, setFeaturesOpen] = useState(false); // accordion closed by default
+  const [featuresOpen, setFeaturesOpen] = useState(false);
 
   function WipeNewClassData() {
     setErrorField('');
@@ -158,6 +158,43 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
       mounted = false;
     };
   }, [forceRefresh]);
+
+  // Preload when opening with an existing class
+  useEffect(() => {
+    const cls = sheet?.class;
+    if (!cls) return;
+    setNewClass({
+      class_name: cls.class_name || '',
+      hit_die: cls.hit_die || 'none',
+      starting_hitpoints: cls.starting_hitpoints ?? 0,
+      hitpoints_per_level: cls.hitpoints_per_level ?? 0,
+      armor_proficiencies: cls.armor_proficiencies || [],
+      weapon_proficiencies: cls.weapon_proficiencies || [],
+      tool_proficiencies: cls.tool_proficiencies || [],
+      attribute_proficiencies: cls.attribute_proficiencies || [],
+      skill_proficiencies: cls.skill_proficiencies || [],
+      num_skill_proficiencies: cls.num_skill_proficiencies ?? 0,
+      starting_equipment: cls.starting_equipment || [],
+      starting_equipment_choices: cls.starting_equipment_choices || [],
+      class_features: cls.class_features || [],
+      spellcasting: {
+        level: cls.spellcasting?.level ?? -1,
+        spell_slots: cls.spellcasting?.spell_slots ?? {},
+        spells_known: cls.spellcasting?.spells_known ?? [],
+        spellcasting_ability: cls.spellcasting?.spellcasting_ability ?? '',
+      },
+      subclass: {
+        selected: !!cls.subclass?.selected,
+        name: cls.subclass?.name ?? '',
+        description: cls.subclass?.description ?? '',
+        level: cls.subclass?.level ?? -1,
+        features: cls.subclass?.features ?? []
+      },
+    });
+    setLocalClassName(cls.class_name || '');
+    setHasSpellcasting((cls.spellcasting?.level ?? -1) >= 0);
+    setHasSubclass(!!cls.subclass && (cls.subclass.level ?? -1) >= 0);
+  }, [sheet?.class]);
 
   const handleChangingClass = (e) => {
 
@@ -265,9 +302,9 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
   const handleDialogClose = () => {
     setCreatingNewClass(false);
-    setFeaturesOpen(false); // ensure accordion closes when dialog closes
     // reset newClass state if desired
     WipeNewClassData(setNewClass);
+    onClose(false);
   };
 
   function ValidateForm() {
@@ -332,7 +369,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     return true;
   }
 
-  const handleCreateClass = async () => {
+  const handleEditClass = async () => {
     if (!ValidateForm()) {
       return;
     }
@@ -343,7 +380,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
       'token': localStorage.getItem('authToken'),
     }
     const res = await fetch(`${import.meta.env.VITE_API_URL}/info/classes`, {
-      method: 'POST', // or PUT depending on your API
+      method: 'PUT', // or PUT depending on your API
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
@@ -367,6 +404,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
     handleChangingClass({ target: { value: newClass.class_name } });
     WipeNewClassData(setNewClass);
+    onClose(true);
 
   };
 
@@ -385,6 +423,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
         error={error}
         label="Class Name"
         variant="outlined"
+        disabled
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onBlur={() => onCommit(value)}
@@ -553,29 +592,12 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
   return (
     <>
-      <FormControl fullWidth variant="standard" margin="normal">
-        <InputLabel id="class-select-label">Class</InputLabel>
-        <Select
-          labelId="class-select-label"
-          id="class-select"
-          value={sheet.class?.class_name || ''}
-          onChange={handleChangingClass}
-          disabled={loading || disabled}
-        >
-          <MenuItem value="">— Select —</MenuItem>
-          <MenuItem value="new">Add New Class…</MenuItem>
-          {fetchedClasses.map((cls) => (
-            <MenuItem key={`class-${cls.c_name}`} value={String(cls.c_name)}>
-              {cls.c_name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      
 
-      <Dialog open={creatingNewClass} onClose={handleDialogClose} fullWidth maxWidth="xl">
+      <Dialog open={open} onClose={handleDialogClose} fullWidth maxWidth="xl">
         <DialogTitle>
           <Box display="flex" alignItems="center" justifyContent="space-between">
-            <Typography variant="h6">Create New Class</Typography>
+            <Typography variant="h6">Editing '{newClass.class_name}'</Typography>
             <IconButton aria-label="close" onClick={handleDialogClose} size="large">
               <CloseIcon />
             </IconButton>
@@ -848,16 +870,17 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
               </Box>
             </Paper>
 
-            {/* Class Features (Accordion) */}
+            {/* Class Features (Accordion, renders only when expanded) */}
             <Accordion
               expanded={featuresOpen}
               onChange={(_, v) => setFeaturesOpen(v)}
-              TransitionProps={{ unmountOnExit: true }}
+              TransitionProps={{ unmountOnExit: true }} // do not keep mounted when collapsed
               sx={{
                 border: (t) => `1px solid ${t.palette.divider}`,
                 borderRadius: 1,
                 boxShadow: 'none',
-                '&:before': { display: 'none' }
+                '&:before': { display: 'none' },
+                mt: 2
               }}
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -865,28 +888,21 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
               </AccordionSummary>
               <AccordionDetails
                 sx={{
-                  p: 0, // keep inner Paper padding consistent
+                  // Align icon buttons without absolute positioning
+                  '& .MuiCardHeader-root': { display: 'flex', alignItems: 'flex-start', pr: 1 },
+                  '& .MuiCardHeader-action': { ml: 'auto', alignSelf: 'flex-start' },
+                  '& .MuiIconButton-root': { position: 'static' }
                 }}
               >
-                <Paper
-                  variant="outlined"
-                  sx={{
-                    p: { xs: 2, md: 3 },
-                    '& .MuiCardHeader-root': { display: 'flex', alignItems: 'flex-start', pr: 1 },
-                    '& .MuiCardHeader-action': { ml: 'auto', alignSelf: 'flex-start' },
-                    '& .MuiIconButton-root': { position: 'static' }
-                  }}
-                >
-                  <Divider sx={{ mb: 2 }} />
-                  {featuresOpen && (
-                    <GetClassFeats
-                      onChange={setClassFeats}
-                      label={"Class"}
-                      objectFeatures={newClass.class_features}
-                      object={newClass}
-                    />
-                  )}
-                </Paper>
+                <Divider sx={{ mb: 2 }} />
+                {featuresOpen && (
+                  <GetClassFeats
+                    onChange={setClassFeats}
+                    label={"Class"}
+                    objectFeatures={newClass.class_features}
+                    object={newClass}
+                  />
+                )}
               </AccordionDetails>
             </Accordion>
           </Stack>
@@ -899,7 +915,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
             
             <Button onClick={handleWikidotFetch} variant="contained" color="secondary" startIcon={<CachedIcon />} loading={loadingWikidotData}>Fetch from Wikidot</Button>
             <Button onClick={handleDialogClose} variant="contained" color="error">Cancel</Button>
-            <Button onClick={handleCreateClass} variant="contained" color="primary">Create</Button>
+            <Button onClick={handleEditClass} variant="contained" color="primary">Save</Button>
           </Box>
 
         </DialogActions>
@@ -908,6 +924,6 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   );
 };
 
-export default ClassSelect;
+export default ClassEdit;
 
 

@@ -261,6 +261,153 @@ class InfoManager():
         else:
              return (False, "Invalid item type")
          
+    def edit_item(self, item: dict,type:str) -> tuple[bool, str]:
+        
+        conn = self.dbm.c().connection
+        
+        if(type == 'Weapon'):
+            com = """
+            SELECT COUNT(*) FROM weapons WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (item.get('name','') ,) ).fetchone()[0]
+            if count == 0:
+                return (False, "Weapon with this name does not exist")
+            
+            com = """
+            UPDATE weapons SET content = ? WHERE name = ?;
+            """
+            conn.execute(com, (json.dumps(item), item.get('name','')))
+            conn.commit()
+            return (True, "Weapon edited successfully")
+        
+        if(type == 'Armor'):
+            
+            com = """
+            SELECT COUNT(*) FROM armors WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (item.get('name','') ,) ).fetchone()[0]
+            if count == 0:
+                return (False, "Armor with this name does not exist")
+            
+            com = """
+            UPDATE armors SET content = ? WHERE name = ?;
+            """
+            conn.execute(com, (json.dumps(item), item.get('name','')))
+            conn.commit()
+            return (True, "Armor edited successfully")
+        
+        if(type == 'Tool'):
+            
+            com = """
+            SELECT COUNT(*) FROM tools WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (item.get('name','') ,) ).fetchone()[0]
+            if count == 0:
+                return (False, "Tool with this name does not exist")
+            
+            com = """
+            UPDATE tools SET content = ? WHERE name = ?;
+            """
+            conn.execute(com, (json.dumps(item), item.get('name','')))
+            conn.commit()
+            return (True, "Tool edited successfully")
+        
+        if(type == 'Misc.' or type == 'Other'):
+            
+            com = """
+            SELECT COUNT(*) FROM miscellaneous WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (item.get('name','') ,) ).fetchone()[0]
+            if count == 0:
+                return (False, "Miscellaneous item with this name does not exist")
+            
+            com = """
+            UPDATE miscellaneous SET content = ? WHERE name = ?;
+            """
+            conn.execute(com, (json.dumps(item), item.get('name','')))
+            conn.commit()
+            return (True, "Miscellaneous item edited successfully")
+        else:
+             return (False, "Invalid item type")
+         
+         
+    def delete_item(self, itemName: str,type:str) -> tuple[bool, str]:
+        
+        conn = self.dbm.c().connection
+        
+        if(type == 'Weapon'):
+            com = """
+            SELECT COUNT(*) FROM weapons WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (itemName ,) ).fetchone()[0]
+            if count == 0:
+                return (False, "No such weapon exists")
+            
+            com = """
+            DELETE FROM weapons WHERE name = ?;
+            """
+            conn.execute(com, (itemName, ))
+            conn.commit()
+            return (True, "Weapon removed successfully")
+        
+        if(type == 'Armor'):
+            
+            com = """
+            SELECT COUNT(*) FROM armors WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (itemName ,) ).fetchone()[0]
+            if count == 0:
+                return (False, "No such armor exists")
+            
+            com = """
+            DELETE FROM armors WHERE name = ?;
+            """
+            conn.execute(com, (itemName, ))
+            conn.commit()
+            return (True, "Armor removed successfully")
+        
+        if(type == 'Tool'):
+            
+            com = """
+            SELECT COUNT(*) FROM tools WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (itemName ,) ).fetchone()[0]
+            if count == 0:
+                return (False, "No such tool exists")
+            
+            com = """
+            DELETE FROM tools WHERE name = ?;
+            """
+            conn.execute(com, (itemName, ))
+            conn.commit()
+            return (True, "Tool removed successfully")
+        
+        if(type == 'Misc.'):
+            
+            com = """
+            SELECT COUNT(*) FROM miscellaneous WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (itemName ,) ).fetchone()[0]
+            if count == 0:
+                return (False, "No such miscellaneous item exists")
+            
+            com = """
+            DELETE FROM miscellaneous WHERE name = ?;
+            """
+            conn.execute(com, (itemName, ))
+            conn.commit()
+            return (True, "Miscellaneous item removed successfully")
+        else:
+             return (False, "Invalid item type")
+         
     def save_new_class(self, playerClass: dict) -> tuple[bool, str]:
         try:
             
@@ -280,6 +427,32 @@ class InfoManager():
                 """
                 
             conn.execute(com, (playerClass.get('class_name',''), json.dumps(playerClass)))
+            conn.commit()
+            
+            return (True, "Class added successfully")
+        except Exception as e:
+            return (False, str(e)) 
+        
+    def save_class_edit(self, playerClass: dict) -> tuple[bool, str]:
+        
+        try:
+            
+            conn = self.dbm.c().connection
+            
+            com = """
+                SELECT COUNT(*) FROM classes WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (playerClass.get('class_name','') ,) ).fetchone()[0]
+            
+            if count == 0:
+                return (False, "Class with this name does not exist")
+            
+            com = """
+                UPDATE classes SET content = ? WHERE name = ?;
+                """
+                
+            conn.execute(com, (json.dumps(playerClass), playerClass.get('class_name','')))
             conn.commit()
             
             return (True, "Class added successfully")

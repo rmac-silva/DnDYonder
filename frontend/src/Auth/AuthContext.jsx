@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState(null);
   const [mounted, setMounted] = useState(false); // Wait for auth before rendering
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   // Make checkAuth available to callers (Login, etc.)
@@ -20,9 +21,9 @@ export const AuthProvider = ({ children }) => {
 
     if (!token) {
       // No token: update state and mark ready
-      console.log("No auth token found");
       setIsLoggedIn(false);
       setUsername(null);
+      setIsAdmin(false);
       setMounted(true);
       return false;
     }
@@ -38,12 +39,16 @@ export const AuthProvider = ({ children }) => {
         const data = await res.json();
         setIsLoggedIn(true);
         setUsername(data.username);
-        console.log("Token valid for user:", username, "with data :", data);
+        setIsAdmin(data.is_admin);
+        console.log("User is admin:", data.is_admin);
         setMounted(true);
+
         return true;
       } else {
-        console.log("Token invalid, logging out");
+        
         localStorage.removeItem("authToken");
+
+        setIsAdmin(false);
         setIsLoggedIn(false);
         setUsername(null);
         setMounted(true);
@@ -85,7 +90,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, authUsername: username, mounted, setAuthUsername: setUsername, logout, checkAuth }}
+      value={{ isLoggedIn, authUsername: username, mounted, setAuthUsername: setUsername, logout, checkAuth, isAdmin }}
     >
       {children}
     </AuthContext.Provider>

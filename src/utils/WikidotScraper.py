@@ -223,11 +223,11 @@ class WikidotScraper:
             pass
         
         try:
-            valid_profs = ["Light Armor", "Medium Armor", "Heavy Armor", "Shields"]
+            valid_profs = ["Light Armor", "Medium Armor", "Heavy Armor", "Shields", ]
             armor_proficiencies_match = re.search(r"Armor:(.*)Weapons", content)
             if armor_proficiencies_match:
                 #Turn into list and capitalize each word, so "light armor, medium armor, shields" becomes ["Light Armor", "Medium Armor", "Shields"]
-                misc_info["armor_proficiencies"] = [ap.strip().title() for ap in armor_proficiencies_match.group(1).split(",")]
+                
                 misc_info["armor_proficiencies"] = []
                 
                 for armor in armor_proficiencies_match.group(1).split(","):
@@ -236,6 +236,9 @@ class WikidotScraper:
                         misc_info["armor_proficiencies"].append(name)
                     elif name.startswith("Shield"):
                         misc_info["armor_proficiencies"].append("Shields")
+                    elif name.lower().strip() == "all armor":
+                        misc_info["armor_proficiencies"].extend(valid_profs[:3]) #All armor means light, medium and heavy
+                        
                         
         except:
             pass
