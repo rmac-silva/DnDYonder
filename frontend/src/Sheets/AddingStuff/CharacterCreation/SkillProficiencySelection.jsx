@@ -32,7 +32,7 @@ function SkillProfSelection({sheet,setSheet, onValid, selectedSkills, setSelecte
 
     const handleSkillToggle = (skill) => {
         var change = 0;
-
+        
         if (selectedSkills.includes(skill)) {
             // If the skill is already selected, remove it
             setSelectedSkills(selectedSkills.filter(s => s !== skill));
@@ -76,7 +76,7 @@ function SkillProfSelection({sheet,setSheet, onValid, selectedSkills, setSelecte
 
             {sheet.class?.skill_proficiencies.map(prof => (
                 
-                <Button key={prof}  variant={selectedSkills.includes(prof) ? 'contained' : 'outlined'} onClick={() => handleSkillToggle(prof)} size="small">{prof}</Button>
+                <Button key={prof}  variant={selectedSkills.includes(prof.trim()) ? 'contained' : 'outlined'} onClick={() => handleSkillToggle(prof.trim())} size="small">{prof}</Button>
             ))}
             </div>
         </div>

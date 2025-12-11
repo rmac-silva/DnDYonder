@@ -80,7 +80,7 @@ const FeatureItem = memo(function FeatureItem({ feature, index, onChange, onBlur
          prevProps.onDelete === nextProps.onDelete;
 });
 
-const GetClassFeats = ({ onChange, label, objectFeatures, object }) => {
+const GetClassFeats = ({ onChange, objectFeatures }) => {
 
   
 
@@ -90,34 +90,7 @@ const GetClassFeats = ({ onChange, label, objectFeatures, object }) => {
 
   
 
-    async function fetchWikidotSubclassData(subclassName) {
-      if(subclassName === '') {
-        alert('Please provide a subclass name to fetch from Wikidot.');
-        
-        return;
-      }
-  
-      try {
-        
-
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/wikidot/subclass/${object.class_name}/${subclassName}`, {
-          method: 'GET',
-          
-        });
-  
-        if (!res.ok) {
-          throw new Error(`Wikidot fetch failed: ${res.status}`);
-        }
-  
-        const data = await res.json();
-        handleWikidotData(data);
-  
-        setLoadingWikidotData(false);
-      } catch (error) {
-        console.error("Error fetching from Wikidot:", error);
-        setLoadingWikidotData(false);
-      }
-    }
+    
 
   // sync when parent provides new features
   useEffect(() => {

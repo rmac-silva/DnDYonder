@@ -1,8 +1,13 @@
 import { Box, useTheme } from '@mui/material';
-
+import { useState,useEffect } from 'react';
 function SheetHeader({draft,setDraft, nameVar, setNameVar}) {
     const theme = useTheme();
     const textClasses = 'focus-visible:outline-none';
+    const [localName,setLocalName] = useState(nameVar);
+
+    useEffect(() => {
+        setLocalName(nameVar);
+      }, [nameVar]);
 
     return (
         <div className="flex bg-white rounded shadow font-semibold p-4 justify-between">
@@ -14,9 +19,9 @@ function SheetHeader({draft,setDraft, nameVar, setNameVar}) {
                 <Box
                     component="input"
                     type="text"
-                    onBlur={(e) => { draft.name = e.target.value; setDraft({ ...draft }) }}
-                    onChange={(e) => setNameVar(e.target.value)}
-                    value={nameVar}
+                    onBlur={(e) => { draft.name = e.target.value; setDraft({ ...draft }); setNameVar(e.target.value); }}
+                    onChange={(e) => setLocalName(e.target.value)}
+                    value={localName}
                     placeholder="Grommisk"
                     className={`mt-1 px-2 py-2 block w-full !text-gray-700 font-semibold leading-tight whitespace-nowrap overflow-y-hidden ${textClasses}`}
                     sx={{

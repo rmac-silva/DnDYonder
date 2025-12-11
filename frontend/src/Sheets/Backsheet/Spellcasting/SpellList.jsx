@@ -14,6 +14,17 @@ Click row -> expand to show description (accordion)
 Keeps existing state vars (sortedSpells, newSpells, forceRefresh) — plug your fetch / select logic back where indicated.
 */
 
+function titleCase(str) {
+    var splitStr = str.toLowerCase().split(' ');
+    for (var i = 0; i < splitStr.length; i++) {
+      // You do not need to check if i is larger than splitStr length, as your for does that for you
+      // Assign it back to the array
+      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+    }
+    // Directly return the joined string
+    return splitStr.join(' ');
+  }
+
 function getSchoolGradients(schoolRaw) {
     const school = String(schoolRaw || '').toLowerCase();
     switch (school) {
@@ -92,12 +103,6 @@ function SpellList({ draft, setDraft }) {
     const known = draft?.class?.spellcasting?.spells_known;
     if (Array.isArray(known) && known.length) return known;
 
-    const spells = draft?.spells;
-    if (Array.isArray(spells) && spells.length) return spells;
-
-    const classSpells = draft?.class?.spellcasting?.spells;
-    if (Array.isArray(classSpells) && classSpells.length) return classSpells;
-
     return [];
   };
 
@@ -115,11 +120,10 @@ function SpellList({ draft, setDraft }) {
     const filtered = ordered.filter(spell => (spell.level ?? 0) <= spellcastingLevel);
 
     setSortedSpells(filtered);
+    console.log("Filtered spells: ", filtered);
   }, [
     draft?.class?.spellcasting?.spells_known,   // primary source
-    draft?.spells,                               // fallback source
-    draft?.class?.spellcasting?.spells,          // fallback source
-    draft?.class?.spellcasting?.max_level_spellslots,
+    draft?.class?.spellcasting?.max_level_spellslots,  // affects filtering
     forceRefresh,
   ]);
 
@@ -225,7 +229,7 @@ function SpellList({ draft, setDraft }) {
                         const grads = getSchoolGradients(getSchool(spell));
                         return (
                             <Accordion
-                                key={`${spell.id ?? spell.name}-${i}`}
+                                key={`${spell.id ?? titleCase(spell.name)}-${i}`}
                                 disableGutters
                                 sx={{
                                     '&:before': { display: 'none' },
@@ -269,7 +273,7 @@ function SpellList({ draft, setDraft }) {
                                     >
                                         <Box sx={{ display: 'flex', flexDirection: 'column', minWidth: 0, rowGap: { xs: 0.15, sm: 0.2, md: 0.25 } }}>
                                             <span style={{ fontWeight: 600, lineHeight: 1.05, fontSize: 'inherit', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                {spell.name}
+                                                {titleCase(spell.name)}
                                             </span>
                                             
                                             <Box sx={{ fontSize : { xs: 10, sm: 11, md: 12, xl: 14 }}} className='!text-neutral-600 !font-normal !italic '>

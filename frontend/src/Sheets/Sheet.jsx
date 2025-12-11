@@ -161,13 +161,13 @@ function GetSheet() {
 
         //Now go into the respective attributes and set the proficiencies
         for (let attr of attributeProfs) {
-            draft.attributes[attr].skills[0].proficient = true; //[0] is always the saving throw
-            draft.attributes[attr].skills[0].locked = true;
+            draft.attributes[attr.trim()].skills[0].proficient = true; //[0] is always the saving throw
+            draft.attributes[attr.trim()].skills[0].locked = true;
         }
 
         for (let skill of skillProfs) {
-            var attributeSkills = draft.attributes[ABILITY_SKILL_MAP[skill]].skills; //Fetch the skills associated with the skill
-            var skillObj = attributeSkills.find(s => s.name === skill); //Find the skill object with the same name
+            var attributeSkills = draft.attributes[ABILITY_SKILL_MAP[skill.trim()]].skills; //Fetch the skills associated with the skill
+            var skillObj = attributeSkills.find(s => s.name === skill.trim()); //Find the skill object with the same name
             skillObj.proficient = true; //Mark it as proficient
             skillObj.locked = true; // Lock it so the user can't unselect it (This isn't activated but still good to be set)
         }

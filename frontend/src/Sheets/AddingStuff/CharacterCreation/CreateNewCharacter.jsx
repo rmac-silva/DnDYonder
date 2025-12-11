@@ -78,11 +78,17 @@ function CreateNewCharacter({ isOpen, onClose, onSubmit, draft, setDraft }) {
 
         }
 
+        
         if (activeStep === 1) {
             // ! - If needed, add more validation to the race
             return hasSelectedRace;
         }
-
+        
+        if(activeStep === 2) {
+            //Character name step
+            return draft.name && draft.name.trim() !== "";
+        }
+        
         return true;
     }
 

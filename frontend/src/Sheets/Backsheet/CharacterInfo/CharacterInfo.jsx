@@ -1,11 +1,18 @@
 // This section will have misc. info, age, hair, height, weight etc...
 import { useState } from "react";
+import {useEffect} from "react";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
   const theme = useTheme();
 
+
+  useEffect(() => {
+    setLocalname(nameVar);
+  }, [nameVar]);
+
+  const [localname, setLocalname] = useState(nameVar);
   const bottomBorder = (thickness = 2) => ({
     borderBottom: `${thickness}px solid ${theme.palette.baseColor.main}`,
     transition: 'border-color 0.2s ease',
@@ -45,9 +52,9 @@ function CharacterInfo({ draft, setDraft, nameVar, setNameVar }) {
           component="input"
           id="characterName"
           type="text"
-          value={nameVar}
-          onChange={(e) => setNameVar(e.target.value)}
-          onBlur={(e) => { draft.name = e.target.value; setDraft({ ...draft }); }}
+          value={localname}
+          onChange={(e) => setLocalname(e.target.value)}
+          onBlur={(e) => { draft.name = e.target.value; setDraft({ ...draft }); setNameVar(e.target.value); }}
           placeholder="Grommisk"
           className="px-2 py-2 block w-full !text-gray-700 font-semibold text-lg md:text-4xl mt-1 leading-tight whitespace-nowrap overflow-y-hidden  focus-visible:outline-none"
           sx={{

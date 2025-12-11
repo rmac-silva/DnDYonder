@@ -258,7 +258,8 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                 <Select
                     labelId="race-select-label"
                     id="race-select"
-                    value={(sheet.race.subrace !== null && sheet.race.subrace !== '') ? sheet.race.subrace + " " + sheet.race.race : sheet.race.race || ''}
+                    value={(sheet.race.subrace !== null && sheet.race.subrace !== '') ? (sheet.race.subrace + " " + sheet.race.race) : sheet.race.race || ''}
+                    
                     onChange={handleChangingRace}
                     disabled={loading || disabled}
                 >

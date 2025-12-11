@@ -1,3 +1,4 @@
+import json
 import requests
 from bs4 import BeautifulSoup
 import pprint as pp
@@ -278,10 +279,9 @@ class WikidotScraper:
     
     def format_results(self):
         formatted_res = {}
-
         seen_subtitles = set()
-
         for key, value in self.results.items():
+            
             merged_content = {}
             merged_content["title"] = key
             try:
@@ -310,12 +310,21 @@ class WikidotScraper:
 
             merged_content["content"] = "\n".join(merged_content["content"])
 
-        class_info = "\n".join(formatted_res["Class Features"]["content"].split("\n\n")[1:])
-        misc_info = self.fetch_misc_class_info(class_info)
         
-        formatted_res["misc_class_info"] = {'title': 'Class Features', 'content': misc_info, 'level_required': 0, 'tables': []}
+        if("Class Features" not in formatted_res):
+            with open("results.json", "w", encoding="utf-8") as f:
+                # results_array = [{"key": key, "value": value} for key, value in self.results.items()]
+                # json.dump(results_array, f, ensure_ascii=False, indent=4)
+                json.dump(formatted_res, f, ensure_ascii=False, indent=4)
+            return formatted_res 
+        else: #The classes have a special field named "Class Features" where we parse hit dice, proficiencies etc...
+            class_info = "\n".join(formatted_res["Class Features"]["content"].split("\n\n")[1:])
+            misc_info = self.fetch_misc_class_info(class_info)
+            
+            formatted_res["misc_class_info"] = {'title': 'Class Features', 'content': misc_info, 'level_required': 0, 'tables': []}
+            return formatted_res
         
-        return formatted_res
+        
 
     def dump_json(self, filepath: str):
         import json
@@ -325,7 +334,7 @@ class WikidotScraper:
             # results_array = [{"key": key, "value": value} for key, value in self.results.items()]
             # json.dump(results_array, f, ensure_ascii=False, indent=4)
 
-            json.dump(self.format_results(), f, ensure_ascii=False, indent=4)
+            json.dump(self.results, f, ensure_ascii=False, indent=4)
 
     # endregion
 
@@ -506,7 +515,7 @@ class WikidotScraper:
         resp = requests.get(url)
 
         if resp.status_code != 200:
-            print("Failed to fetch spell data, status code:", resp.status_code)
+            #print("Failed to fetch spell data, status code:", resp.status_code)
             self.results = {}
             self.fails = 0
             self.index = 0
@@ -518,14 +527,14 @@ class WikidotScraper:
         page_content = soup.find(id="page-content")
 
         if(page_content is None):
-            print("No page content")
+            #print("No page content")
             self.results = {}
             return self
         
         #Search for an element with the ID 404-message
         error_message = page_content.find(id="404-message")
         if(error_message is not None):
-            print("Error message found in spell fetch")
+            #print("Error message found in spell fetch")
             self.results = {}
             return self
         
@@ -542,7 +551,7 @@ class WikidotScraper:
         self.results["Content"] = paragraph_elements[0].text.strip()
         
         # Iterate the following paragraphs, until you reach the one that starts with "Spell Lists.  "
-        print(f"Iterating through {len(paragraph_elements)} paragraph elements for description.")
+        #print(f"Iterating through {len(paragraph_elements)} paragraph elements for description.")
         for i in range(1, len(paragraph_elements)):
             para_text = paragraph_elements[i].text.strip()
             if para_text.startswith("Spell Lists."):

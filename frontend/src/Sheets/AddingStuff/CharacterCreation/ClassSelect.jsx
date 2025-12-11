@@ -430,7 +430,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
       }
 
       var content = value.content || "";
-      if (value.table) {
+      if (value.tables && value.tables.length > 0) {
         //Append some text informing there's a table that will be shown later
         content += "\n\n[Table data available, it will be shown in the sheet.]";
       }

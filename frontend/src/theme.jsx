@@ -1,5 +1,5 @@
 import { createTheme, alpha } from '@mui/material/styles';
-import {useEffect} from "react";
+
 
 // On refresh, randomize the primary color for a given array
 const primaryPool = [
@@ -111,6 +111,8 @@ const theme = createTheme({
         }),
         // Softer hover for outlined/text variants too
         outlinedPrimary: ({ theme }) => ({
+          backgroundColor: alpha(theme.palette.primary.main, 0.15),
+          color: alpha('#000000',0.8),
           '&:hover': {
             backgroundColor: alpha(theme.palette.primary.main, 0.95),
             borderColor: theme.palette.primary.main,

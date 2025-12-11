@@ -1,10 +1,9 @@
-import os
 import sqlite3
 import hashlib
 import random
 import json
 from db_utils.db_setup import setup_database
-
+import threading
 ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
@@ -13,8 +12,13 @@ class DatabaseManager:
     def __init__(self, db_path: str, SECRET_KEY: str):
         self.db_path = db_path
         self.SECRET_KEY = SECRET_KEY
+        
         setup_database(self.db_path)
-        pass
+        
+        #Launch the backup thread
+        backup_thread = threading.Thread(target=self.backup_database, daemon=True)
+        backup_thread.start()
+        
 
     def c(self):
         conn = sqlite3.connect(self.db_path)
@@ -31,9 +35,43 @@ class DatabaseManager:
             chars.append(random.choice(ALPHABET))
         return "".join(chars)
 
+    def backup_database(self, backup_interval : int = 86400) -> bool:
+        """Creates a backup of the database. Creating a copy of the current database file with a timestamp extension.
+        By default backs up the database every 24hrs, keeping a maximum of 5 copies.
+
+        This function is thread safe, since it will be run in a separate thread by the main application.
+        Args:
+            backup_interval (int, optional): Interval in seconds between backups. Defaults to 86400.
+
+        Returns:
+            bool: _description_
+        """
+        import os
+        import time
+        from datetime import datetime
+        from glob import glob
+        import shutil
+
+        while True:
+            # Clean up old backups, keeping only the most recent 5
+            backup_files = glob(f"{self.db_path}-backup-*.db")
+            backup_files.sort(key=os.path.getmtime, reverse=True)
+
+            if( len(backup_files) == 6):
+                #Delete oldest
+                os.remove(backup_files[0])
+                
+            timestamp = datetime.now().strftime("%d-%m---%H-%M-%S")
+            backup_path = f"{self.db_path}-backup-{timestamp}.db"
+            shutil.copy2(self.db_path, backup_path)
+
+
+            time.sleep(backup_interval)
+        
+    
     def create_user(self, username: str) -> tuple[bool, str]:
         """Creates a new user in the database. Returns False if the user already exists, True if created successfully."""
-
+        
         # Check if username is valid
         if username is None or username == "":
             return (False, "Invalid username.")

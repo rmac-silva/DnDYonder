@@ -67,49 +67,6 @@ export function ClassEditPage() {
     return () => { abort = true; };
   }, []);
 
-  async function handleDelete(cls) {
-    const name = cls?.name || '';
-    if (!name) return;
-    const ok = window.confirm(`Delete class "${name}"? This cannot be undone.`);
-    if (!ok) return;
-
-    try {
-      const token = localStorage.getItem('authToken');
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/info/delete_class`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {})
-        },
-        body: JSON.stringify({ name })
-      });
-      if (!res.ok) {
-        const txt = await res.text().catch(() => '');
-        throw new Error(`HTTP ${res.status} ${txt}`);
-      }
-      // refresh list
-      const refetch = await fetch(`${import.meta.env.VITE_API_URL}/info/classes`);
-      const arr = await refetch.json();
-      const normalized = arr.map((row) => {
-        let content = {};
-        try { content = typeof row.c_content === 'string' ? JSON.parse(row.c_content) : (row.c_content || {}); } catch { content = {}; }
-        return {
-          name: row.c_name || content.class_name || 'Unnamed Class',
-          description: content?.description || '',
-          hit_die: content?.hit_dice || content?.hit_die || '',
-          weapon_proficiencies: content?.weapon_proficiencies || [],
-          armor_proficiencies: content?.armor_proficiencies || [],
-          tool_proficiencies: content?.tool_proficiencies || [],
-          raw: content
-        };
-      });
-      setClasses(normalized);
-    } catch (err) {
-      console.error('Delete failed:', err);
-      alert(`Failed to delete class: ${err.message}`);
-    }
-  }
-
   function openEdit(cls) {
     // cls.raw is the parsed c_content
     setEditedClass(cls?.raw || null);
@@ -210,9 +167,6 @@ export function ClassEditPage() {
                   <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
                     <Button variant="contained" color="primary" onClick={() => openEdit(cls)}>
                       Edit
-                    </Button>
-                    <Button variant="contained" color="error" onClick={() => handleDelete(cls)}>
-                      Delete
                     </Button>
                   </CardActions>
                 </Card>

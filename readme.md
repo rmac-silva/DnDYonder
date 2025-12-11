@@ -13,20 +13,21 @@
 > npm run dev -- --host 0.0.0.0
 
 # TODO:
-## Database Management Improvements
-Enable editing subclasses
 
-## Log
-- Create a log that logs all actions sent to the backend, with timestamps and user info. This is important for debugging and tracking changes.
-
-## Backups
-- Implement a backup system that periodically saves the database, deleting old backups to save space. 
-
-## Bug Testing
+## Bug Testing -- 
 - Form validate everything, try and create empty items, classes, duplicate entries, SUBCLASSES.
 
 # RELEASE v 1.0 
 - Host on private server, get a domain name etc...
+
+## Usability
+- Add a way to make the health calculation manual / use the class information
+- Feedback on save
+- Turn all console alerts into proper modal components that can be styled and re-used.
+- Add loading spinners when fetching data from the backend.
+- Enable the user to change subclasses. This entails removing the features granted by the subclass from the list. This is also a lazy fix for the next bullet point, since users can just re-select their subclass after editing.
+- Make it possible to reload the class and subclass features. This is because if we update the class or subclass, the existing sheets won't have the new features until we re-create them. So add a button to force-reload the sheet features from the class/subclass.
+- Spells follow the same issue as above, either make it so that spell information is loaded from the database (through a cache similar to the item cache), or simply force the user to re-add the spells
 
 ## Features to add - Post Release
 - Possibility to export as JSON for backup purposes.
@@ -46,8 +47,16 @@ Enable editing subclasses
 
 
 # Changelog
-## Database Management Improvements
-- A way to edit or delete created classes, weapons etc... This has to be done only by admins! We can't let anyone delete anything. 
-  Create a backend admin user and only allow that user to perform these actions. Only show the delete button if the user is an admin, checked at login.
-- Alternatively, create a python terminal for editing and deleting the DB items.
 
+## Database Management Improvements
+- Enabled editing subclasses.
+- Enable editing and deleting spells.
+
+## Bug Testing
+- Can you add duplicate spells? ~~Yes you can~~ No you can't.
+
+## Log
+- Create a log that logs all actions sent to the backend, with timestamps and user info. This is important for debugging and tracking changes.
+
+## Backups
+- Implement a backup system that periodically saves the database, deleting old backups to save space. 

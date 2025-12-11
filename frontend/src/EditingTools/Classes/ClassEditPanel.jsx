@@ -898,9 +898,7 @@ const ClassEdit = ({ sheet, setSheet, selectClass, disabled, open, onClose }) =>
                 {featuresOpen && (
                   <GetClassFeats
                     onChange={setClassFeats}
-                    label={"Class"}
                     objectFeatures={newClass.class_features}
-                    object={newClass}
                   />
                 )}
               </AccordionDetails>

@@ -5,6 +5,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Box from '@mui/material/Box';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Typography from '@mui/material/Typography';
 
 /**
  * Long-press delete (with grace + progress animation)
@@ -112,6 +113,91 @@ const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
     opacity: isDeleting ? 0 : 1,
   };
 
+   function GetFeatureDescription(feature) {
+        if (feature.description) {
+            //Remove any "\n\n[Table data available, it will be shown in the sheet.]" from the description
+            if (feature.description.includes("\n\n[Table data available, it will be shown in the sheet.]")) {
+                return feature.description.replace("\n\n[Table data available, it will be shown in the sheet.]", "");
+            } else {
+                return feature.description;
+            }
+        } else {
+            return "No description available.";
+        }
+    }
+
+  function GetTableOfFeature(feature) {
+        //Check if the table has feature.table.table_header
+        if (feature.tables && feature.tables.length > 0) {
+            
+
+            var table_content = [];
+
+            feature.tables.forEach(table => {
+                const table_columns = table.num_columns;
+
+                var formatted_header = [];
+                if (Array.isArray(table.table_header) == false) {
+                    formatted_header.push(
+                        <th key={0} colSpan={table_columns} style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2', textAlign: 'left' }}>
+                            {table.table_header}
+                        </th>
+                    );
+                } else {
+                    table.table_header.forEach((header, index) => {
+                        formatted_header.push(
+                            <th key={index} style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2', textAlign: 'left' }}>
+                                {header}
+                            </th>
+                        );
+                    });
+                }
+
+                var formatted_rows = [];
+                table.table_rows.forEach((row_data, i) => {
+                    var row = [];
+                    if (Array.isArray(table.table_rows[i])) {
+                        for (let j = 0; j < table_columns; j++) {
+                            if (j === table_columns - 1) {
+                                // We are at the last column, if there's more entries merge them all into the last position
+                                let remaining = row_data.slice(j).filter(Boolean).join(" ");
+                                row.push(<td key={j} style={{ border: '1px solid #ddd', padding: '8px' }}>{remaining}</td>);
+                            } else {
+                                const cellData = table.table_rows[i][j];
+                                row.push(<td key={j} style={{ border: '1px solid #ddd', padding: '8px' }}>{cellData || ''}</td>);
+                            }
+                        }
+                    } else {
+                        // If it's just text, occupy both rows like a header
+                        row.push(<td key={0} colSpan={table_columns} style={{ border: '1px solid #ddd', padding: '8px', fontWeight: 'bold', backgroundColor: '#f9f9f9' }}>{table.table_rows[i]}</td>);
+                    }
+
+                    formatted_rows.push(<tr key={i}>{row}</tr>);
+                });
+
+
+
+                table_content.push( <>
+                    <br />
+                    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '2px' }}>
+                        <thead>
+                            <tr>
+                                {formatted_header}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {formatted_rows}
+                        </tbody>
+                    </table>
+                </>);
+            });
+            return table_content;
+        } else {
+            return [];
+        }
+
+    }
+
   return (
     <div
       onPointerDown={handlePointerDown}
@@ -156,11 +242,15 @@ const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
             </Box>
           </AccordionSummary>
           <AccordionDetails sx={{ pt: 0, px: 2, pb: 2, mb:2}} className='border-2 border-neutral-200 border-t-0 rounded-b-2xl'>
-            <div className="text-md ">
-              {String(feature?.description || '').split('\n\n').map((p, i) => (
-                <p key={i} className="">{p}</p>
-              ))}
-            </div>
+            <Typography className='!text-lg' variant="body2" sx={{ whiteSpace: 'pre-wrap', color: '#333', lineHeight: 1.45 }}>
+                            {GetFeatureDescription(feature)}
+
+                        </Typography>
+                        {GetTableOfFeature(feature).map((tableElement, index) => (
+                            <div key={index}>
+                                {tableElement}
+                            </div>
+                        ))}
           </AccordionDetails>
         </Accordion>
       </div>

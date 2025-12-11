@@ -40,7 +40,24 @@ class InfoManager():
             for cclass in res:
                 formatted_array.append({'c_name': cclass[0], 'c_content': json.loads(cclass[1])})
             return (True, formatted_array)
+    
+    def get_all_subclasses(self):
+        conn = self.dbm.c().connection
         
+        com = """
+        SELECT name,content FROM subclasses;
+        """
+        
+        res = conn.execute(com).fetchall()
+        
+        if res is None:
+            return (True, [])
+        else:
+            formatted_array = []
+            for subclass in res:
+                formatted_array.append({'sc_name': subclass[0], 'sc_content': json.loads(subclass[1])})
+            return (True, formatted_array)
+    
     def get_available_spells(self):
         conn = self.dbm.c().connection
         
@@ -475,19 +492,92 @@ class InfoManager():
         except Exception as e:
             return (False, str(e))
         
-    def save_new_spell(self, spell: dict) -> tuple[bool, str]:
+    def save_subclass_edit(self, playerClass: dict) -> tuple[bool, str]:
         try:
             
             conn = self.dbm.c().connection
+            
+            com = """
+                UPDATE subclasses SET content = ?, name = ? WHERE name = ? AND class_name = ?;
+                """
+
+            conn.execute(com, (json.dumps(playerClass), playerClass.get('name',''), playerClass.get('old_subclass_name',''), playerClass.get('class_name','')))
+            conn.commit()
+
+            return (True, "Subclass edited successfully")
+        except Exception as e:
+            return (False, str(e))
+    
+    def delete_subclass(self, subclassName: str,className : str) -> tuple[bool, str]:
+        print("[infoManager.py] Deleting subclass:", subclassName, "of class:", className)
+        try:
+            conn = self.dbm.c().connection
+            
+            com = """
+                DELETE FROM subclasses WHERE name = ? AND class_name = ?;
+                """
+
+            conn.execute(com, (subclassName, className))
+            conn.commit()
+
+            return (True, "Subclass deleted successfully")
+        except Exception as e:
+            return (False, str(e))
+    
+    def save_new_spell(self, spell: dict) -> tuple[bool, str]:
+        
+        try:
+            
+            conn = self.dbm.c().connection
+            
+            com = """
+                SELECT COUNT(*) FROM spells WHERE name = ?;
+            """
+            
+            count = conn.execute(com, (spell.get('name','').strip().lower() ,) ).fetchone()[0]
+            if count > 0:
+                return (False, "Spell with this name already exists")
 
             com = """
                 INSERT INTO spells (name, content) VALUES (?, ?);
                 """
 
-            conn.execute(com, (spell.get('name',''), json.dumps(spell)))
+            conn.execute(com, (spell.get('name','').strip().lower(), json.dumps(spell)))
             conn.commit()
 
             return (True, "Spell added successfully")
+        except Exception as e:
+            return (False, str(e))
+        
+    def update_spell(self, spell: dict) -> tuple[bool, str]:
+        try:
+            
+            conn = self.dbm.c().connection
+
+            com = """
+                UPDATE spells SET content = ? WHERE name = ?;
+                """
+
+            conn.execute(com, (json.dumps(spell), spell.get('name','')))
+            conn.commit()
+
+            return (True, "Spell added successfully")
+        except Exception as e:
+            return (False, str(e))
+        
+    def delete_spell(self, spellName: str) -> tuple[bool, str]:
+        try:
+            
+            conn = self.dbm.c().connection
+
+            com = """
+                DELETE FROM spells WHERE name = ?;
+                """
+
+            conn.execute(com, (spellName,))
+            conn.commit()
+
+            return (True, "Spell deleted successfully")
         except Exception as e:
             return (False, str(e))
 

@@ -25,6 +25,8 @@ def setup_database(db_path : str):
     conn.commit()
     conn.close()
 
+
+
 def create_users_table(c):
     c.execute('''
         CREATE TABLE IF NOT EXISTS users (
