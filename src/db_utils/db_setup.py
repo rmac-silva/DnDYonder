@@ -1,6 +1,7 @@
 """This file will generate the database and tables if they do not exist yet.
 """
 
+import os
 import sqlite3
 import hashlib
 from pathlib import Path
@@ -110,7 +111,7 @@ def create_armors_table(c):
         );''')
     
 def set_admin_users(c):
-    admin_users = ["Gilbio","Admin"]  # List of admin usernames
+    admin_users = os.getenv('ADMIN_USERS', 'admin').split(',')
     for admin in admin_users:
       username = hash(admin)
       c.execute('UPDATE users SET is_admin = 1 WHERE username = ?;', (username,))
