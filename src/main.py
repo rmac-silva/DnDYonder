@@ -24,10 +24,12 @@ load_dotenv()  # Load environment variables from a .env file
 SECRET_KEY = os.getenv("SECRET_KEY", "default_secret_key")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 DB_PATH = os.getenv("DB_PATH", "NO_VALID_DATABASE_PATH")
+#/logs under DB Path
+LOG_PATH = os.path.join(os.path.dirname(DB_PATH), "logs")
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 3600
 
-lg = Logger()
+lg = Logger(folderpath=LOG_PATH)
 
 #Database access
 db = DatabaseManager(DB_PATH, SECRET_KEY)
