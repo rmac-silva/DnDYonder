@@ -14,11 +14,14 @@
 
 # TODO:
 
-## Bug Testing -- 
-- Form validate everything, try and create empty items, classes, duplicate entries, SUBCLASSES.
-
 # RELEASE v 1.0 
 - Host on private server, get a domain name etc...
+
+## Race Editing
+- Enable editing and deleting races
+
+## Bug Testing -- 
+- Form validate everything, try and create empty items, classes, duplicate entries, SUBCLASSES.
 
 ## Usability
 - Add a way to make the health calculation manual / use the class information
@@ -44,7 +47,7 @@
 - BUG! No feedback when WikiDot item fetching fails.
 - BUG! Starting equipment selection is buggy. If you select equipment, then change class, then change back, the previously selected equipment is still selected and adds on top of the new class equipment.
 - BUG! Can select multiple skill proficiencies when creating a character.
-
+- BUG! When creating a race, if the subrace is empty, it crashes the app.
 
 # Changelog
 

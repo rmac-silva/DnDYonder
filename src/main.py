@@ -641,7 +641,7 @@ RUNNING_ON_CONTAINER = os.getenv("RUNNING_ON_CONTAINER", "false").lower() == "tr
 
 if __name__ == "__main__":
     if(RUNNING_ON_CONTAINER):
-        uvicorn.run("main:app", host="0.0.0.0", port=8000,ssl_keyfile=str(CERT_DIR / 'localhost-key.pem'), ssl_certfile=str(CERT_DIR / 'localhost.pem'), reload=False)
+        uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=False)
     else:
         uvicorn.run("main:app", host=find_ip(), port=8000,ssl_keyfile=str(CERT_DIR / 'localhost-key.pem'), ssl_certfile=str(CERT_DIR / 'localhost.pem'), reload=True)
         
