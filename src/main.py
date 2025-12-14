@@ -1,3 +1,4 @@
+from pathlib import Path
 from fastapi import  Form, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
@@ -16,17 +17,19 @@ from utils.logger import Logger
 from utils.sheet_converter_to_text import ExportAsText
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+try:
+    load_dotenv()  # Load environment variables from a .env file
+except Exception as e:
+    print(f"Error loading .env file: {e}\n")
 
 origins = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
 
 #JWT Secrets - Fetched from .env file
-load_dotenv()  # Load environment variables from a .env file
 SECRET_KEY = os.getenv("SECRET_KEY", "default_secret_key")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 DB_PATH = os.getenv("DB_PATH", "NO_VALID_DATABASE_PATH")
 #/logs under DB Path
 LOG_PATH = os.path.join(os.path.dirname(DB_PATH), "logs")
-
 ACCESS_TOKEN_EXPIRE_MINUTES = 3600
 
 lg = Logger(folderpath=LOG_PATH)
@@ -631,7 +634,15 @@ def find_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     return s.getsockname()[0]
-     
+
+BASE_DIR = Path(__file__).resolve().parent
+CERT_DIR = BASE_DIR / "certs"
+RUNNING_ON_CONTAINER = os.getenv("RUNNING_ON_CONTAINER", "false").lower() == "true"
+
 if __name__ == "__main__":
-    uvicorn.run("main:app", host=find_ip(), port=8000,ssl_keyfile='./certs/localhost-key.pem', ssl_certfile='./certs/localhost.pem', reload=True)
+    if(RUNNING_ON_CONTAINER):
+        uvicorn.run("main:app", host="0.0.0.0", port=8000,ssl_keyfile=str(CERT_DIR / 'localhost-key.pem'), ssl_certfile=str(CERT_DIR / 'localhost.pem'), reload=False)
+    else:
+        uvicorn.run("main:app", host=find_ip(), port=8000,ssl_keyfile=str(CERT_DIR / 'localhost-key.pem'), ssl_certfile=str(CERT_DIR / 'localhost.pem'), reload=True)
+        
     
