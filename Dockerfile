@@ -20,7 +20,7 @@ RUN mkdir -p /data/backups
 ENV DB_PATH=/data/yonder-prod-db.db
 ENV BACKUP_PATH=/data/backups
 ENV ALGORITHM=HS256
-ENV SECRET_KEY=replace_me
+ENV SECRET_KEY=mNcX0s59KNz5sr0GuKDz
 ENV ADMIN_USERS=Gilbio,Admin
 ENV RUNNING_ON_CONTAINER=true
 ENV CORS_ORIGINS=https://dnd-yonder.vercel.app
