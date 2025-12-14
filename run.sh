@@ -24,6 +24,8 @@ docker volume inspect $VOLUME_NAME >/dev/null 2>&1 || docker volume create $VOLU
 echo "Starting $PROJECT_NAME container..."
 docker run -d \
   --name $CONTAINER_NAME \
+  -v /etc/letsencrypt/live/backend.blazy.uk/fullchain.pem:/app/certs/localhost.pem:ro \
+  -v /etc/letsencrypt/live/backend.blazy.uk/privkey.pem:/app/certs/localhost-key.pem:ro \
   -v $VOLUME_NAME:/data \
   -e DB_PATH=/data/yonder-prod-db.db \
   -e BACKUP_PATH=/data/backups \
