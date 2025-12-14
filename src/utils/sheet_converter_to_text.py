@@ -75,7 +75,7 @@ def PrintClass(data: CharacterClass):
     spell_codex = data.spellcasting.spells_known
     spell_list = []
     for spell in spell_codex:
-        spell_list.append(f"[{spell.get("level")}]{spell.get("name")}")
+        spell_list.append(f"[{spell.get('level')}]{spell.get('name')}")
     sorted_spell_list = sorted(spell_list, key=lambda s: int(s[1]))
     return "\n".join(sorted_spell_list)
 
