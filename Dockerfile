@@ -22,6 +22,7 @@ ENV BACKUP_PATH=/data/backups
 ENV ALGORITHM=HS256
 ENV SECRET_KEY=6vBJEAGbDiZWetFfrEzm
 ENV ADMIN_USERS=Gilbio,Admin
+ENV RUNNING_ON_CONTAINER=true
 ENV CORS_ORIGINS=https://dnd-yonder.vercel.app
 
 CMD ["python", "src/main.py"]
