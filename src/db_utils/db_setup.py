@@ -3,8 +3,15 @@
 
 import sqlite3
 import hashlib
+from pathlib import Path
 
 def setup_database(db_path : str):
+    db_path_str: str = db_path
+    db_path_path: Path = Path(db_path_str)
+
+    # Ensure parent directory exists (important for Docker volumes)
+    db_path_path.parent.mkdir(parents=True, exist_ok=True)
+    
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
     

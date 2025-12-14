@@ -624,7 +624,12 @@ def export_sheet_txt(username: str, sheet_id: int):
         
 #endregion - Export & Download
 
+def find_ip():
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
      
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="192.168.1.71", port=8000,ssl_keyfile='./certs/localhost-key.pem', ssl_certfile='./certs/localhost.pem', reload=True)
+    uvicorn.run("main:app", host=find_ip(), port=8000,ssl_keyfile='./certs/localhost-key.pem', ssl_certfile='./certs/localhost.pem', reload=True)
     

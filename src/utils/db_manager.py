@@ -51,6 +51,11 @@ class DatabaseManager:
         from datetime import datetime
         from glob import glob
         import shutil
+        from pathlib import Path
+        
+        db_path = Path(self.db_path)
+        backups_dir = db_path.parent / "backups"
+        backups_dir.mkdir(parents=True, exist_ok=True)
 
         while True:
             # Clean up old backups, keeping only the most recent 5
