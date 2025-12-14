@@ -22,7 +22,7 @@ echo "Ensuring volume exists..."
 docker volume inspect $VOLUME_NAME >/dev/null 2>&1 || docker volume create $VOLUME_NAME
 
 echo "Starting $PROJECT_NAME container..."
-docker run -d \
+docker run -it \
   --name $CONTAINER_NAME \
   -v $VOLUME_NAME:/data \
   -e DB_PATH=/data/yonder-prod-db.db \
