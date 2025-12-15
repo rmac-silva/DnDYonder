@@ -148,7 +148,7 @@ function SheetLeftColumn({draft,setDraft}) {
              {/* Link to point buy calculator */}
              <Link
                  className='!text-md !font-semibold !mb-4 !ml-2'
-                 href={`https://dnd5e.wikidot.com/spells`}
+                 href={`https://chicken-dinner.com/5e/5e-point-buy.html`}
                  sx={{
                      fontSize: { xs: '1rem', sm: '1.1rem', md: '1.2rem' },
                      mb: 2,
