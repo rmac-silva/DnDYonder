@@ -48,6 +48,7 @@
 - BUG! Starting equipment selection is buggy. If you select equipment, then change class, then change back, the previously selected equipment is still selected and adds on top of the new class equipment.
 - BUG! Can select multiple skill proficiencies when creating a character.
 - BUG! When creating a race, if the subrace is empty, it crashes the app.
+- BUG! Sorcerer class automatic fetch failed. Something about proficiencies not being iterable.
 
 # Changelog
 

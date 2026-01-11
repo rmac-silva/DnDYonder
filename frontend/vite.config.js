@@ -19,5 +19,6 @@ export default defineConfig({
       key: fs.readFileSync(path.resolve(__dirname, "certs/localhost-key.pem")),
       cert: fs.readFileSync(path.resolve(__dirname, "certs/localhost.pem")),
     }
+    // https:false
   }
 })
