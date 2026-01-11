@@ -17,13 +17,13 @@ Keeps existing state vars (sortedSpells, newSpells, forceRefresh) — plug your 
 function titleCase(str) {
     var splitStr = str.toLowerCase().split(' ');
     for (var i = 0; i < splitStr.length; i++) {
-      // You do not need to check if i is larger than splitStr length, as your for does that for you
-      // Assign it back to the array
-      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+        // You do not need to check if i is larger than splitStr length, as your for does that for you
+        // Assign it back to the array
+        splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
     }
     // Directly return the joined string
     return splitStr.join(' ');
-  }
+}
 
 function getSchoolGradients(schoolRaw) {
     const school = String(schoolRaw || '').toLowerCase();
@@ -85,52 +85,53 @@ function getSchoolGradients(schoolRaw) {
 }
 
 function SpellList({ draft, setDraft }) {
-  const [sortedSpells, setSortedSpells] = useState([]);
-  const [forceRefresh, setForceRefresh] = useState(false);
-  const [onMobile, setOnMobile] = useState(window.innerWidth < 768);
+    const [sortedSpells, setSortedSpells] = useState([]);
+    const [forceRefresh, setForceRefresh] = useState(false);
+    const [onMobile, setOnMobile] = useState(window.innerWidth < 768);
+    const [spellcastingLevel, setSpellcastingLevel] = useState(0);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setOnMobile(window.innerWidth < 768);
+    useEffect(() => {
+        const handleResize = () => {
+            setOnMobile(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Prefer spells_known; fall back to other keys only if empty/absent
+    const getSpellSource = () => {
+        const known = draft?.class?.spellcasting?.spells_known;
+        if (Array.isArray(known) && known.length) return known;
+
+        return [];
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    // Sort whenever the source or level changes
+    useEffect(() => {
+        const source = getSpellSource();
+        const ordered = [...source].sort((a, b) => {
+            const la = Number(a.level ?? 0);
+            const lb = Number(b.level ?? 0);
+            if (la !== lb) return la - lb;
+            return String(a.name).localeCompare(String(b.name));
+        });
 
-  // Prefer spells_known; fall back to other keys only if empty/absent
-  const getSpellSource = () => {
-    const known = draft?.class?.spellcasting?.spells_known;
-    if (Array.isArray(known) && known.length) return known;
+        setSpellcastingLevel(Number(draft?.class?.spellcasting?.max_level_spellslots ?? 0));
 
-    return [];
-  };
 
-  // Sort whenever the source or level changes
-  useEffect(() => {
-    const source = getSpellSource();
-    const ordered = [...source].sort((a, b) => {
-      const la = Number(a.level ?? 0);
-      const lb = Number(b.level ?? 0);
-      if (la !== lb) return la - lb;
-      return String(a.name).localeCompare(String(b.name));
-    });
+        setSortedSpells(ordered);
+        console.log("Filtered spells: ", ordered);
+    }, [
+        draft?.class?.spellcasting?.spells_known,   // primary source
+        draft?.class?.spellcasting?.max_level_spellslots,  // affects filtering
+        forceRefresh,
+    ]);
 
-    const spellcastingLevel = Number(draft?.class?.spellcasting?.max_level_spellslots ?? 0);
-    const filtered = ordered.filter(spell => (spell.level ?? 0) <= spellcastingLevel);
-
-    setSortedSpells(filtered);
-    console.log("Filtered spells: ", filtered);
-  }, [
-    draft?.class?.spellcasting?.spells_known,   // primary source
-    draft?.class?.spellcasting?.max_level_spellslots,  // affects filtering
-    forceRefresh,
-  ]);
-
-  const persistSpells = () => {
-    // ensure effect runs even if object ref didn’t change elsewhere
-    setForceRefresh(v => !v);
-  };
+    const persistSpells = () => {
+        // ensure effect runs even if object ref didn’t change elsewhere
+        setForceRefresh(v => !v);
+    };
 
     // Add new spell (called by AddNewSpell)
     const handleAddSpell = (spellObj) => {
@@ -162,19 +163,19 @@ function SpellList({ draft, setDraft }) {
     }
 
     const columnTemplates = {
-      xs: 'minmax(90px,1.4fr) minmax(50px,0.5fr) minmax(60px,0.7fr) minmax(75px,0.8fr) minmax(85px,1fr)',
-      sm: 'minmax(110px,1.5fr) minmax(60px,0.6fr) minmax(75px,0.8fr) minmax(95px,0.9fr) minmax(105px,1.1fr)',
-      md: 'minmax(130px,1.5fr) minmax(65px,0.6fr) minmax(85px,0.8fr) minmax(110px,0.9fr) minmax(120px,1.1fr)',
-      lg: 'minmax(150px,1.5fr) minmax(70px,0.6fr) minmax(90px,0.8fr) minmax(120px,0.9fr) minmax(140px,1.1fr)',
-      xl: '1.5fr 0.6fr 0.80fr 0.9fr 1.1fr'
+        xs: 'minmax(90px,1.4fr) minmax(50px,0.5fr) minmax(60px,0.7fr) minmax(75px,0.8fr) minmax(85px,1fr)',
+        sm: 'minmax(110px,1.5fr) minmax(60px,0.6fr) minmax(75px,0.8fr) minmax(95px,0.9fr) minmax(105px,1.1fr)',
+        md: 'minmax(130px,1.5fr) minmax(65px,0.6fr) minmax(85px,0.8fr) minmax(110px,0.9fr) minmax(120px,1.1fr)',
+        lg: 'minmax(150px,1.5fr) minmax(70px,0.6fr) minmax(90px,0.8fr) minmax(120px,0.9fr) minmax(140px,1.1fr)',
+        xl: '1.5fr 0.6fr 0.80fr 0.9fr 1.1fr'
     };
     // NEW: linear spacing scale (xl is baseline)
     const spacingScale = {
-      px:        { xs: 2, sm: 2, md: 2, lg: 2, xl: 2 },
-      pyHeader:  { xs: 0.50, sm: 0.55, md: 0.70, lg: 0.85, xl: 1 },
-      pyRow:     { xs: 0.40, sm: 0.50, md: 0.55, lg: 0.65, xl: 0.75 },
-      gap:       { xs: 0.25, sm: 0.40, md: 0.55, lg: 0.70, xl: 0.75 },
-      minHeight: { xs: '38px', sm: '40px', md: '44px', lg: '46px', xl: '48px' }
+        px: { xs: 2, sm: 2, md: 2, lg: 2, xl: 2 },
+        pyHeader: { xs: 0.50, sm: 0.55, md: 0.70, lg: 0.85, xl: 1 },
+        pyRow: { xs: 0.40, sm: 0.50, md: 0.55, lg: 0.65, xl: 0.75 },
+        gap: { xs: 0.25, sm: 0.40, md: 0.55, lg: 0.70, xl: 0.75 },
+        minHeight: { xs: '38px', sm: '40px', md: '44px', lg: '46px', xl: '48px' }
     };
 
     return (
@@ -194,11 +195,11 @@ function SpellList({ draft, setDraft }) {
                         sx={{
                             display: 'grid',
                             gridTemplateColumns: {
-                              xs: columnTemplates.xs,
-                              sm: columnTemplates.sm,
-                              md: columnTemplates.md,
-                              lg: columnTemplates.lg,
-                              xl: columnTemplates.xl
+                                xs: columnTemplates.xs,
+                                sm: columnTemplates.sm,
+                                md: columnTemplates.md,
+                                lg: columnTemplates.lg,
+                                xl: columnTemplates.xl
                             },
                             px: spacingScale.px,
                             py: spacingScale.pyHeader,
@@ -260,36 +261,37 @@ function SpellList({ draft, setDraft }) {
                                             alignItems: 'center',
                                             width: '100%',
                                             gridTemplateColumns: {
-                                              xs: columnTemplates.xs,
-                                              sm: columnTemplates.sm,
-                                              md: columnTemplates.md,
-                                              lg: columnTemplates.lg,
-                                              xl: columnTemplates.xl
+                                                xs: columnTemplates.xs,
+                                                sm: columnTemplates.sm,
+                                                md: columnTemplates.md,
+                                                lg: columnTemplates.lg,
+                                                xl: columnTemplates.xl
                                             },
                                             fontSize: { xs: 12, sm: 11.5, md: 12.5, xl: 15 },
                                             gap: spacingScale.gap,
                                             overflow: 'hidden',
                                         }}
                                     >
+                                        {/*If the spell has a level higher than the current spellcasting lvl. grey out the name and other informations */}
                                         <Box sx={{ display: 'flex', flexDirection: 'column', minWidth: 0, rowGap: { xs: 0.15, sm: 0.2, md: 0.25 } }}>
-                                            <span style={{ fontWeight: 600, lineHeight: 1.05, fontSize: 'inherit', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            <span  style={{ fontWeight: 600, lineHeight: 1.05, fontSize: 'inherit', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: (spell.level > spellcastingLevel) ? '#888' : 'inherit' }}>
                                                 {titleCase(spell.name)}
                                             </span>
-                                            
-                                            <Box sx={{ fontSize : { xs: 10, sm: 11, md: 12, xl: 14 }}} className='!text-neutral-600 !font-normal !italic '>
+
+                                            <Box sx={{ fontSize: { xs: 10, sm: 11, md: 12, xl: 14 }, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }} className='!text-neutral-600 !font-normal !italic '>
                                                 {spell.level === 0 ? 'Cantrip' : `Level ${spell.level}`}
                                             </Box>
                                         </Box>
-                                        <span style={{ whiteSpace: 'nowrap', lineHeight: 1 }}>{getCastTime(spell) || '—'}</span>
-                                        <span style={{ whiteSpace: 'nowrap', lineHeight: 1 }}>{spell.range || '—'}</span>
-                                        <span style={{ whiteSpace: 'nowrap', lineHeight: 1 }}>{getSchool(spell)}</span>
-                                        <span style={{ fontSize: '0.68rem', marginRight: 4, whiteSpace: 'nowrap', lineHeight: 1 }}>{spell.components || '—'}</span>
+                                        <span style={{ whiteSpace: 'nowrap', lineHeight: 1, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}>{getCastTime(spell) || '—'}</span>
+                                        <span style={{ whiteSpace: 'nowrap', lineHeight: 1, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}>{spell.range || '—'}</span>
+                                        <span style={{ whiteSpace: 'nowrap', lineHeight: 1, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}>{getSchool(spell)}</span>
+                                        <span style={{ fontSize: '0.68rem', marginRight: 4, whiteSpace: 'nowrap', lineHeight: 1, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}>{spell.components || '—'}</span>
                                     </Box>
                                 </AccordionSummary>
                                 <AccordionDetails sx={{ px: 2, py: 1 }}>
                                     <Typography
                                         variant="body2"
-                                        sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5 }}
+                                        sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
                                     >
                                         {spell.description || 'No description.'}
                                     </Typography>
@@ -300,15 +302,15 @@ function SpellList({ draft, setDraft }) {
 
                                         <Typography
                                             variant="body2"
-                                            className='!text-xs font-normal '
-                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mr: 0.5 }}
+                                            className='!text-xs !font-semibold '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mr: 0.5, color: (spell.level > spellcastingLevel) ? '#888' : '#000000'  }}
                                         >
                                             {"Range:"}
                                         </Typography>
                                         <Typography
                                             variant="body2"
-                                            className='!text-xs font-normal !text-neutral-600'
-                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: .5}}
+                                            className='!text-xs font-normal '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: .5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
                                         >
                                             {spell.range || 'No range.'}
                                         </Typography>
@@ -317,15 +319,15 @@ function SpellList({ draft, setDraft }) {
 
                                         <Typography
                                             variant="body2"
-                                            className='!text-xs font-normal '
-                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mr: 0.5 }}
+                                            className='!text-xs !font-semibold '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mr: 0.5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
                                         >
                                             {"School:"}
                                         </Typography>
                                         <Typography
                                             variant="body2"
-                                            className='!text-xs font-normal !text-neutral-600'
-                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: .5}}
+                                            className='!text-xs font-normal '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: .5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
                                         >
                                             {spell.school || 'No school.'}
                                         </Typography>
@@ -334,15 +336,15 @@ function SpellList({ draft, setDraft }) {
 
                                         <Typography
                                             variant="body2"
-                                            className='!text-xs font-normal '
-                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mr: 0.5 }}
+                                            className='!text-xs !font-semibold '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mr: 0.5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
                                         >
                                             {"Cast time:"}
                                         </Typography>
                                         <Typography
                                             variant="body2"
-                                            className='!text-xs font-normal !text-neutral-600'
-                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: .5 }}
+                                            className='!text-xs font-normal '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: .5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
                                         >
                                             {spell.casting_time || 'No description.'}
                                         </Typography>
@@ -350,15 +352,15 @@ function SpellList({ draft, setDraft }) {
                                     <Box display={"flex"}>
                                         <Typography
                                             variant="body2"
-                                            className='!text-xs font-normal '
-                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5, mr: 0.5 }}
+                                            className='!text-xs !font-semibold '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5, mr: 0.5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
                                         >
                                             {"Components:"}
                                         </Typography>
                                         <Typography
                                             variant="body2"
-                                            className='!text-xs font-normal !text-neutral-600'
-                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5 }}
+                                            className='!text-xs font-normal '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: 1.5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
                                         >
                                             {spell.components || '—'}
                                         </Typography>

@@ -1,0 +1,2 @@
+[INFO] [2026-01-11 12:45:35] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Gobbly] Fetching Wikidot item info for item: Gobbly
+[ERROR] [2026-01-11 12:45:35] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Gobbly] Could not fetch item info for item: Gobbly. Error: 'Description'

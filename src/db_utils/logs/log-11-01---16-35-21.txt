@@ -1,0 +1,2 @@
+[INFO] [2026-01-11 16:35:22] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Fetching Wikidot spell info for spell: Firebolt
+[ERROR] [2026-01-11 16:35:23] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Could not fetch spell info for spell: Firebolt. Error: Item not found on http://dndroll.wikidot.com/spells:firebolt. If you believe this is an error, try heading to the URL in your browser.

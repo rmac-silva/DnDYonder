@@ -435,6 +435,42 @@ def save_new_race(data: dict):
         raise HTTPException(status_code=500, detail=res[1])
     else:
         return res[1]
+    
+@app.delete("/info/races")
+def delete_race(data : dict ):
+    username = jwt_manager.fetch_username_from_token(data.get('token', False))
+    
+    if username[0] is False:
+        lg.log_error(f"[main.py/delete_race] @DELETE[/info/races] Could not authenticate user for deleting race. Error: {username[1]}")
+        raise HTTPException(status_code=403, detail=username[1])
+    
+    lg.log(f"[main.py/delete_race] @DELETE[/info/races] Deleting race {data.get('race',{}).get('raceName'  )}. Author: {username[1]}")
+    
+    res = info_manager.delete_race(data.get('raceName', ""))
+    if res[0] is False:
+        lg.log_error(f"[main.py/delete_race] @DELETE[/info/races] Could not delete race {data.get('race',{}).get('raceName'  )}. Error: {res[1]}")
+        raise HTTPException(status_code=500, detail=res[1])
+    else:
+        return res[1]
+    
+@app.put("/info/races")
+def save_race_edit(data: dict):
+    username = jwt_manager.fetch_username_from_token(data.get('token', False))
+    
+    if username[0] is False:
+        lg.log_error(f"[main.py/save_race_edit] @PUT[/info/races] Could not authenticate user for editing race. Error: {username[1]}")
+        raise HTTPException(status_code=403, detail=username[1])
+    print("\n\n",data.get('race',{}),"\n\n")
+    lg.log(f"[main.py/save_race_edit] @PUT[/info/races] Editing race {data.get('race',{}).get('subrace'  )} {data.get('race', {}).get('name','')}. Author: {username[1]}")
+
+    res = info_manager.save_race_edit(data.get('race', {}))
+    if res[0] is False:
+        lg.log_error(f"[main.py/save_race_edit] @PUT[/info/races] Could not edit race {data.get('race',{}).get('raceName'  )}. Error: {res[1]}")
+        raise HTTPException(status_code=500, detail=res[1])
+    else:
+        return res[1]
+    
+    
 
 @app.get("/info/weapons")
 def get_available_weapons( ):
@@ -589,12 +625,13 @@ def get_wikidot_item_info(item_name: str):
 
 @app.get("/wikidot/spell/{spell_name}")
 def get_wikidot_spell_info(spell_name: str):
+    
     lg.log(f"[main.py/get_wikidot_spell_info] @GET[/wikidot/spell/{spell_name}] Fetching Wikidot spell info for spell: {spell_name}")
     try:
         res = wks.fetch_spell_info(spell_name.lower()).format_results_dndroll_spells()
     except Exception as e:
         lg.log_error(f"[main.py/get_wikidot_spell_info] @GET[/wikidot/spell/{spell_name}] Could not fetch spell info for spell: {spell_name}. Error: {str(e)}")
-        raise HTTPException(status_code=500, detail="Could not fetch spell info")
+        raise HTTPException(status_code=500, detail="Could not fetch spell info: " + str(e))
     return res
 
 
@@ -643,7 +680,7 @@ if __name__ == "__main__":
     if(RUNNING_ON_CONTAINER):
         uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=False)
     else:
-        uvicorn.run("main:app", host=find_ip(), port=8000,ssl_keyfile=str(CERT_DIR / 'localhost-key.pem'), ssl_certfile=str(CERT_DIR / 'localhost.pem'), reload=True)
-        # uvicorn.run("main:app", host=find_ip(), port=8000, reload=True)
+        # uvicorn.run("main:app", host=find_ip(), port=8000,ssl_keyfile=str(CERT_DIR / 'localhost-key.pem'), ssl_certfile=str(CERT_DIR / 'localhost.pem'), reload=True)
+        uvicorn.run("main:app", host=find_ip(), port=8000, reload=True)
         
     

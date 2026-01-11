@@ -1,0 +1,3 @@
+[INFO] [2026-01-11 15:21:51] [main.py/delete_race] @DELETE[/info/races] Deleting race None. Author: Gilbio
+[INFO] [2026-01-11 15:22:25] [main.py/delete_race] @DELETE[/info/races] Deleting race None. Author: Gilbio
+[ERROR] [2026-01-11 15:22:25] [main.py/delete_race] @DELETE[/info/races] Could not delete race None. Error: Race with the name   already exists

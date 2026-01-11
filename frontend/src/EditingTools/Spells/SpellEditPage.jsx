@@ -14,12 +14,13 @@ import {
 import CircularProgress from '@mui/material/CircularProgress';
 import Navbar from '../../Navbar/Navbar';
 import SpellsEditPanel from './SpellsEditPanel.jsx'; // use the spell edit panel
+import { useNotification } from '../../Utils/NotificationContext.jsx';
 
 export function SpellEditPage() {
     const [spells, setSpells] = useState([]);
     const [loading, setLoading] = useState(false);
     const [refreshPage, setRefreshPage] = useState(false);
-
+    const { showNotification } = useNotification();
     const [editedSpell, setEditedSpell] = useState(null);
     const [editOpen, setEditOpen] = useState(false);
 
@@ -92,7 +93,7 @@ export function SpellEditPage() {
             setRefreshPage(true);
         } catch (err) {
             console.error('Delete failed:', err);
-            alert(`Failed to delete spell: ${err.message}`);
+            showNotification(`Failed to delete spell: ${err.message}`, 'error');
         }
     }
 
@@ -130,7 +131,7 @@ export function SpellEditPage() {
             }
         } catch (error) {
             console.error('Edit failed:', error);
-            alert(`Failed to edit spell: ${error.message}`);
+            showNotification(`Failed to edit spell: ${error.message}`, 'error');
         }
     }
 

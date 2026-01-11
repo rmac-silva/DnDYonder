@@ -1,5 +1,5 @@
 import { React, useState } from 'react';
-import { Box, useTheme } from '@mui/material';
+import { Box, useTheme, Checkbox } from '@mui/material';
 
 function PlayerStats({ draft, setDraft }) {
     const theme = useTheme();
@@ -12,15 +12,18 @@ function PlayerStats({ draft, setDraft }) {
     const [speed, setSpeed] = useState(parseInt(draft.stats.speed));
 
     function GetMaxHP() {
+        if (draft.stats.auto_hp === false) {
+            return maxHP;
+        }
         let startingHitpoints = parseInt(draft.class?.starting_hitpoints);
         let hpPerLevel = parseInt(draft.class?.hitpoints_per_level);
         let level = parseInt(draft.stats.level);
         let conMod = Math.floor((draft.attributes.Constitution.value - 10) / 2);
-        let maxHP = (startingHitpoints + conMod) + ((hpPerLevel + conMod) * (level - 1));
-        if (isNaN(maxHP) || !isFinite(maxHP)) {
+        let calcHP = (startingHitpoints + conMod) + ((hpPerLevel + conMod) * (level - 1));
+        if (isNaN(calcHP) || !isFinite(calcHP)) {
             return "";
         }
-        return maxHP;
+        return calcHP;
     }
 
     return (
@@ -161,12 +164,27 @@ function PlayerStats({ draft, setDraft }) {
                         component="input"
                         id="hp-max"
                         type="text"
-
                         placeholder="Max HP"
                         value={GetMaxHP()}
-                        onChange={(e) => setMaxHP(parseInt(e.target.value))}
-                        onBlur={() => { draft.stats.max_hp = parseInt(maxHP); setDraft({ ...draft }) }}
-                        className="absolute  text-center bg-zinc-50 font-semibold rounded z-10 focus-visible:outline-none hover:shadow-md transition-all duration-200"
+                        readOnly={draft.stats.auto_hp !== false}
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            if (val === "") {
+                                setMaxHP("");
+                            } else {
+                                const parsed = parseInt(val);
+                                if (!isNaN(parsed)) {
+                                    setMaxHP(parsed);
+                                }
+                            }
+                        }}
+                        onBlur={() => { 
+                            const finalVal = parseInt(maxHP) || 0;
+                            draft.stats.max_hp = finalVal; 
+                            setMaxHP(finalVal);
+                            setDraft({ ...draft }); 
+                        }}
+                        className={`absolute text-center ${draft.stats.auto_hp !== false ? 'bg-zinc-100 cursor-default' : 'bg-zinc-50'} font-semibold rounded z-10 focus-visible:outline-none hover:shadow-md transition-all duration-200`}
                         sx={{
                             right: { xs: '2.5rem', sm: '8rem', md: '8rem', lg: '6rem', xl: '10.5rem' },
                             top: { xs: '-1.75rem', sm: '-1.9rem', md: '-2rem', lg: '-2rem', xl: '-1.8rem' },
@@ -179,6 +197,50 @@ function PlayerStats({ draft, setDraft }) {
                             transition: 'border-color 0.2s ease',
                         }}
                     />
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            display: 'flex',
+                            alignItems: 'center',
+                            right: { xs: '0rem', sm: '5.3rem', md: '5rem', lg: '3rem', xl: '13.3rem' },
+                            top: { xs: '-1.5rem', sm: '-1.75rem', md: '-1.75rem', lg: '-1.75rem', xl: '3.2rem' },
+                            zIndex: 20
+                        }}
+                    >
+                         <Box
+                            component="label"
+                            htmlFor="hp-auto-toggle"
+                            sx={{
+                                cursor: 'pointer',
+                                fontWeight: 600, // Semibold
+                                fontSize: { xs: '0.65rem', xl: '0.85rem' },
+                                color: 'text.secondary',
+                                userSelect: 'none',
+                                mr: -0.5 // tighten gap with checkbox
+                            }}
+                        >
+                            {draft.stats.auto_hp !== false ? "(A)" : "(M)"}
+                        </Box>
+                        <Checkbox
+                            id="hp-auto-toggle"
+                            size="small"
+                            checked={draft.stats.auto_hp !== false}
+                            onChange={(e) => {
+                                const checked = e.target.checked;
+                                if (!checked) {
+                                    const currentCalc = GetMaxHP();
+                                    setMaxHP(currentCalc);
+                                    draft.stats.max_hp = currentCalc;
+                                }
+                                draft.stats.auto_hp = checked;
+                                setDraft({ ...draft });
+                            }}
+                            sx={{
+                                padding: 0.5,
+                                '& .MuiSvgIcon-root': { fontSize: { xs: '1.1rem', xl: '1.5rem' } }
+                            }}
+                        />
+                    </Box>
                 </div>
 
                 <div className="relative inline-block">

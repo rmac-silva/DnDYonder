@@ -203,7 +203,15 @@ const SwipeableFeatureAccordion = ({ feature, onDelete }) => {
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerUp}
-      style={{ position: 'relative' }}
+      onPointerCancel={handlePointerUp}
+      onContextMenu={(e) => e.preventDefault()}
+      style={{ 
+        position: 'relative', 
+        userSelect: 'none', 
+        WebkitUserSelect: 'none', 
+        WebkitTouchCallout: 'none',
+        touchAction: 'pan-y' // Allow vertical scrolling but control horizontal/long-press
+      }}
     >
       <div style={progressOverlayStyle}>
         <div style={progressCircleStyle}>

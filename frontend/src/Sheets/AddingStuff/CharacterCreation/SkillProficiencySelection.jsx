@@ -1,6 +1,6 @@
 import {React, useState} from 'react';
 import Button from '@mui/material/Button';
-
+import { useNotification } from '../../../Utils/NotificationContext';
 
 function SkillProfSelection({sheet,setSheet, onValid, selectedSkills, setSelectedSkills}) {
 
@@ -28,7 +28,7 @@ function SkillProfSelection({sheet,setSheet, onValid, selectedSkills, setSelecte
         "Persuasion": "Charisma"
     };
 
-    
+    const { showNotification } = useNotification();
 
     const handleSkillToggle = (skill) => {
         var change = 0;
@@ -54,7 +54,7 @@ function SkillProfSelection({sheet,setSheet, onValid, selectedSkills, setSelecte
         } else {
             //Cannot select more skills
             //Show a popup
-            alert(`You can only select ${sheet.class.num_skill_proficiencies} skill proficiencies.`);
+            showNotification(`You can only select ${sheet.class.num_skill_proficiencies} skill proficiencies.`, 'error');
         }
 
         // This only gets updated on next frame. So we need to use a local array to check

@@ -15,7 +15,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import CachedIcon from '@mui/icons-material/Cached';
-
+import { useNotification } from "../../Utils/NotificationContext.jsx";
 import GetClassFeats from "../Lists/ClassFeature";
 
 
@@ -24,7 +24,7 @@ function SubclassSelect({ draft, setDraft }) {
   const [loading, setLoading] = useState(true);
   const [forceRefresh, setForceRefresh] = useState(false);
   const [readyToCreate, setReadyToCreate] = useState(false);
-
+  const { showNotification } = useNotification();
   const [fetchedSubclasses, setFetchedSubclasses] = useState([]);
   const [creatingNewSubclass, setCreatingNewSubclass] = useState(false);
   const [error, setError] = useState(null);
@@ -140,14 +140,14 @@ function SubclassSelect({ draft, setDraft }) {
 
     // Ensure the subclass has a name
     if (newSubclass.name.trim() === "") {
-      alert("Subclass must have a name.");
+      showNotification("Subclass must have a name.", 'error');
       setError("name");
       return false;
     }
 
     //Check if it has features
     if (newSubclass.features.length === 0) {
-      alert("Subclass must have at least one feature.");
+      showNotification("Subclass must have at least one feature.", 'error');
       setError("features");
       return false;
     }
@@ -155,7 +155,7 @@ function SubclassSelect({ draft, setDraft }) {
     //Check if all features have required_level
     for (const feat of newSubclass.features) {
       if (feat.level_requirement === undefined || feat.level_requirement === null || feat.level_requirement < 0) {
-        alert(`Feature "${feat.name}" must have a required level.`);
+        showNotification(`Feature "${feat.name}" must have a required level.`, 'error');
         setError("features");
         return false;
       }
@@ -283,7 +283,7 @@ function SubclassSelect({ draft, setDraft }) {
           variant="outlined"
           color="secondary"
           disabled={loadingWikidotData}
-          startIcon={<CachedIcon />}
+          startIcon={<CachedIcon className={loadingWikidotData ? 'animate-spin' : ''} />}
           sx={{ mr: 1 }}
         >
           Fetch from Wikidot

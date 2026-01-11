@@ -23,506 +23,537 @@ import Button from '@mui/material/Button';
 import ItemCache from '../MiddleColumn/Inventory/ItemCache';
 import CachedIcon from '@mui/icons-material/Cached';
 import Tooltip from '@mui/material/Tooltip';
+import { useNotification } from '../../Utils/NotificationContext.jsx';
 import { Paper, Divider, Stack } from '@mui/material';
 
 const AddItem = ({ onAddItem, isOpen, itemTypeDefault }) => {
-    const [itemType, setItemType] = useState(itemTypeDefault || 'Weapon'); // Default to 'Weapon'
-    const [loadingWikidotData, setLoadingWikidotData] = useState(false);
+  const [itemType, setItemType] = useState(itemTypeDefault || 'Weapon'); // Default to 'Weapon'
+  const [loadingWikidotData, setLoadingWikidotData] = useState(false);
+  const { showNotification } = useNotification();
 
+  const emptyTool = {
+    name: '', description: '', weight: '', cost: '',
+    features: [],
+  }
 
-    const emptyTool = {
-        name: '', description: '', weight: '', cost: '',
-        features: [],
+  const [newTool, setNewTool] = useState(emptyTool);
+
+  const emptyWeapon = {
+    name: '', description: '', weight: '', cost: '',
+    features: [],
+    attacks: [{
+      damage: '',
+      damage_type: [],
+    }],
+    range: '',
+    properties: [],
+  }
+
+  const [newWeapon, setNewWeapon] = useState(emptyWeapon);
+
+  const weaponProperties = [
+    "Ammunition", "Finesse", "Heavy", "Light", "Loading", "Range", "Reach", "Special", "Thrown", "Two-Handed", "Versatile"
+  ];
+
+  const damageTypes = [
+    "Acid", "Bludgeoning", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Piercing", "Poison", "Psychic", "Radiant", "Slashing", "Thunder"
+  ];
+
+  const emptyArmor = {
+    name: '', description: '', weight: '', cost: '',
+    features: [],
+    armor_class: '',
+    armor_type: '',
+    stealth_disadvantage: false,
+    strength_requirement: 0,
+  }
+
+  const [newArmor, setNewArmor] = useState(emptyArmor);
+
+  const validateItem = (item, itemType) => {
+    // Check if the item has a name and description
+    if (!item.name || !item.description) {
+      showNotification("Item must have a name and description.", 'error');
+      return false;
     }
 
-    const [newTool, setNewTool] = useState(emptyTool);
-
-    const emptyWeapon = {
-        name: '', description: '', weight: '', cost: '',
-        features: [],
-        attacks: [{
-            damage: '',
-            damage_type: [],
-        }],
-        range: '',
-        properties: [],
+    //If it's a weapon, ensure at least one attack is defined
+    if (itemType === 'Weapon') {
+      for (const attack of item.attacks) {
+        if (!attack.damage || attack.damage_type.length === 0) {
+          showNotification("Each attack must have damage and at least one damage type.", 'error');
+          return false;
+        }
+      }
     }
 
-    const [newWeapon, setNewWeapon] = useState(emptyWeapon);
-
-    const weaponProperties = [
-        "Ammunition", "Finesse", "Heavy", "Light", "Loading", "Range", "Reach", "Special", "Thrown", "Two-Handed", "Versatile"
-    ];
-
-    const damageTypes = [
-        "Acid", "Bludgeoning", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Piercing", "Poison", "Psychic", "Radiant", "Slashing", "Thunder"
-    ];
-
-    const emptyArmor = {
-        name: '', description: '', weight: '', cost: '',
-        features: [],
-        armor_class: '',
-        armor_type: '',
-        stealth_disadvantage: false,
-        strength_requirement: 0,
+    //If it's armor, ensure armor class and type are defined
+    if (itemType === 'Armor') {
+      if (!item.armor_class || !item.armor_type) {
+        showNotification("Armor must have an armor class and armor type defined.", 'error');
+        return false;
+      }
     }
 
-    const [newArmor, setNewArmor] = useState(emptyArmor);
 
-    const validateItem = (item) => {
-        // Check if the item has a name and description
-        if (!item.name || !item.description) {
-            return false;
-        }
 
-        // Additional validation logic can go here
+    // Additional validation logic can go here
 
-        return true;
+    return true;
+  }
+
+  const saveNewItemToBackend = async (item) => {
+
+    const payload = {
+      'item': item,
+      'type': itemType,
+      'token': localStorage.getItem('authToken'),
+    }
+    console.log(item);
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/info/save_item`, {
+      method: 'POST', // or PUT depending on your API
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      showNotification(`Error saving item: ${errorData.detail || 'Unknown error'}`, 'error');
+      throw new Error(`Save failed: ${res.status} - ${errorData.detail || 'Unknown error'}`);
+    } else {
+      ItemCache.ForceCacheRefresh();//Update the cache after adding a new item
     }
 
-    const saveNewItemToBackend = async (item) => {
+  }
 
-        const payload = {
-            'item': item,
-            'type': itemType,
-            'token': localStorage.getItem('authToken'),
-        }
-        console.log(item);
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/info/save_item`, {
-            method: 'POST', // or PUT depending on your API
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-        });
+  const CancelCreation = () => {
+    onAddItem(null);
 
-        if (!res.ok) {
-            const errorData = await res.json();
-            alert(`Error saving item: HTTP ${res.status} - ${errorData.detail || 'Unknown error'}`);
-            throw new Error(`Save failed: ${res.status} - ${errorData.detail || 'Unknown error'}`);
-        } else {
-            ItemCache.ForceCacheRefresh();//Update the cache after adding a new item
-        }
+    //Reset states
+    setNewWeapon(emptyWeapon);
+    setNewArmor(emptyArmor);
+    setNewTool(emptyTool);
+  }
+
+  const CreateItem = async () => {
+
+    console.log("Creating item", itemType);
+    if (itemType === 'Weapon' && validateItem(newWeapon, itemType)) {
+
+      await saveNewItemToBackend(newWeapon);
+      onAddItem(newWeapon);
+      setNewWeapon(emptyWeapon);
 
     }
-
-    const CreateItem = async () => {
-
-        console.log("Creating item", itemType);
-        if (itemType === 'Weapon' && validateItem(newWeapon)) {
-
-            await saveNewItemToBackend(newWeapon);
-            onAddItem(newWeapon);
-            setNewWeapon(emptyWeapon);
-
-        }
-        else if (itemType === 'Armor' && validateItem(newArmor)) {
-            await saveNewItemToBackend(newArmor);
-            onAddItem(newArmor);
-            setNewArmor(emptyArmor);
-        }
-        else if (itemType === 'Tool' || itemType === "Misc." && validateItem(newTool)) {
-            await saveNewItemToBackend(newTool);
-            onAddItem(newTool);
-            setNewTool(emptyTool);
-        }
-
-
-
-    };
-
-    const updateActiveItem = (value) => {
-        if (itemType === 'Weapon') {
-            setNewWeapon((s) => ({ ...s, ...value })); //Take the current state S, copy it and update with the value overwriting any duplicate fields
-        }
-        else if (itemType === 'Armor') {
-            setNewArmor((s) => ({ ...s, ...value }));
-        }
-        else if (itemType === 'Tool' || itemType === "Misc.") {
-            setNewTool((s) => ({ ...s, ...value }));
-        }
+    else if (itemType === 'Armor' && validateItem(newArmor, itemType)) {
+      await saveNewItemToBackend(newArmor);
+      onAddItem(newArmor);
+      setNewArmor(emptyArmor);
+    }
+    else if (itemType === 'Tool' || itemType === "Misc." && validateItem(newTool, itemType)) {
+      await saveNewItemToBackend(newTool);
+      onAddItem(newTool);
+      setNewTool(emptyTool);
     }
 
-    // Helpers specifically for attacks array (keeps component code cleaner)
-    const addAttack = () => {
-        const updated = [...newWeapon.attacks, { damage: '', damage_type: [] }];
-        updateActiveItem({ attacks: updated });
-    };
 
-    const updateAttackAt = (index, partial) => {
-        const updated = newWeapon.attacks.map((a, i) => i === index ? { ...a, ...partial } : a);
-        updateActiveItem({ attacks: updated });
-    };
 
-    const removeAttackAt = (index) => {
-        const updated = newWeapon.attacks.filter((_, i) => i !== index);
-        updateActiveItem({ attacks: updated });
-    };
+  };
 
-    async function handleWikidotFetch() {
-        setLoadingWikidotData(true);
-        var item_name = ""
+  const updateActiveItem = (value) => {
+    if (itemType === 'Weapon') {
+      setNewWeapon((s) => ({ ...s, ...value })); //Take the current state S, copy it and update with the value overwriting any duplicate fields
+    }
+    else if (itemType === 'Armor') {
+      setNewArmor((s) => ({ ...s, ...value }));
+    }
+    else if (itemType === 'Tool' || itemType === "Misc.") {
+      setNewTool((s) => ({ ...s, ...value }));
+    }
+  }
 
-        if (itemType === 'Weapon') {
-            item_name = newWeapon.name;
-        }
-        else if (itemType === 'Armor') {
-            item_name = newArmor.name;
-        }
-        else if (itemType === 'Tool' || itemType === "Misc.") {
-            item_name = newTool.name;
-        } else {
-            setLoadingWikidotData(false);
-            return;
-        }
+  // Helpers specifically for attacks array (keeps component code cleaner)
+  const addAttack = () => {
+    const updated = [...newWeapon.attacks, { damage: '', damage_type: [] }];
+    updateActiveItem({ attacks: updated });
+  };
 
-        try {
-            // Sanitize the string for URL (replace spaces with underscores)
-            item_name = item_name.trim().replace(/\s+/g, '_');
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/wikidot/item/${item_name}`, {
-                method: 'GET',
-            });
+  const updateAttackAt = (index, partial) => {
+    const updated = newWeapon.attacks.map((a, i) => i === index ? { ...a, ...partial } : a);
+    updateActiveItem({ attacks: updated });
+  };
 
-            if (!res.ok) {
-                throw new Error(`Wikidot fetch failed: ${res.status}`);
-            }
+  const removeAttackAt = (index) => {
+    const updated = newWeapon.attacks.filter((_, i) => i !== index);
+    updateActiveItem({ attacks: updated });
+  };
 
-            const data = await res.json();
-            handleWikidotData(data);
+  async function handleWikidotFetch() {
+    setLoadingWikidotData(true);
+    var item_name = ""
 
-            setLoadingWikidotData(false);
-        } catch (error) {
-            console.error("Error fetching from Wikidot:", error);
-            setLoadingWikidotData(false);
-        }
+    if (itemType === 'Weapon') {
+      item_name = newWeapon.name;
+    }
+    else if (itemType === 'Armor') {
+      item_name = newArmor.name;
+    }
+    else if (itemType === 'Tool' || itemType === "Misc.") {
+      item_name = newTool.name;
+    } else {
+      setLoadingWikidotData(false);
+      return;
     }
 
-    async function handleWikidotData(data) {
-        console.log("Wikidot data received:", data);
+    try {
+      // Sanitize the string for URL (replace spaces with underscores)
+      item_name = item_name.trim().replace(/\s+/g, '_');
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/wikidot/item/${item_name}`, {
+        method: 'GET',
+      });
 
-        if (data === null || data === undefined || Object.keys(data).length === 0) {
-            alert("No data found on Wikidot for this item.");
-            return;
-        }
+      if (!res.ok) {
+        throw new Error(`Wikidot fetch failed: ${res.status}`);
+      }
 
-        if (itemType === 'Weapon') {
-            newWeapon.range = data.range || '';
-            newWeapon.description = data.description || '';
-            newWeapon.weight = data.weight || '';
-            newWeapon.cost = data.cost || '';
-            newWeapon.properties = data.properties || [];
-            newWeapon.attacks = data.attacks || [];
-        } else if(itemType === 'Armor') {
-            newArmor.armor_class = data.armor_class || '';
-            newArmor.armor_type = data.armor_type || '';
-            newArmor.description = data.description || '';
-            newArmor.stealth_disadvantage = data.stealth_disadvantage || false;
-            newArmor.strength_requirement = data.strength_requirement || 0;
-            newArmor.weight = data.weight || '';
-            newArmor.cost = data.cost || '';
-        } else if(itemType === 'Tool' || itemType === "Misc.") {
-            newTool.description = data.description || '';
-            newTool.weight = data.weight || '';
-            newTool.cost = data.cost || '';
-        }
+      const data = await res.json();
+      handleWikidotData(data);
+
+      setLoadingWikidotData(false);
+    } catch (error) {
+      console.error("Error fetching from Wikidot:", error);
+      setLoadingWikidotData(false);
+    }
+  }
+
+  async function handleWikidotData(data) {
+    console.log("Wikidot data received:", data);
+
+    if (data === null || data === undefined || Object.keys(data).length === 0) {
+      showNotification("No data found on Wikidot for this item.", 'error');
+      return;
     }
 
-    return (<>
-        <Dialog open={isOpen} onClose={() => onAddItem(null)} fullWidth maxWidth="lg">
-            <DialogTitle>
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Typography variant="h6">Create New Item</Typography>
-                    <IconButton aria-label="close" onClick={() => onAddItem(null)} size="large">
-                        <CloseIcon />
-                    </IconButton>
-                </Box>
-            </DialogTitle>
+    if (itemType === 'Weapon') {
+      newWeapon.range = data.range || '';
+      newWeapon.description = data.description || '';
+      newWeapon.weight = data.weight || '';
+      newWeapon.cost = data.cost || '';
+      newWeapon.properties = data.properties || [];
+      newWeapon.attacks = data.attacks || [];
+    } else if (itemType === 'Armor') {
+      newArmor.armor_class = data.armor_class || '';
+      newArmor.armor_type = data.armor_type || '';
+      newArmor.description = data.description || '';
+      newArmor.stealth_disadvantage = data.stealth_disadvantage || false;
+      newArmor.strength_requirement = data.strength_requirement || 0;
+      newArmor.weight = data.weight || '';
+      newArmor.cost = data.cost || '';
+    } else if (itemType === 'Tool' || itemType === "Misc.") {
+      newTool.description = data.description || '';
+      newTool.weight = data.weight || '';
+      newTool.cost = data.cost || '';
+    }
+  }
 
-            <DialogContent dividers>
-                <Stack spacing={2}>
-                  {/* Basics */}
-                  <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
-                    <Typography variant="h6" sx={{ mb: 1 }}>Basics</Typography>
-                    <Divider sx={{ mb: 2 }} />
-                    <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
-                      <FormControl sx={{ minWidth: 250 }}>
-                        <InputLabel id="item-type-label">Item Type</InputLabel>
-                        <Select
-                          labelId="item-type-label"
-                          id="item-type-select"
-                          value={itemType}
-                          label="Item Type"
-                          disabled={loadingWikidotData}
-                          onChange={(e) => setItemType(e.target.value)}
-                        >
-                          <MenuItem value="Weapon">Weapon</MenuItem>
-                          <MenuItem value="Tool">Tool</MenuItem>
-                          <MenuItem value="Armor">Armor</MenuItem>
-                          <MenuItem value="Misc.">Misc.</MenuItem>
-                        </Select>
-                      </FormControl>
+  return (<>
+    <Dialog open={isOpen} onClose={() => CancelCreation(null)} fullWidth maxWidth="lg">
+      <DialogTitle>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Typography variant="h6">Create New Item</Typography>
+          <IconButton aria-label="close" onClick={() => CancelCreation(null)} size="large">
+            <CloseIcon />
+          </IconButton>
+        </Box>
+      </DialogTitle>
 
-                      <FormControl sx={{ minWidth: 260, flex: 1 }}>
-                        <TextField
-                          label="Item Name"
-                          variant="outlined"
-                          value={itemType === 'Weapon' ? newWeapon.name : itemType === 'Armor' ? newArmor.name : newTool.name}
-                          onChange={(e) => updateActiveItem({ name: e.target.value })}
-                          required
-                          size="medium"
-                          disabled={loadingWikidotData}
-                        />
-                      </FormControl>
+      <DialogContent dividers>
+        <Stack spacing={2}>
+          {/* Basics */}
+          <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+            <Typography variant="h6" sx={{ mb: 1 }}>Basics</Typography>
+            <Divider sx={{ mb: 2 }} />
+            <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
+              <FormControl sx={{ minWidth: 250 }}>
+                <InputLabel id="item-type-label">Item Type</InputLabel>
+                <Select
+                  labelId="item-type-label"
+                  id="item-type-select"
+                  value={itemType}
+                  label="Item Type"
+                  disabled={loadingWikidotData}
+                  onChange={(e) => setItemType(e.target.value)}
+                >
+                  <MenuItem value="Weapon">Weapon</MenuItem>
+                  <MenuItem value="Tool">Tool</MenuItem>
+                  <MenuItem value="Armor">Armor</MenuItem>
+                  <MenuItem value="Misc.">Misc.</MenuItem>
+                </Select>
+              </FormControl>
 
-                      <FormControl sx={{ minWidth: 140 }}>
-                        <TextField
-                          label="Weight (Lb)"
-                          variant="outlined"
-                          value={itemType === 'Weapon' ? newWeapon.weight : itemType === 'Armor' ? newArmor.weight : newTool.weight}
-                          onChange={(e) => updateActiveItem({ weight: e.target.value })}
-                          size="medium"
-                          disabled={loadingWikidotData}
-                        />
-                      </FormControl>
+              <FormControl sx={{ minWidth: 260, flex: 1 }}>
+                <TextField
+                  label="Item Name"
+                  variant="outlined"
+                  value={itemType === 'Weapon' ? newWeapon.name : itemType === 'Armor' ? newArmor.name : newTool.name}
+                  onChange={(e) => updateActiveItem({ name: e.target.value })}
+                  required
+                  size="medium"
+                  disabled={loadingWikidotData}
+                />
+              </FormControl>
 
-                      <FormControl sx={{ minWidth: 140 }}>
-                        <TextField
-                          label="Cost (Gp)"
-                          variant="outlined"
-                          value={itemType === 'Weapon' ? newWeapon.cost : itemType === 'Armor' ? newArmor.cost : newTool.cost}
-                          onChange={(e) => updateActiveItem({ cost: e.target.value })}
-                          size="medium"
-                          disabled={loadingWikidotData}
-                        />
-                      </FormControl>
-                    </Box>
+              <FormControl sx={{ minWidth: 140 }}>
+                <TextField
+                  label="Weight (Lb)"
+                  variant="outlined"
+                  value={itemType === 'Weapon' ? newWeapon.weight : itemType === 'Armor' ? newArmor.weight : newTool.weight}
+                  onChange={(e) => updateActiveItem({ weight: e.target.value })}
+                  size="medium"
+                  disabled={loadingWikidotData}
+                />
+              </FormControl>
 
-                    <Box mt={2}>
-                      <FormControl sx={{ width: '100%' }}>
-                        <TextField
-                          label="Item Description"
-                          variant="outlined"
-                          required
-                          value={itemType === 'Weapon' ? newWeapon.description : itemType === 'Armor' ? newArmor.description : newTool.description}
-                          onChange={(e) => updateActiveItem({ description: e.target.value })}
-                          size="medium"
-                          multiline
-                          minRows={3}
-                        />
-                      </FormControl>
-                    </Box>
-                  </Paper>
+              <FormControl sx={{ minWidth: 140 }}>
+                <TextField
+                  label="Cost (Gp)"
+                  variant="outlined"
+                  value={itemType === 'Weapon' ? newWeapon.cost : itemType === 'Armor' ? newArmor.cost : newTool.cost}
+                  onChange={(e) => updateActiveItem({ cost: e.target.value })}
+                  size="medium"
+                  disabled={loadingWikidotData}
+                />
+              </FormControl>
+            </Box>
 
-                  {/* Weapon Details */}
-                  {itemType === 'Weapon' && (
-                    <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
-                      <Typography variant="h6" sx={{ mb: 1 }}>Weapon Details</Typography>
-                      <Divider sx={{ mb: 2 }} />
-                      <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
-                        <FormControl sx={{ minWidth: 160 }}>
-                          <TextField
-                            label="Range"
-                            variant="outlined"
-                            value={newWeapon.range}
-                            onChange={(e) => updateActiveItem({ range: e.target.value })}
-                            size="medium"
-                          />
-                        </FormControl>
-                        <FormControl sx={{ minWidth: 260, flex: 1 }}>
-                          <Autocomplete
-                            multiple
-                            options={weaponProperties}
-                            value={newWeapon.properties}
-                            onChange={(_, newValue) => { updateActiveItem({ properties: newValue }); }}
-                            disableClearable={false}
-                            renderInput={(params) => <TextField {...params} label="Weapon Properties" placeholder="Search properties..." />}
-                            filterSelectedOptions
-                          />
-                        </FormControl>
-                      </Box>
+            <Box mt={2}>
+              <FormControl sx={{ width: '100%' }}>
+                <TextField
+                  label="Item Description"
+                  variant="outlined"
+                  required
+                  value={itemType === 'Weapon' ? newWeapon.description : itemType === 'Armor' ? newArmor.description : newTool.description}
+                  onChange={(e) => updateActiveItem({ description: e.target.value })}
+                  size="medium"
+                  multiline
+                  minRows={3}
+                />
+              </FormControl>
+            </Box>
+          </Paper>
 
-                      <Typography variant="subtitle1" sx={{ mt: 2 }}>Attacks</Typography>
-                      <Stack spacing={1}>
-                        {newWeapon.attacks.map((attack, idx) => (
-                          <Box key={idx} display="flex" gap={2} alignItems="center" p={1} border="1px solid #e0e0e0" borderRadius={1} flexWrap="wrap">
-                            <FormControl sx={{ minWidth: 200 }}>
-                              <TextField
-                                label={`Damage (e.g. 1d6)`}
-                                variant="outlined"
-                                value={attack.damage ?? ''}
-                                onChange={(e) => updateAttackAt(idx, { damage: e.target.value })}
-                                size="medium"
-                              />
-                            </FormControl>
-
-                            <FormControl sx={{ minWidth: 300, flex: 1 }}>
-                              <Autocomplete
-                                multiple
-                                options={damageTypes}
-                                value={attack.damage_type ?? []}
-                                onChange={(_, newValue) => updateAttackAt(idx, { damage_type: newValue })}
-                                disableClearable={false}
-                                renderInput={(params) => <TextField {...params} label="Damage Type(s)" placeholder="Select damage types" />}
-                                filterSelectedOptions
-                              />
-                            </FormControl>
-
-                            <IconButton size="small" onClick={() => removeAttackAt(idx)} aria-label="remove-attack">
-                              <CloseIcon />
-                            </IconButton>
-                          </Box>
-                        ))}
-                      </Stack>
-
-                      <Box display="flex" justifyContent="center" mt={2}>
-                        <Button variant="outlined" color="primary" onClick={addAttack}>
-                          Add New Attack
-                        </Button>
-                      </Box>
-                    </Paper>
-                  )}
-
-                  {/* Armor Details */}
-                  {itemType === 'Armor' && (
-                    <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
-                      <Typography variant="h6" sx={{ mb: 1 }}>Armor Details</Typography>
-                      <Divider sx={{ mb: 2 }} />
-                      <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
-                        <FormControl sx={{ minWidth: 180 }}>
-                          <TextField
-                            label="Armor Class (AC)"
-                            variant="outlined"
-                            value={newArmor.armor_class}
-                            onChange={(e) => updateActiveItem({ armor_class: e.target.value })}
-                            size="medium"
-                          />
-                        </FormControl>
-                        <FormControl sx={{ minWidth: 220 }}>
-                          <InputLabel id="armor-type-label">Armor Type</InputLabel>
-                          <Select
-                            labelId="armor-type-label"
-                            id="armor-type-select"
-                            value={newArmor.armor_type}
-                            label="Armor Type"
-                            onChange={(e) => updateActiveItem({ armor_type: e.target.value })}
-                          >
-                            <MenuItem value="Light">Light</MenuItem>
-                            <MenuItem value="Medium">Medium</MenuItem>
-                            <MenuItem value="Heavy">Heavy</MenuItem>
-                            <MenuItem value="Shield">Shield</MenuItem>
-                          </Select>
-                        </FormControl>
-                        <FormControl sx={{ minWidth: 200 }}>
-                          <TextField
-                            label="Strength Requirement"
-                            variant="outlined"
-                            value={newArmor.strength_requirement}
-                            onChange={(e) => updateActiveItem({ strength_requirement: e.target.value })}
-                            size="medium"
-                          />
-                        </FormControl>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={newArmor.stealth_disadvantage}
-                              onChange={(e) => updateActiveItem({ stealth_disadvantage: e.target.checked })}
-                            />
-                          }
-                          label="Stealth Disadvantage"
-                        />
-                      </Box>
-                    </Paper>
-                  )}
-
-                  {/* Features */}
-                  <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
-                    <Typography variant="h6" sx={{ mb: 1 }}>Features</Typography>
-                    <Divider sx={{ mb: 2 }} />
-                    {(itemType === 'Weapon' ? newWeapon.features : itemType === 'Armor' ? newArmor.features : newTool.features).map((feature, index) => (
-                      <Box key={index} display="flex" flexDirection="column" gap={1} p={2} border="1px solid #e0e0e0" borderRadius={1}>
-                        <Box display="flex" justifyContent="flex-end">
-                          <IconButton
-                            onClick={() => {
-                              const updatedFeatures = (itemType === 'Weapon' ? newWeapon.features : itemType === 'Armor' ? newArmor.features : newTool.features).filter((_, i) => i !== index);
-                              updateActiveItem({ features: updatedFeatures });
-                            }}
-                            size="small"
-                            aria-label="delete"
-                          >
-                            <CloseIcon color="error" />
-                          </IconButton>
-                        </Box>
-
-                        <TextField
-                          label={`Feature ${index + 1} Name`}
-                          variant="outlined"
-                          value={feature.name}
-                          onChange={(e) => {
-                            const updatedFeatures = (itemType === 'Weapon' ? newWeapon.features : itemType === 'Armor' ? newArmor.features : newTool.features).map((f, i) =>
-                              i === index ? { ...f, name: e.target.value } : f
-                            );
-                            updateActiveItem({ features: updatedFeatures });
-                          }}
-                          size="small"
-                        />
-                        <TextField
-                          label={`Feature ${index + 1} Description`}
-                          variant="outlined"
-                          value={feature.description}
-                          onChange={(e) => {
-                            const updatedFeatures = (itemType === 'Weapon' ? newWeapon.features : itemType === 'Armor' ? newArmor.features : newTool.features).map((f, i) =>
-                              i === index ? { ...f, description: e.target.value } : f
-                            );
-                            updateActiveItem({ features: updatedFeatures });
-                          }}
-                          size="small"
-                          multiline
-                          rows={4}
-                        />
-                      </Box>
-                    ))}
-
-                    <Box display="flex" justifyContent="center" mt={2}>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => {
-                          const updatedFeatures = [
-                            ...(itemType === 'Weapon' ? newWeapon.features : itemType === 'Armor' ? newArmor.features : newTool.features),
-                            { name: '', description: '' }
-                          ];
-                          updateActiveItem({ features: updatedFeatures });
-                        }}
-                      >
-                        Add New Feature
-                      </Button>
-                    </Box>
-                  </Paper>
-                </Stack>
-            </DialogContent>
-
-            <DialogActions>
-              <Tooltip title="Fetches item information from Wikidot" arrow>
-                <span>
-                  <Button
-                    onClick={handleWikidotFetch}
+          {/* Weapon Details */}
+          {itemType === 'Weapon' && (
+            <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>Weapon Details</Typography>
+              <Divider sx={{ mb: 2 }} />
+              <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
+                <FormControl sx={{ minWidth: 160 }}>
+                  <TextField
+                    label="Range"
                     variant="outlined"
-                    color="secondary"
-                    disabled={loadingWikidotData || !(itemType === 'Weapon' ? newWeapon.name : itemType === 'Armor' ? newArmor.name : newTool.name)}
-                    startIcon={<CachedIcon />}
-                  >
-                    Fetch from Wikidot
-                  </Button>
-                </span>
-              </Tooltip>
+                    value={newWeapon.range}
+                    onChange={(e) => updateActiveItem({ range: e.target.value })}
+                    size="medium"
+                  />
+                </FormControl>
+                <FormControl sx={{ minWidth: 260, flex: 1 }}>
+                  <Autocomplete
+                    multiple
+                    options={weaponProperties}
+                    value={newWeapon.properties}
+                    onChange={(_, newValue) => { updateActiveItem({ properties: newValue }); }}
+                    disableClearable={false}
+                    renderInput={(params) => <TextField {...params} label="Weapon Properties" placeholder="Search properties..." />}
+                    filterSelectedOptions
+                  />
+                </FormControl>
+              </Box>
 
-              <Button onClick={() => onAddItem(null)} variant="contained" color="error">
-                Cancel
+              <Typography variant="subtitle1" sx={{ mt: 2 }}>Attacks</Typography>
+              <Stack spacing={1}>
+                {newWeapon.attacks.map((attack, idx) => (
+                  <Box key={idx} display="flex" gap={2} alignItems="center" p={1} border="1px solid #e0e0e0" borderRadius={1} flexWrap="wrap">
+                    <FormControl sx={{ minWidth: 200 }}>
+                      <TextField
+                        label={`Damage (e.g. 1d6)`}
+                        variant="outlined"
+                        value={attack.damage ?? ''}
+                        onChange={(e) => updateAttackAt(idx, { damage: e.target.value })}
+                        size="medium"
+                      />
+                    </FormControl>
+
+                    <FormControl sx={{ minWidth: 300, flex: 1 }}>
+                      <Autocomplete
+                        multiple
+                        options={damageTypes}
+                        value={attack.damage_type ?? []}
+                        onChange={(_, newValue) => updateAttackAt(idx, { damage_type: newValue })}
+                        disableClearable={false}
+                        renderInput={(params) => <TextField {...params} label="Damage Type(s)" placeholder="Select damage types" />}
+                        filterSelectedOptions
+                      />
+                    </FormControl>
+
+                    <IconButton size="small" onClick={() => removeAttackAt(idx)} aria-label="remove-attack">
+                      <CloseIcon />
+                    </IconButton>
+                  </Box>
+                ))}
+              </Stack>
+
+              <Box display="flex" justifyContent="center" mt={2}>
+                <Button variant="outlined" color="primary" onClick={addAttack}>
+                  Add New Attack
+                </Button>
+              </Box>
+            </Paper>
+          )}
+
+          {/* Armor Details */}
+          {itemType === 'Armor' && (
+            <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>Armor Details</Typography>
+              <Divider sx={{ mb: 2 }} />
+              <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
+                <FormControl sx={{ minWidth: 180 }}>
+                  <TextField
+                    label="Armor Class (AC)"
+                    variant="outlined"
+                    value={newArmor.armor_class}
+                    onChange={(e) => updateActiveItem({ armor_class: e.target.value })}
+                    size="medium"
+                  />
+                </FormControl>
+                <FormControl sx={{ minWidth: 220 }}>
+                  <InputLabel id="armor-type-label">Armor Type</InputLabel>
+                  <Select
+                    labelId="armor-type-label"
+                    id="armor-type-select"
+                    value={newArmor.armor_type}
+                    label="Armor Type"
+                    onChange={(e) => updateActiveItem({ armor_type: e.target.value })}
+                  >
+                    <MenuItem value="Light">Light</MenuItem>
+                    <MenuItem value="Medium">Medium</MenuItem>
+                    <MenuItem value="Heavy">Heavy</MenuItem>
+                    <MenuItem value="Shield">Shield</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ minWidth: 200 }}>
+                  <TextField
+                    label="Strength Requirement"
+                    variant="outlined"
+                    value={newArmor.strength_requirement}
+                    onChange={(e) => updateActiveItem({ strength_requirement: e.target.value })}
+                    size="medium"
+                  />
+                </FormControl>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={newArmor.stealth_disadvantage}
+                      onChange={(e) => updateActiveItem({ stealth_disadvantage: e.target.checked })}
+                    />
+                  }
+                  label="Stealth Disadvantage"
+                />
+              </Box>
+            </Paper>
+          )}
+
+          {/* Features */}
+          <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+            <Typography variant="h6" sx={{ mb: 1 }}>Features</Typography>
+            <Divider sx={{ mb: 2 }} />
+            {(itemType === 'Weapon' ? newWeapon.features : itemType === 'Armor' ? newArmor.features : newTool.features).map((feature, index) => (
+              <Box key={index} display="flex" flexDirection="column" gap={1} p={2} border="1px solid #e0e0e0" borderRadius={1}>
+                <Box display="flex" justifyContent="flex-end">
+                  <IconButton
+                    onClick={() => {
+                      const updatedFeatures = (itemType === 'Weapon' ? newWeapon.features : itemType === 'Armor' ? newArmor.features : newTool.features).filter((_, i) => i !== index);
+                      updateActiveItem({ features: updatedFeatures });
+                    }}
+                    size="small"
+                    aria-label="delete"
+                  >
+                    <CloseIcon color="error" />
+                  </IconButton>
+                </Box>
+
+                <TextField
+                  label={`Feature ${index + 1} Name`}
+                  variant="outlined"
+                  value={feature.name}
+                  onChange={(e) => {
+                    const updatedFeatures = (itemType === 'Weapon' ? newWeapon.features : itemType === 'Armor' ? newArmor.features : newTool.features).map((f, i) =>
+                      i === index ? { ...f, name: e.target.value } : f
+                    );
+                    updateActiveItem({ features: updatedFeatures });
+                  }}
+                  size="small"
+                />
+                <TextField
+                  label={`Feature ${index + 1} Description`}
+                  variant="outlined"
+                  value={feature.description}
+                  onChange={(e) => {
+                    const updatedFeatures = (itemType === 'Weapon' ? newWeapon.features : itemType === 'Armor' ? newArmor.features : newTool.features).map((f, i) =>
+                      i === index ? { ...f, description: e.target.value } : f
+                    );
+                    updateActiveItem({ features: updatedFeatures });
+                  }}
+                  size="small"
+                  multiline
+                  rows={4}
+                />
+              </Box>
+            ))}
+
+            <Box display="flex" justifyContent="center" mt={2}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => {
+                  const updatedFeatures = [
+                    ...(itemType === 'Weapon' ? newWeapon.features : itemType === 'Armor' ? newArmor.features : newTool.features),
+                    { name: '', description: '' }
+                  ];
+                  updateActiveItem({ features: updatedFeatures });
+                }}
+              >
+                Add New Feature
               </Button>
-              <Button onClick={() => { CreateItem(); }} variant="contained" color="primary">
-                Create
-              </Button>
-            </DialogActions>
-        </Dialog>
-    </>);
+            </Box>
+          </Paper>
+        </Stack>
+      </DialogContent>
+
+      <DialogActions>
+        <Tooltip title="Fetches item information from Wikidot" arrow>
+          <span>
+            <Button
+              onClick={handleWikidotFetch}
+              variant="outlined"
+              color="secondary"
+              disabled={loadingWikidotData || !(itemType === 'Weapon' ? newWeapon.name : itemType === 'Armor' ? newArmor.name : newTool.name)}
+              startIcon={<CachedIcon />}
+            >
+              Fetch from Wikidot
+            </Button>
+          </span>
+        </Tooltip>
+
+        <Button onClick={() => CancelCreation()} variant="contained" color="error">
+          Cancel
+        </Button>
+        <Button onClick={() => { CreateItem(); }} variant="contained" color="primary">
+          Create
+        </Button>
+      </DialogActions>
+    </Dialog>
+  </>);
 };
 
 export default AddItem;

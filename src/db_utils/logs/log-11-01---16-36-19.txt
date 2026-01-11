@@ -1,0 +1,8 @@
+[INFO] [2026-01-11 16:36:20] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Fetching Wikidot spell info for spell: Firebolt
+[ERROR] [2026-01-11 16:36:21] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Could not fetch spell info for spell: Firebolt. Error: Item not found on http://dndroll.wikidot.com/spells:firebolt. If you believe this is an error, try heading to the URL in your browser.
+[INFO] [2026-01-11 16:36:40] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Fetching Wikidot spell info for spell: Firebolt
+[ERROR] [2026-01-11 16:36:40] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Could not fetch spell info for spell: Firebolt. Error: Item not found on http://dndroll.wikidot.com/spells:firebolt. If you believe this is an error, try heading to the URL in your browser.
+[INFO] [2026-01-11 16:36:53] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Fetching Wikidot spell info for spell: Firebolt
+[ERROR] [2026-01-11 16:36:53] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Could not fetch spell info for spell: Firebolt. Error: Item not found on http://dndroll.wikidot.com/spells:firebolt. If you believe this is an error, try heading to the URL in your browser.
+[INFO] [2026-01-11 16:37:07] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Fetching Wikidot spell info for spell: Shadow_Blade
+[ERROR] [2026-01-11 16:37:08] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Could not fetch spell info for spell: Shadow_Blade. Error: 'spell_details'

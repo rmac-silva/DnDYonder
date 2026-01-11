@@ -5,7 +5,7 @@ TODO: Allow the user to create a class if needed
 */
 
 import React, { useState, useEffect } from 'react';
-
+import { useNotification } from '../../../Utils/NotificationContext';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
@@ -35,6 +35,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
     const [fetchedRaces, setFetchedRaces] = useState([]);
     const [forceRefresh, setForceRefresh] = useState(false);
     const [creatingNewRace, setCreatingNewRace] = useState(false);
+    const { showNotification } = useNotification();
     const [newRace, setNewRace] = useState({
         race: '',
         subrace: '',
@@ -107,14 +108,14 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
             return;
         }
         // find race and pass to parent if provided
-        // console.log("Trying to find race:", val, "in", fetchedRaces);
+        console.log("Trying to find race:", val, "in", fetchedRaces);
         const race = fetchedRaces.find((c) => String(c.r_name) === String(val));
 
         if (!race) {
             sheet.race = null;
         } else {
             sheet.race = race.r_content;
-            // console.log("Found race, applied to sheet:", sheet)
+            console.log("Found race, applied to sheet:", sheet)
         }
         setSheet({ ...sheet });
         selectRace();
@@ -178,22 +179,22 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
 
     function validateNewRace() {
         if(newRace.race.trim() === '') {
-            alert("Race name is required.");
+            showNotification("Race name is required.", 'error');
             setErrorField('race');
             return false;
         }
         if(newRace.creature_type.trim() === '') {
-            alert("Creature type is required.");
+            showNotification("Creature type is required.", 'error');
             setErrorField('creature_type');
             return false;
         }
         if(newRace.size.trim() === '') {
-            alert("Size is required.");
+            showNotification("Size is required.", 'error');
             setErrorField('size');
             return false;
         }
         if(isNaN(parseInt(newRace.speed)) || parseInt(newRace.speed) <= 0) {
-            alert("Speed must be a positive number.");
+            showNotification("Speed must be a positive number.", 'error');
             setErrorField('speed');
             return false;
         }
@@ -209,7 +210,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
         return true;
     }
 
-    const handleCreateClass = async () => {
+    const handleCreateRace = async () => {
 
         if(!validateNewRace()) {
             return;
@@ -223,6 +224,7 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
             'race': newRace,
             'token': localStorage.getItem('authToken'),
         }
+        
         const res = await fetch(`${import.meta.env.VITE_API_URL}/info/races`, {
             method: 'POST', // or PUT depending on your API
             headers: { 'Content-Type': 'application/json' },
@@ -230,7 +232,9 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
         });
 
         if (!res.ok) {
-            throw new Error(`Save failed: ${res.status}`);
+            const errData = await res.json();
+            showNotification(`Error creating race: ${errData.detail}`, 'error');
+            return;
         }
 
         // close dialog
@@ -240,11 +244,18 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
 
         // Optional: refresh races list or inform parent
         // For now we call onRaceChange with the newRace object (no id)
+        //The current bug is that fetchedRaces only updates on the next render cycle
         setFetchedRaces([...fetchedRaces, [{ r_name: newRace.race, r_content: JSON.stringify(newRace) }]]);
         setForceRefresh(true);
         
+        //And here we're assuming it's already been added to the list of options.
+        //Instead manually set the race on the sheet
+        sheet.race = newRace;
+        console.log("Applying newly created race ",newRace, " to sheet: ",  sheet)
 
-        handleChangingRace({ target: { value: newRace.race } });
+        //Update the sheet with the new race information
+        setSheet({ ...sheet });
+        selectRace();
         
         // reset newClass state
         WipeRaceData();
@@ -413,14 +424,14 @@ const RaceSelect = ({ sheet, setSheet, selectRace,disabled }) => {
                       <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 }, mb: 4 }}>
                         <Typography variant="h6" sx={{ mb: 1 }}>Race Features</Typography>
                         <Divider sx={{ mb: 2 }} />
-                        <GetClassFeats onChange={setRaceFeats} label={"Race"} />
+                        <GetClassFeats onChange={setRaceFeats} objectFeatures={newRace.race_features} />
                       </Paper>
                     </Stack>
                 </DialogContent>
 
                 <DialogActions sx={{ mt: 2 }}>
                     <Button onClick={handleDialogClose}>Cancel</Button>
-                    <Button onClick={handleCreateClass} variant="contained" color="primary">
+                    <Button onClick={handleCreateRace} variant="contained" color="primary">
                         Create
                     </Button>
                 </DialogActions>

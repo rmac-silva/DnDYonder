@@ -40,6 +40,9 @@ export function AdminPage() {
                             <Button variant="outlined" href="/admin/spells" color='primary' className='w-full !py-10 text-center !text-3xl p-2' >
                                 Edit Spells
                             </Button>
+                            <Button variant="outlined" href="/admin/races" color='primary' className='w-full !py-10 text-center !text-3xl p-2' >
+                                Edit Races
+                            </Button>
 
                         </Grid>
                     </div>

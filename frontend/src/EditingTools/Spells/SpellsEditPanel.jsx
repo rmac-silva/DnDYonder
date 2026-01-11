@@ -21,11 +21,11 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CachedIcon from '@mui/icons-material/Cached';
-
+import { useNotification } from '../../Utils/NotificationContext';
 
 
 export default function SpellsEditPanel({isOpen, handleClose, spellData}) {
-
+    const { showNotification } = useNotification();
     const [newSpell, setNewSpell] = useState(null);
     const [editingExistingSpell, setEditingExistingSpell] = useState(false);
     const [loadingWikidotData, setLoadingWikidotData] = useState(false);
@@ -91,7 +91,7 @@ export default function SpellsEditPanel({isOpen, handleClose, spellData}) {
 
 
         if (newSpell.name.trim() === "") {
-            alert("Please enter a spell name to fetch from Wikidot.");
+            showNotification("Please enter a spell name to fetch from Wikidot.", 'error');
             setLoadingWikidotData(false);
             return;
         }
@@ -133,7 +133,7 @@ export default function SpellsEditPanel({isOpen, handleClose, spellData}) {
 
     function handleSubmit() {
         if(CheckRequirements() === false) {
-            alert("Please fill in all required fields before submitting the spell.");
+            showNotification("Please fill in all required fields before submitting the spell.", 'error');
             return;
         }
         handleClose(true, newSpell)

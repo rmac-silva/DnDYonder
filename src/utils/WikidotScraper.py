@@ -44,6 +44,7 @@ class WikidotScraper:
         spell_name_formatted = spell_name.replace("_", "-").lower()
         spell_name_formatted = spell_name_formatted.replace("'", "") #Remove any apostrophes
         url = f"http://dndroll.wikidot.com/spells:{spell_name_formatted}"
+        print("Fetching spell info from URL:", url)
         return self.execute_request_dndroll_spell_wikidot(url)
 
     # region - Wikidot Request Execution and Parsing
@@ -347,7 +348,9 @@ class WikidotScraper:
             self.results = {}
             self.fails = 0
             self.index = 0
-            return self
+            # Throw an exception indicating that the item was not found
+            raise Exception(f"Item not found on {url}. If you believe this is an error, try heading to the URL in your browser.")
+            
 
         soup = BeautifulSoup(resp.content, "html.parser")
         
@@ -519,7 +522,7 @@ class WikidotScraper:
             self.results = {}
             self.fails = 0
             self.index = 0
-            return self
+            raise Exception(f"Item not found on {url}. If you believe this is an error, try heading to the URL in your browser.")
 
         soup = BeautifulSoup(resp.content, "html.parser")
         
@@ -527,77 +530,84 @@ class WikidotScraper:
         page_content = soup.find(id="page-content")
 
         if(page_content is None):
-            #print("No page content")
+            print("No page content")
             self.results = {}
-            return self
+            raise Exception(f"Page ({url}) has no content to scrape. If you believe this is an error, try heading to the URL in your browser.")
         
         #Search for an element with the ID 404-message
         error_message = page_content.find(id="404-message")
         if(error_message is not None):
             #print("Error message found in spell fetch")
             self.results = {}
-            return self
+            raise Exception(f"Page ({url}) has no content to scrape (404). If you believe this is an error, try heading to the URL in your browser.")
+
         
-        #Find all the paragraph elements inside the content. If there's 2 paragraph contents
-        # The first one is the description and the second paragraph element is just the source (useless)
-        # So we only fetch the first paragraph element, and search for a table.
-        
-        #If there's three paragraphs, the second one is content as well.
-        paragraph_elements = page_content.find_all("p")
-        
-        
-        
-        #First paragraph is spell information, range, casting time, components etc...
-        self.results["Content"] = paragraph_elements[0].text.strip()
-        
-        # Iterate the following paragraphs, until you reach the one that starts with "Spell Lists.  "
-        #print(f"Iterating through {len(paragraph_elements)} paragraph elements for description.")
-        for i in range(1, len(paragraph_elements)):
-            para_text = paragraph_elements[i].text.strip()
-            if para_text.startswith("Spell Lists."):
-                break
-            else:
-                if "Description" not in self.results:
-                    self.results["Description"] = para_text
-                else:
-                    self.results["Description"] += "\n\n" + para_text
+        try:
+            #Find all the paragraph elements inside the content. If there's 2 paragraph contents
+            # The first one is the description and the second paragraph element is just the source (useless)
+            # So we only fetch the first paragraph element, and search for a table.
             
-        
-        
-        return self
+            #If there's three paragraphs, the second one is content as well.
+            paragraph_elements = page_content.find_all("p")
+
+            #First paragraph is spell information, range, casting time, components etc...
+            self.results["Content"] = paragraph_elements[0].text.strip()
+            
+            # Iterate the following paragraphs, until you reach the one that starts with "Spell Lists.  "
+            #print(f"Iterating through {len(paragraph_elements)} paragraph elements for description.")
+            for i in range(1, len(paragraph_elements)):
+                para_text = paragraph_elements[i].text.strip()
+                if para_text.startswith("Spell Lists."):
+                    break
+                else:
+                    if "Description" not in self.results:
+                        self.results["Description"] = para_text
+                    else:
+                        self.results["Description"] += "\n\n" + para_text
+                
+            
+            
+            return self
+        except Exception as e:
+            raise Exception(f"Error parsing spell data from {url}: {str(e)}")
     
     def format_results_dndroll_spells(self):
-        formatted_results = {}
-        formatted_results["description"] = self.results.get("Description", "")
+        try:
+            formatted_results = {}
+            formatted_results["description"] = self.results.get("Description", "")
 
-        level, school, is_ritual = self.fetch_school_and_level_from_paragraphs()
-        formatted_results["level"] = level
-        formatted_results["school"] = school
-        formatted_results["is_ritual"] = is_ritual
-        
-        if("Content" in self.results):
-            components = self.results["Content"].split("\n")
-            for comp in components:
-                key_value = comp.split(": ")
-                if(len(key_value) == 2):
-                    key = key_value[0].strip()
-                    value = key_value[1].strip()
-                    
-                    if key == "Casting Time":
-                        formatted_results["casting_time"] = value
-                    elif key == "Range":
-                        formatted_results["range"] = value
-                    elif key == "Components":
-                        formatted_results["components"] = value
-                    elif key == "Duration":
-                        formatted_results["duration"] = value
-                    else:
-                        formatted_results["spell_details"][key.lower().replace(" ", "_")] = value
+            level, school, is_ritual = self.fetch_school_and_level_from_paragraphs()
+            formatted_results["level"] = level
+            formatted_results["school"] = school
+            formatted_results["is_ritual"] = is_ritual
+            
+            if("Content" in self.results):
+                
+                components = self.results["Content"].split("\n")
+                print("Spell components:", components)
+                for comp in components:
+                    key_value = comp.split(": ")
+                    if(len(key_value) == 2):
+                        key = key_value[0].strip()
+                        value = key_value[1].strip()
+                        
+                        if key.lower() == "casting time":
+                            formatted_results["casting_time"] = value
+                        elif key.lower() == "range":
+                            formatted_results["range"] = value
+                        elif key.lower() == "components":
+                            formatted_results["components"] = value
+                        elif key.lower() == "duration":
+                            formatted_results["duration"] = value
+                        else:
+                            formatted_results["spell_details"][key.lower().replace(" ", "_")] = value
 
-        self.results = {}
-        self.fails = 0
-        self.index = 0
-        return formatted_results
+            self.results = {}
+            self.fails = 0
+            self.index = 0
+            return formatted_results
+        except Exception as e:
+            raise Exception(f"Error formatting spell results: {str(e)}")
     
     def fetch_school_and_level_from_paragraphs(self):
         import re

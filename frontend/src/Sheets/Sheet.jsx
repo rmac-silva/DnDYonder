@@ -310,7 +310,7 @@ function GetSheet() {
                                     - 2 columns on md
                                     - 3 columns on lg and up
                                 */}
-                                <div className='w-full grid gap-4 mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-[.5fr_1fr_.5fr] '>
+                                <div className='w-full grid gap-4 mt-4 grid-cols-1 md:grid-cols-[.5fr_.5fr] xl:grid-cols-[.5fr_1fr_.5fr] '>
                                     {/* Backstory cell */}
                                     <div className='w-full min-w-0 flex flex-col items-center space-y-2'>
                                         <Backstory draft={draft} setDraft={updateDraft} />

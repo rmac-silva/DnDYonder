@@ -1,7 +1,0 @@
-[INFO] [2025-12-14 12:36:19] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
-[INFO] [2025-12-14 12:36:20] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (1) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
-[INFO] [2025-12-14 12:36:20] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Paladin
-[INFO] [2025-12-14 12:37:19] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (1) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
-[INFO] [2025-12-14 12:41:37] [main.py/register_user] @POST[/auth/register] Registering user: Theneras
-[INFO] [2025-12-14 12:43:37] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: e1c80b74c96d400b5003634aab82d98cf3d3c6e90dad8acf644019023faeb15d
-[INFO] [2025-12-14 12:45:16] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9

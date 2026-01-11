@@ -18,6 +18,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CachedIcon from '@mui/icons-material/Cached';
 import GetClassFeats from '../../Sheets/Lists/ClassFeature';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useNotification } from '../../Utils/NotificationContext';
 
 export default function SubclassEditPanel({ dialogOpen, editedSubclass, onSubmit }) {
     const [readyToCreate, setReadyToCreate] = useState(false);
@@ -26,6 +27,7 @@ export default function SubclassEditPanel({ dialogOpen, editedSubclass, onSubmit
     const [newSubclass, setNewSubclass] = useState({ });
     const [editingExistingSubclass, setEditingExistingSubclass] = useState(false);
     const [featuresOpen, setFeaturesOpen] = useState(false);
+    const { showNotification } = useNotification();
     // Initialize form state when dialog opens or when editedSubclass changes
     useEffect(() => {
 
@@ -62,14 +64,14 @@ export default function SubclassEditPanel({ dialogOpen, editedSubclass, onSubmit
 
         // Ensure the subclass has a name
         if (newSubclass.name.trim() === "") {
-            alert("Subclass must have a name.");
+            showNotification("Subclass must have a name.", 'error');
             setError("name");
             return false;
         }
 
         //Check if it has features
         if (newSubclass.features.length === 0) {
-            alert("Subclass must have at least one feature.");
+            showNotification("Subclass must have at least one feature.", 'error');
             setError("features");
             return false;
         }
@@ -77,7 +79,7 @@ export default function SubclassEditPanel({ dialogOpen, editedSubclass, onSubmit
         //Check if all features have required_level
         for (const feat of newSubclass.features) {
             if (feat.level_requirement === undefined || feat.level_requirement === null || feat.level_requirement < 0) {
-                alert(`Feature "${feat.name}" must have a required level.`);
+                showNotification(`Feature "${feat.name}" must have a required level.`, 'error');
                 setError("features");
                 return false;
             }

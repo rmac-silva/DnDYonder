@@ -8,6 +8,7 @@ class CharacterRace():
     def __init__(self):
         
         self.race = ""
+        self.subrace = ""
         self.creature_type = ""
         self.size = ""
         self.alignment = ""
@@ -23,6 +24,7 @@ class CharacterRace():
         """Convert the CharacterRace object into a JSON-serializable dictionary."""
         return {
             "race" : self.race,
+            "subrace": self.subrace,
             "creature_type": self.creature_type,
             "size": self.size,
             "alignment": self.alignment,
@@ -32,6 +34,7 @@ class CharacterRace():
         
     def load_from_dict(self, data: dict):
         self.race = data.get("race", "")
+        self.subrace = data.get("subrace", "")
         self.creature_type = data.get("creature_type", "")
         self.size = data.get("size", "")
         

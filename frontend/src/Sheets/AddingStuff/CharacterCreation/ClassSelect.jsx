@@ -30,7 +30,7 @@ import GetAttributeProficiencies from '../../Lists/AttributeProficiencies';
 import GetSkillProficiencies from '../../Lists/SkillProficiencies';
 import GetStartingEquipment from '../../Lists/StartingEquipment';
 import GetClassFeats from '../../Lists/ClassFeature';
-
+import { useNotification } from '../../../Utils/NotificationContext';
 import { getItem, ForceCacheRefresh } from '../../MiddleColumn/Inventory/ItemCache';
 
 // NEW: layout helpers
@@ -52,7 +52,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
   const [hasSubclass, setHasSubclass] = useState(false);
   const [hasSpellcasting, setHasSpellcasting] = useState(false);
-
+  const { showNotification } = useNotification();
   const [localClassName, setLocalClassName] = useState('');
 
   const [newClass, setNewClass] = useState({
@@ -162,8 +162,8 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   const handleChangingClass = (e) => {
 
     //Wipe the selected starting equipment and skill proficiencies from the sheet first
-    
-    
+
+
 
     const val = e.target.value;
     if (val === 'new') {
@@ -273,31 +273,31 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   function ValidateForm() {
     if (!newClass.class_name) {
       setErrorField('class_name');
-      alert('Please provide a class name.');
+      showNotification('Please provide a class name.', 'error');
       return false;
     }
 
     if (newClass.starting_hitpoints === 0 || newClass.hitpoints_per_level === 0) {
       setErrorField('hit_die');
-      alert('Please select a valid hit die for the class.');
+      showNotification('Please select a valid hit die for the class.', 'error');
       return false;
     }
 
     if (newClass.attribute_proficiencies.length === 0) {
       setErrorField('attribute_proficiencies');
-      alert('Please select at least one saving throw proficiency.');
+      showNotification('Please select at least one saving throw proficiency.', 'error');
       return false;
     }
 
     if (newClass.skill_proficiencies.length === 0) {
       setErrorField('skill_proficiencies');
-      alert('Please select the skill proficiencies for the class.');
+      showNotification('Please select the skill proficiencies for the class.', 'error');
       return false;
     }
 
     if (newClass.num_skill_proficiencies === undefined || newClass.num_skill_proficiencies <= 0) {
       setErrorField('num_skill_proficiencies');
-      alert('Please provide a valid number of skill proficiencies to choose from.');
+      showNotification('Please provide a valid number of skill proficiencies to choose from.', 'error');
       return false;
     }
 
@@ -320,7 +320,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
       for (let feat of newClass.class_features) {
         if (feat.level_requirement === undefined || feat.level_requirement < 1) {
           setErrorField('class_features');
-          alert(`Please provide a valid level for the class feature: ${feat.name}`);
+          showNotification(`Please provide a valid level for the class feature: ${feat.name}`, 'error');
           return false;
         }
       }
@@ -349,9 +349,9 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
     });
 
     if (!res.ok) {
-      //Alert with error message
+      //Show error message
       const err = await res.json().catch(() => ({ detail: 'Unknown' }));
-      alert(`Error creating class: HTTP ${res.status} - ${err.detail}`);
+      showNotification(`Error creating class: HTTP ${res.status} - ${err.detail}`, 'error');
       throw new Error(`Save failed: ${res.status}`);
     }
 
@@ -394,10 +394,9 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   });
 
   async function handleWikidotData(data) {
-    console.log("Wikidot data received:", data);
 
     if (data === null || Object.keys(data).length === 0) {
-      alert("No data found on Wikidot for this class" + ". If it is an Unearthed Arcana, try adding 'UA' to the name: {YOUR NAME} UA");
+      showNotification("No data found on Wikidot for this class" + ". If it is an Unearthed Arcana, try adding 'UA' to the name: {YOUR NAME} UA", 'error');
       return;
     }
 
@@ -434,11 +433,14 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
         //Append some text informing there's a table that will be shown later
         content += "\n\n[Table data available, it will be shown in the sheet.]";
       }
+      try {
+        //Iterate through the weapon and tool proficiencies, and check for items that are not defined in the item cache.
+      if (data.misc_class_info.content.weapon_proficiencies !== undefined) {
 
-      //Iterate through the weapon and tool proficiencies, and check for items that are not defined in the item cache.
-      
-      for (let prof of data.misc_class_info.content.weapon_proficiencies) {
+        for (let prof of data.misc_class_info.content.weapon_proficiencies) {
           if (getItem(prof) === undefined) {
+            console.error("Item proficiency item not found in cache, creating:", prof);
+
             var item = {
               name: prof,
               type: "Weapon",
@@ -446,15 +448,22 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
               weight: 0,
               cost: 0,
               features: [],
-              range : "",
-              attacks:  [],
+              range: "",
+              attacks: [],
             };
             await saveNewItem(item);
           }
         }
+      } else {
+        //No weapon proficiencies, set to empty array
+        newClass.weapon_proficiencies = [];
+      }
 
-      for (let prof of data.misc_class_info.content.tool_proficiencies) {
+      if (data.misc_class_info.content.tool_proficiencies !== undefined) {
+
+        for (let prof of data.misc_class_info.content.tool_proficiencies) {
           if (getItem(prof) === undefined) {
+            console.error("Tool proficiency item not found in cache, creating:", prof);
             item = {
               name: prof,
               type: "Tool",
@@ -466,10 +475,17 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
             await saveNewItem(item);
           }
         }
+      } else {
+        //No tool proficiencies, set to empty array
+        newClass.tool_proficiencies = [];
+      }
+      } catch (error) {
+        console.error("Error while automatically adding weapon and tool proficiencies from wikidot:", error);
+        showNotification("An error occurred while adding weapon and tool proficiencies. Please try again or add them manually.", 'error');
+        newClass.weapon_proficiencies = [];
+        newClass.tool_proficiencies = [];
+      }
       
-
-      
-
       var new_feature = {
         name: key,
         description: content,
@@ -499,7 +515,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
     if (!res.ok) {
       const errorData = await res.json();
-      
+
       throw new Error(`Save failed: ${res.status} - ${errorData.detail || 'Unknown error'}`);
     } else {
       ForceCacheRefresh();//Update the cache after adding a new item
@@ -526,7 +542,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
   async function fetchWikidotClassData(className) {
 
     if (className === '') {
-      alert('Please provide a class name to fetch from Wikidot.');
+      showNotification('Please provide a class name to fetch from Wikidot.', 'error');
       setLoadingWikidotData(false);
       return;
     }
@@ -586,7 +602,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
           {/* RESTRUCTURED: Standard sections with Paper + headers */}
           <Stack spacing={2}>
             {/* Warning before Basics */}
-            <Typography  className='text-lg !font-semibold'>
+            <Typography className='text-lg !font-semibold'>
               Tip: Fill in Spellcasting, Subclass details, and Starting Equipment before fetching from Wikidot as it slows down the website a lot.
             </Typography>
 
@@ -881,9 +897,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
                   {featuresOpen && (
                     <GetClassFeats
                       onChange={setClassFeats}
-                      label={"Class"}
                       objectFeatures={newClass.class_features}
-                      object={newClass}
                     />
                   )}
                 </Paper>
@@ -896,7 +910,7 @@ const ClassSelect = ({ sheet, setSheet, selectClass, disabled }) => {
 
 
           <Box gap={2} display="flex">
-            
+
             <Button onClick={handleWikidotFetch} variant="contained" color="secondary" startIcon={<CachedIcon />} loading={loadingWikidotData}>Fetch from Wikidot</Button>
             <Button onClick={handleDialogClose} variant="contained" color="error">Cancel</Button>
             <Button onClick={handleCreateClass} variant="contained" color="primary">Create</Button>

@@ -14,7 +14,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CloseIcon from '@mui/icons-material/Close';
 import Navbar from '../../Navbar/Navbar.jsx';
 import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import  {useNotification} from '../../Utils/NotificationContext.jsx';
 import { useMediaQuery } from '@mui/material';
 
 const iconColor = "#333333"
@@ -34,12 +34,12 @@ function SheetListings() {
     const [openedSheetID, setOpenedSheetID] = useState(null);
     const isMobile = useMediaQuery('(max-width:600px)');
     const [activeSheetId, setActiveSheetId] = useState(null);
-
+    const { showNotification } = useNotification();
     // Return a subtle SVG background per race (default DnD races)
 
     const deleteSheet = async (sheetId) => {
 
-        //Alert dialog to confirm deletion
+        
         if (!window.confirm("Are you sure you want to delete this sheet?")) {
             return;
         }
@@ -82,9 +82,11 @@ function SheetListings() {
             }
             console.log("Share link:", data);
             try {
+                showNotification("Share link copied to clipboard.", 'success');
                 await navigator.clipboard.writeText(data);
                 setCopyNoticeOpen(true);
             } catch (error) {
+                showNotification("Failed to copy link to clipboard.", 'error');
                 console.warn("Clipboard copy failed:", error);
             }
 
@@ -253,9 +255,7 @@ function SheetListings() {
                 onClose={handleCloseCopyNotice}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
-                <Alert onClose={handleCloseCopyNotice} severity="success" variant="filled" sx={{ width: '100%' }}>
-                    Link copied to clipboard
-                </Alert>
+                
             </Snackbar>
 
             <div>

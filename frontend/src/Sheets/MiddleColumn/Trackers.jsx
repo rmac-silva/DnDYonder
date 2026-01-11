@@ -25,7 +25,7 @@ function Trackers({ draft, setDraft }) {
     };
 
     const handleRemove = (idx) => {
-        //Alert window confirming the deletion
+        
         if (window.confirm(`Are you sure you want to remove ${trackers[idx].name}?`)) {
             const newTrackers = trackers.filter((_, i) => i !== idx);
             setTrackers(newTrackers); //Update local

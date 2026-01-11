@@ -20,7 +20,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
-
+import { useNotification } from '../../../Utils/NotificationContext';
 function AddNewSpell({ draft, setDraft, onAdd }) {
 
   const [mounted, setMounted] = useState(false);
@@ -29,7 +29,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
   const [selectValue, setSelectValue] = useState('');
   const [forceRefresh, setForceRefresh] = useState(true);
   const [creatingNewSpell, setCreatingNewSpell] = useState(false);
-
+  const { showNotification } = useNotification();
   const [loadingWikidotData, setLoadingWikidotData] = useState(false);
 
   function titleCase(str) {
@@ -95,17 +95,17 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
     const getSpells = async () => {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/info/spells`);
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({ detail: 'Unknown' }));
-          throw new Error(`HTTP ${res.status} - ${err.detail}`);
-        }
         const data = await res.json();
+        if (!res.ok) {
+          
+          throw new Error(`${data.detail}`);
+        }
         if (!mounted) return;
         // expecting data.spells or an array
         // console.log('Fetched spells:', data.spells);
         setFetchedSpells(data.spells);
       } catch (err) {
-        console.error('Error fetching spells:', err);
+        showNotification('Error fetching spells:', 'error');
       } finally {
         if (mounted) setLoading(false);
       }
@@ -140,7 +140,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
 
 
     if (newSpell.name.trim() === "") {
-      alert("Please enter a spell name to fetch from Wikidot.");
+      showNotification("Please enter a spell name to fetch from Wikidot.", 'error');
       setLoadingWikidotData(false);
       return;
     }
@@ -152,16 +152,16 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
         method: 'GET',
       });
 
+      const data = await res.json();
       if (!res.ok) {
-        throw new Error(`Wikidot fetch failed: ${res.status}`);
+        throw new Error(`${data.detail}`);
       }
 
-      const data = await res.json();
       handleWikidotData(data);
 
       setLoadingWikidotData(false);
     } catch (error) {
-      console.error("Error fetching from Wikidot:", error);
+      showNotification(error.message, 'error');
       setLoadingWikidotData(false);
     }
   }
@@ -184,7 +184,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
 
 
     if (!CheckRequirements()) {
-      alert("Please fill in all required fields. (Dropdowns must be selected)");
+      showNotification("Please fill in all required fields. (Dropdowns must be selected)", 'error');
       return;
     }
 
@@ -201,7 +201,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
     });
 
     if (!res.ok) {
-      alert(`Failed to save spell. Server responded with status ${res.status}.`);
+      showNotification(`Failed to save spell. Server responded with status ${res.status}.`, 'error');
       throw new Error(`Save failed: ${res.status}`);
     }
 
@@ -251,7 +251,7 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
         draft.class.spellcasting.spells_known.push(selectedSpell.s_content);
         setDraft({ ...draft });
       } else {
-        alert("This spell is already on your spell list.");
+        showNotification("This spell is already on your spell list.", 'error');
       }
     }
     onAdd(true);
@@ -437,10 +437,10 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                 onClick={handleWikidotFetch}
                 variant="outlined"
                 color="secondary"
-                startIcon={<CachedIcon />}
-                disabled={loadingWikidotData || !newSpell.name.trim()}
+                startIcon={<CachedIcon className={loadingWikidotData ? "animate-spin" : ""} />}
+                disabled={!newSpell.name.trim()}
               >
-                Fetch from Wikidot
+                {loadingWikidotData ? "Fetching..." : "Fetch from Wikidot"}
               </Button>
             </span>
           </Tooltip>

@@ -1,0 +1,15 @@
+[INFO] [2026-01-11 19:24:57] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 19:24:58] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Paladin
+[INFO] [2026-01-11 19:25:54] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 19:26:18] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 19:26:59] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 19:26:59] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 19:27:10] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 19:27:22] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 19:27:25] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Paladin
+[INFO] [2026-01-11 19:27:25] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 19:27:26] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Paladin
+[INFO] [2026-01-11 19:27:27] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 19:28:02] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 19:28:05] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Paladin
+[INFO] [2026-01-11 19:28:13] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)

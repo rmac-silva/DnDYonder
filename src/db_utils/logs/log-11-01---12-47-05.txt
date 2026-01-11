@@ -1,0 +1,4 @@
+[INFO] [2026-01-11 12:48:22] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:05:33] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:05:34] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:05:34] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Rogue

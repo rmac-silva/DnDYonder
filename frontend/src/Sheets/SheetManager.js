@@ -5,6 +5,7 @@ var saving = false;
 var draftGlobal = null;
 var sheetidGlobal = null;
 var hashedemailGlobal = null;
+var autoSaveInterval = null;
 
 
 export function initSheetManager(draft,sheetid,hashedemail) {
@@ -12,6 +13,17 @@ export function initSheetManager(draft,sheetid,hashedemail) {
     sheetidGlobal = sheetid;
     hashedemailGlobal = hashedemail;
     console.log("SheetManager initialized:", {draftGlobal, sheetidGlobal, hashedemailGlobal});
+
+    // Initialize auto-save every 5 minutes
+    if (!autoSaveInterval) {
+        autoSaveInterval = setInterval(() => {
+            // Only auto-save if there are unsaved changes and a sheet is actually loaded
+            if (draftGlobal && draftGlobal.name !== '' && !isSheetSaved()) {
+                console.log("Triggering auto-save...");
+                saveSheet(true); // Call silent save
+            }
+        }, 5 * 60 * 1000); // 5 minutes);
+    }
 }
 
 export function getDraftGlobal() {
@@ -36,21 +48,26 @@ export function setDraftGlobal(draft) {
     draftGlobal = draft;
 }
 
-export function saveSheet() {
+export function saveSheet(silent = false) {
     //Check if the sheet is a valid sheet
     if(draftGlobal === null || draftGlobal.name === '') {
-        console.warn("Attempted to save sheet before it was initialized");
-        return;
+        if (!silent) console.warn("Attempted to save sheet before it was initialized");
+        return Promise.resolve(false);
     }
 
     /// Saves the sheet in its current state to the backend
-    if (saving) return; //Prevent multiple simultaneous saves
+    if (saving) return Promise.resolve(null); //Prevent multiple simultaneous saves
     saving = true;
-    saveSheetToBackend().then(() => {
+    
+    return saveSheetToBackend().then(() => {
         saving = false;
         setSheetSaved(true);
-    }).catch(() => {
+        console.log("Auto-save completed.");
+        return {res : true, msg: "Save successful"};
+    }).catch((err) => {
+        console.error("Auto-save failed:", err);
         saving = false;
+        return {res: false, msg: "Save failed: " + err.message};
     });
 }
 
@@ -59,6 +76,7 @@ const saveSheetToBackend = async () => {
 
     if (sheetidGlobal === undefined) {
         console.log("Saving new sheet...");
+        console.log(draftGlobal);
         return saveNewSheet(); //Call the load function
     } else {
         return saveExistingSheet();
@@ -78,8 +96,8 @@ export const saveNewSheet = async () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
-            if (!res.ok) throw new Error(`Save failed: ${res.status}`);
             const saved = await res.json();
+            if (!res.ok) throw new Error(`Save failed: ${saved.detail}`);
 
 
             //Navigate to the new sheet's page, since it has an ID now

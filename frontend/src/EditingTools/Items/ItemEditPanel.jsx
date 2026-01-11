@@ -20,7 +20,7 @@ import FormControl from '@mui/material/FormControl';
 import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
-
+import { useNotification } from '../../Utils/NotificationContext.jsx';
 import CachedIcon from '@mui/icons-material/Cached';
 import Tooltip from '@mui/material/Tooltip';
 import { Paper, Divider, Stack } from '@mui/material';
@@ -39,6 +39,8 @@ const EditItem = ({ onClose, isOpen, itemType, item }) => {
     name: '', description: '', weight: '', cost: '',
     features: [], armor_class: '', armor_type: '', stealth_disadvantage: false, strength_requirement: 0,
   });
+
+  const { showNotification } = useNotification();
 
   const weaponProperties = [
         "Ammunition", "Finesse", "Heavy", "Light", "Loading", "Range", "Reach", "Special", "Thrown", "Two-Handed", "Versatile"
@@ -70,14 +72,14 @@ const EditItem = ({ onClose, isOpen, itemType, item }) => {
   const validateItem = (item) => {
     // Check if the item has a name and description
     if (!item.name || !item.description) {
-      alert("Item must have a name and description.");
+      showNotification("Item must have a name and description.", 'error');
       return false;
     }
 
     if (itemType === 'Weapon') {
       // Additional weapon-specific validation
       if (!item.attacks || item.attacks.length === 0) {
-        alert("Weapon must have at least one attack.");
+        showNotification("Weapon must have at least one attack.", 'error');
         return false;
       }
     }
@@ -97,7 +99,7 @@ const EditItem = ({ onClose, isOpen, itemType, item }) => {
     });
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
-      alert(`Error saving item: HTTP ${res.status} - ${errorData.detail || 'Unknown error'}`);
+      showNotification(`Error saving item: HTTP ${res.status} - ${errorData.detail || 'Unknown error'}`, 'error');
       throw new Error(`Save failed: ${res.status}`);
     } else {
       onClose(true);
@@ -171,7 +173,7 @@ const EditItem = ({ onClose, isOpen, itemType, item }) => {
 
   async function handleWikidotData(data) {
     if (!data || Object.keys(data).length === 0) {
-      alert("No data found on Wikidot for this item.");
+      showNotification("No data found on Wikidot for this item.", 'error');
       return;
     }
 

@@ -15,11 +15,12 @@ import {
 import ItemCache, { subscribeItemCache, ForceCacheRefresh, getAll } from '../../Sheets/MiddleColumn/Inventory/ItemCache';
 import Navbar from '../../Navbar/Navbar';
 import EditItem from './ItemEditPanel.jsx';
+import { useNotification } from '../../Utils/NotificationContext.jsx';
 
 export function ItemEditPage() {
   const [refreshPage, setRefreshPage] = useState(false);
   const [items, setItems] = useState(() => getAll());
-
+  const { showNotification } = useNotification();
   const [editedItem, setEditedItem] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [editedType, setEditedType] = useState(''); // track item type for the panel
@@ -79,7 +80,7 @@ export function ItemEditPage() {
       setRefreshPage(true);
     } catch (err) {
       console.error('Delete failed:', err);
-      alert(`Failed to delete item: ${err.message}`);
+      showNotification(`Delete failed: ${err.message}`, 'error');
     }
   }
 

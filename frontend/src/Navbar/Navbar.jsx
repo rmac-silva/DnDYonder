@@ -9,21 +9,40 @@ import { useAuth } from '../Auth/AuthContext';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import SheetDrawer from './SheetDrawer';
 import { isSheetSaved, saveSheet } from '../Sheets/SheetManager.js';
+import { useNotification } from '../Utils/NotificationContext.jsx';
 
 function Navbar() {
     const location = useLocation();
     const pathname = location.pathname || '/';
     const { isLoggedIn, logout, authUsername, isAdmin } = useAuth();
+    const { showNotification } = useNotification();
     const navigate = useNavigate();
 
-    const handleNavigate = (path) => {
+    const handleNavigate = async (path) => {
         try {
+            // Check if we are on a sheet page by path
+            // (Optional check: if pathname starts with /Sheets/)
             if (!isSheetSaved()) {
-                const ok = window.confirm('You have unsaved changes. Leave without saving?');
-                if (!ok) return;
-                saveSheet();
+                const wantToSave = window.confirm('You have unsaved changes. Click OK to save and leave, or Cancel to discard changes and leave.');
+                
+                if (wantToSave) {
+                    const success = await saveSheet(true); // silent=true so we use custom notification
+                    if (success) {
+                        showNotification("Save successful!", "success");
+                    } else if (success === false) {
+                        showNotification("Save failed!", "error");
+                        // Decide if we should block navigation on failure?
+                        // For now, let's allow since the user wanted to leave.
+                    }
+                } else {
+                     // User cancelled (discard changes)
+                     // Do nothing, just proceed to navigate
+                }
             }
-        } catch (err) {}
+        } catch (err) {
+            console.error("Error during navigation save check:", err);
+            showNotification("Save check failed!", "error");
+        }
         navigate(path);
     };
 

@@ -1,0 +1,77 @@
+[INFO] [2026-01-11 15:45:17] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:45:32] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:45:39] [main.py/delete_race] @DELETE[/info/races] Deleting race None. Author: Gilbio
+[INFO] [2026-01-11 15:46:23] [main.py/delete_race] @DELETE[/info/races] Deleting race None. Author: Gilbio
+[INFO] [2026-01-11 15:47:27] [main.py/delete_race] @DELETE[/info/races] Deleting race None. Author: Gilbio
+[INFO] [2026-01-11 15:47:39] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:48:43] [main.py/save_new_race] @POST[/info/races] Creating a new race High . Author: Gilbio
+[INFO] [2026-01-11 15:48:47] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:50:37] [main.py/save_race_edit] @PUT[/info/races] Editing race High . Author: Gilbio
+[INFO] [2026-01-11 15:50:43] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:51:00] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:51:07] [main.py/save_race_edit] @PUT[/info/races] Editing race  . Author: Gilbio
+[INFO] [2026-01-11 15:51:14] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:51:33] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:51:52] [main.py/save_spell_edit] @PUT[/info/spells] Editing a spell feather fall. Author: Gilbio
+[INFO] [2026-01-11 15:51:54] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:51:54] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 15:51:55] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Rogue
+[INFO] [2026-01-11 15:52:13] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/adadada] Fetching Wikidot spell info for spell: adadada
+[ERROR] [2026-01-11 15:52:14] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/adadada] Could not fetch spell info for spell: adadada. Error: 'Content'
+[INFO] [2026-01-11 16:05:47] [main.py/get_wikidot_subclass_info] @GET[/wikidot/subclass/Rogue/ada] Fetching Wikidot subclass info for subclass: ada and class: Rogue
+[INFO] [2026-01-11 16:06:27] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Rogue
+[INFO] [2026-01-11 16:07:15] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Rogue
+[INFO] [2026-01-11 16:12:13] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:12:31] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:12:31] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:12:31] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Rogue
+[INFO] [2026-01-11 16:21:16] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:21:16] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:21:53] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:22:26] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:22:26] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:22:32] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:22:32] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:22:44] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:22:46] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:22:47] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:22:55] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:22:57] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:22:58] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:23:55] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:23:57] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:23:57] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:23:58] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:23:58] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:24:02] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:24:02] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:24:11] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:24:11] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:24:43] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:24:43] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:24:45] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:24:45] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:24:57] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:24:57] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:25:36] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:25:36] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:25:57] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:25:57] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:26:23] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:26:28] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:26:42] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:26:42] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:28:32] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:28:32] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:28:43] [main.py/delete_sheet] @DELETE[/sheets/username/sheet_id] Deleting character sheet (21) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:29:05] [main.py/new_sheet] @POST[/sheets/new] Saving a new character sheet to the DB for user: (True, 'Gilbio')
+[INFO] [2026-01-11 16:29:07] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Paladin
+[INFO] [2026-01-11 16:31:04] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Fetching Wikidot spell info for spell: Firebolt
+[ERROR] [2026-01-11 16:31:04] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Could not fetch spell info for spell: Firebolt. Error: 'Content'
+[INFO] [2026-01-11 16:31:43] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (22) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-11 16:31:59] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Fetching Wikidot spell info for spell: Firebolt
+[ERROR] [2026-01-11 16:31:59] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Could not fetch spell info for spell: Firebolt. Error: 'Content'
+[INFO] [2026-01-11 16:32:29] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Fetching Wikidot spell info for spell: Firebolt
+[ERROR] [2026-01-11 16:32:29] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Could not fetch spell info for spell: Firebolt. Error: 'Content'
+[INFO] [2026-01-11 16:32:35] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Fetching Wikidot spell info for spell: Firebolt
+[ERROR] [2026-01-11 16:32:35] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Firebolt] Could not fetch spell info for spell: Firebolt. Error: 'Content'

@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
-
+import { useNotification } from '../Utils/NotificationContext.jsx';
 
 export default function Register() {
 
@@ -13,8 +13,8 @@ export default function Register() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-
-
+    const { showNotification } = useNotification();
+    
 
     const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ export default function Register() {
             if(response.ok) {
                 setLoading(false);
                 navigate('/login');
-                alert('Registration successful! Please log in.');
+                showNotification("Registration successful! Please log in.", "success");
                 return;
             } else {
                 const data = await response.json();

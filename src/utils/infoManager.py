@@ -584,6 +584,10 @@ class InfoManager():
     def save_new_race(self, playerRace: dict) -> tuple[bool, str]:
         try:
             race_name = playerRace.get('subrace','') + " " + playerRace.get('race','')
+            
+            if(race_name.strip() == ""):
+                return (False, "Race name cannot be empty")
+            
             com = """
                 SELECT COUNT(*) FROM races WHERE name = ?;
             """
@@ -605,3 +609,33 @@ class InfoManager():
             return (True, "Race added successfully")
         except Exception as e:
             return (False, str(e)) 
+        
+    def delete_race(self, raceName:str) -> tuple[bool, str]:
+        try:
+            
+            conn = self.dbm.c().connection
+
+            com = """
+            DELETE FROM Races where name = ?;
+            """
+            
+            conn.execute(com, (raceName,))
+            conn.commit()
+            
+            return (True, "Race deleted successfully")
+        except Exception as e:
+            return (False, str(e))
+        
+    def save_race_edit(self, playerRace: dict) -> tuple[bool, str]:
+        try:    
+            conn = self.dbm.c().connection
+            
+            com = """
+            UPDATE Races SET content = ?, name = ? WHERE name = ?;
+            """
+            
+            conn.execute(com, (json.dumps(playerRace), playerRace.get('subrace','') + " " + playerRace.get('race',''), playerRace.get('old_name','')))
+            conn.commit()
+            return (True, "Race edited successfully")
+        except Exception as e:
+            return (False, str(e))

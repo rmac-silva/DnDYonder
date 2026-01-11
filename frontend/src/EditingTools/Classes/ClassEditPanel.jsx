@@ -35,6 +35,8 @@ import GetSkillProficiencies from '../../Sheets/Lists/SkillProficiencies';
 import GetStartingEquipment from '../../Sheets/Lists/StartingEquipment';
 import GetClassFeats from '../../Sheets/Lists/ClassFeature';
 
+import { useNotification } from '../../Utils/NotificationContext.jsx';
+
 import { getItem, ForceCacheRefresh } from '../../Sheets/MiddleColumn/Inventory/ItemCache';
 
 // NEW: layout helpers
@@ -49,11 +51,13 @@ const ClassEdit = ({ sheet, setSheet, selectClass, disabled, open, onClose }) =>
   const [fetchedClasses, setFetchedClasses] = useState([]);
   const [forceRefresh, setForceRefresh] = useState(false);
   const [creatingNewClass, setCreatingNewClass] = useState(false);
-
+  
   const [hasSubclass, setHasSubclass] = useState(false);
   const [hasSpellcasting, setHasSpellcasting] = useState(false);
-
+  
   const [localClassName, setLocalClassName] = useState('');
+  const { showNotification } = useNotification();
+  
 
   const [newClass, setNewClass] = useState({
     class_name: '',
@@ -310,31 +314,31 @@ const ClassEdit = ({ sheet, setSheet, selectClass, disabled, open, onClose }) =>
   function ValidateForm() {
     if (!newClass.class_name) {
       setErrorField('class_name');
-      alert('Please provide a class name.');
+      showNotification('Please provide a class name.', 'error');
       return false;
     }
 
     if (newClass.starting_hitpoints === 0 || newClass.hitpoints_per_level === 0) {
       setErrorField('hit_die');
-      alert('Please select a valid hit die for the class.');
+      showNotification('Please select a valid hit die for the class.', 'error');
       return false;
     }
 
     if (newClass.attribute_proficiencies.length === 0) {
       setErrorField('attribute_proficiencies');
-      alert('Please select at least one saving throw proficiency.');
+      showNotification('Please select at least one saving throw proficiency.', 'error');
       return false;
     }
 
     if (newClass.skill_proficiencies.length === 0) {
       setErrorField('skill_proficiencies');
-      alert('Please select the skill proficiencies for the class.');
+      showNotification('Please select the skill proficiencies for the class.', 'error');
       return false;
     }
 
     if (newClass.num_skill_proficiencies === undefined || newClass.num_skill_proficiencies <= 0) {
       setErrorField('num_skill_proficiencies');
-      alert('Please provide a valid number of skill proficiencies to choose from.');
+      showNotification('Please provide a valid number of skill proficiencies to choose from.', 'error');
       return false;
     }
 
@@ -357,7 +361,7 @@ const ClassEdit = ({ sheet, setSheet, selectClass, disabled, open, onClose }) =>
       for (let feat of newClass.class_features) {
         if (feat.level_requirement === undefined || feat.level_requirement < 1) {
           setErrorField('class_features');
-          alert(`Please provide a valid level for the class feature: ${feat.name}`);
+          showNotification(`Please provide a valid level for the class feature: ${feat.name}`, 'error');
           return false;
         }
       }
@@ -386,9 +390,9 @@ const ClassEdit = ({ sheet, setSheet, selectClass, disabled, open, onClose }) =>
     });
 
     if (!res.ok) {
-      //Alert with error message
+      //Show error message
       const err = await res.json().catch(() => ({ detail: 'Unknown' }));
-      alert(`Error creating class: HTTP ${res.status} - ${err.detail}`);
+      showNotification(`Error creating class: HTTP ${res.status} - ${err.detail}`, 'error');
       throw new Error(`Save failed: ${res.status}`);
     }
 
@@ -436,7 +440,7 @@ const ClassEdit = ({ sheet, setSheet, selectClass, disabled, open, onClose }) =>
     console.log("Wikidot data received:", data);
 
     if (data === null || Object.keys(data).length === 0) {
-      alert("No data found on Wikidot for this class" + ". If it is an Unearthed Arcana, try adding 'UA' to the name: {YOUR NAME} UA");
+      showNotification("No data found on Wikidot for this class" + ". If it is an Unearthed Arcana, try adding 'UA' to the name: {YOUR NAME} UA", 'error');
       return;
     }
 
@@ -565,7 +569,7 @@ const ClassEdit = ({ sheet, setSheet, selectClass, disabled, open, onClose }) =>
   async function fetchWikidotClassData(className) {
 
     if (className === '') {
-      alert('Please provide a class name to fetch from Wikidot.');
+      showNotification('Please provide a class name to fetch from Wikidot.', 'error');
       setLoadingWikidotData(false);
       return;
     }

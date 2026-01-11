@@ -34,10 +34,6 @@ const AttributeRow = ({ skill, attributeModifier, proficiencyBonus, updateDraftF
     }
 
     function ChangeProficiency(e) {
-        // if(locked) {
-        //     alert("This skill's proficiency is locked by your class.");
-        //     return; //Do nothing if the skill is from the class
-        // }
 
         const isProf = !!e.target.checked;
         skill.proficient = isProf;

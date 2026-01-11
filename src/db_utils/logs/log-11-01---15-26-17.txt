@@ -1,0 +1,2 @@
+[INFO] [2026-01-11 15:26:35] [main.py/delete_race] @DELETE[/info/races] Deleting race None. Author: Gilbio
+[ERROR] [2026-01-11 15:26:35] [main.py/delete_race] @DELETE[/info/races] Could not delete race None. Error: Error binding parameter 1: type 'dict' is not supported
