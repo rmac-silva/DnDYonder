@@ -22,7 +22,7 @@ class Logger():
         
         timestamp = datetime.now().strftime("%d-%m---%H-%M-%S")
         self.filepath = os.path.join(folderpath, f"log-{timestamp}.txt")    
-        
+        self.log_cleanup()
     
     def log_cleanup(self):
         """
