@@ -1,0 +1,309 @@
+[INFO] [2025-12-16 13:31:49] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (1) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-16 13:31:50] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Paladin
+[INFO] [2025-12-16 13:31:50] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-16 13:31:51] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (1) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[ERROR] [2025-12-20 16:49:32] [main.py/verify_token] @GET[/auth/verify_token] Could not verify token. Error: Could not decode token: Signature has expired.
+[INFO] [2025-12-20 16:49:40] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9
+[INFO] [2025-12-20 16:49:42] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:29:41] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9
+[INFO] [2025-12-21 17:29:46] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:29:51] [main.py/delete_sheet] @DELETE[/sheets/username/sheet_id] Deleting character sheet (1) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:30:05] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:30:13] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:31:35] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:33:39] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:35:30] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:37:02] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:37:30] [main.py/new_sheet] @POST[/sheets/new] Saving a new character sheet to the DB for user: (True, 'Gilbio')
+[INFO] [2025-12-21 17:39:38] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:39:46] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:41:36] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:44:01] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:47:39] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:48:14] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:48:42] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:51:43] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:51:50] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:52:05] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:52:08] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:52:27] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:52:36] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:52:41] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:53:24] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:56:07] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:57:16] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:58:48] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 17:59:10] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 18:10:59] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 18:11:33] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 18:11:44] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 18:11:49] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 18:12:19] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 18:12:22] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 18:12:40] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 18:12:42] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2025-12-21 18:59:13] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[ERROR] [2026-01-04 11:44:58] [main.py/verify_token] @GET[/auth/verify_token] Could not verify token. Error: Could not decode token: Signature has expired.
+[INFO] [2026-01-04 11:45:04] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9
+[INFO] [2026-01-04 11:45:05] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-04 11:45:05] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[ERROR] [2026-01-09 12:12:52] [main.py/verify_token] @GET[/auth/verify_token] Could not verify token. Error: Could not decode token: Signature has expired.
+[INFO] [2026-01-09 12:37:18] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9
+[INFO] [2026-01-09 12:37:19] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 12:37:20] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 13:47:03] [main.py/register_user] @POST[/auth/register] Registering user: ToniMontanelas
+[INFO] [2026-01-09 13:47:10] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b
+[INFO] [2026-01-09 13:47:20] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b)
+[INFO] [2026-01-09 13:47:29] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b)
+[INFO] [2026-01-09 21:57:16] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:20] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:23] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:26] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:30] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:38] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:40] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:41] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:42] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:46] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Paladin
+[INFO] [2026-01-09 21:57:47] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:48] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:48] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:49] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:57:49] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Paladin
+[INFO] [2026-01-09 21:58:00] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:59:03] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 21:59:23] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Barbarian] Fetching Wikidot class info for class: Barbarian
+[INFO] [2026-01-09 22:00:00] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Greataxe] Fetching Wikidot item info for item: Greataxe
+[INFO] [2026-01-09 22:00:20] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Greataxe. Author: Gilbio
+[INFO] [2026-01-09 22:00:40] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Handaxe] Fetching Wikidot item info for item: Handaxe
+[INFO] [2026-01-09 22:00:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Handaxe. Author: Gilbio
+[INFO] [2026-01-09 22:01:43] [main.py/save_new_class] @POST[/info/classes] Saving a new class. Author: Gilbio
+[INFO] [2026-01-09 22:02:09] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Fighter] Fetching Wikidot class info for class: Fighter
+[INFO] [2026-01-09 22:02:23] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 22:02:33] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 22:02:39] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Fighter] Fetching Wikidot class info for class: Fighter
+[INFO] [2026-01-09 22:03:46] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Leather_Armor] Fetching Wikidot item info for item: Leather_Armor
+[ERROR] [2026-01-09 22:03:47] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Leather_Armor] Could not fetch item info for item: Leather_Armor. Error: 'Description'
+[INFO] [2026-01-09 22:04:26] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Leather] Fetching Wikidot item info for item: Leather
+[ERROR] [2026-01-09 22:04:28] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Leather] Could not fetch item info for item: Leather. Error: invalid literal for int() with base 10: '11 + Dex modifier'
+[INFO] [2026-01-09 22:04:39] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Leather] Fetching Wikidot item info for item: Leather
+[ERROR] [2026-01-09 22:04:40] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Leather] Could not fetch item info for item: Leather. Error: invalid literal for int() with base 10: '11 + Dex modifier'
+[INFO] [2026-01-09 22:05:37] [main.py/get_wikidot_item_info] @GET[/wikidot/item/leather] Fetching Wikidot item info for item: leather
+[ERROR] [2026-01-09 22:05:38] [main.py/get_wikidot_item_info] @GET[/wikidot/item/leather] Could not fetch item info for item: leather. Error: invalid literal for int() with base 10: '11 + Dex modifier'
+[INFO] [2026-01-09 22:06:20] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Armor with name Leather Armor. Author: Gilbio
+[INFO] [2026-01-09 22:06:39] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Longbow] Fetching Wikidot item info for item: Longbow
+[ERROR] [2026-01-09 22:06:47] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Longbow] Could not fetch item info for item: Longbow. Error: invalid literal for int() with base 10: '11 + Dex modifier'
+[INFO] [2026-01-09 22:06:55] [main.py/get_wikidot_item_info] @GET[/wikidot/item/longbow] Fetching Wikidot item info for item: longbow
+[ERROR] [2026-01-09 22:06:58] [main.py/get_wikidot_item_info] @GET[/wikidot/item/longbow] Could not fetch item info for item: longbow. Error: invalid literal for int() with base 10: '11 + Dex modifier'
+[INFO] [2026-01-09 22:07:59] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Fighter] Fetching Wikidot class info for class: Fighter
+[INFO] [2026-01-09 22:08:13] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Longbow] Fetching Wikidot item info for item: Longbow
+[INFO] [2026-01-09 22:08:25] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Longbow. Author: Gilbio
+[INFO] [2026-01-09 22:09:32] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Light_Crossbow] Fetching Wikidot item info for item: Light_Crossbow
+[INFO] [2026-01-09 22:09:36] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Light Crossbow. Author: Gilbio
+[INFO] [2026-01-09 22:10:00] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Dungeoneer's_Pack] Fetching Wikidot item info for item: Dungeoneer's_Pack
+[ERROR] [2026-01-09 22:10:04] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Dungeoneer's_Pack] Could not fetch item info for item: Dungeoneer's_Pack. Error: invalid literal for int() with base 10: '61\xa01/2'
+[INFO] [2026-01-09 22:10:07] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Dungeoneers_Pack] Fetching Wikidot item info for item: Dungeoneers_Pack
+[ERROR] [2026-01-09 22:10:17] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Dungeoneers_Pack] Could not fetch item info for item: Dungeoneers_Pack. Error: invalid literal for int() with base 10: '61\xa01/2'
+[INFO] [2026-01-09 22:10:34] [main.py/get_wikidot_item_info] @GET[/wikidot/item/dungeoneers_pack] Fetching Wikidot item info for item: dungeoneers_pack
+[ERROR] [2026-01-09 22:10:36] [main.py/get_wikidot_item_info] @GET[/wikidot/item/dungeoneers_pack] Could not fetch item info for item: dungeoneers_pack. Error: invalid literal for int() with base 10: '61\xa01/2'
+[INFO] [2026-01-09 22:10:58] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Dungeoneers_Pack] Fetching Wikidot item info for item: Dungeoneers_Pack
+[ERROR] [2026-01-09 22:10:59] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Dungeoneers_Pack] Could not fetch item info for item: Dungeoneers_Pack. Error: invalid literal for int() with base 10: '61\xa01/2'
+[INFO] [2026-01-09 22:11:03] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Dungeoneer's_Pack] Fetching Wikidot item info for item: Dungeoneer's_Pack
+[ERROR] [2026-01-09 22:11:16] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Dungeoneer's_Pack] Could not fetch item info for item: Dungeoneer's_Pack. Error: invalid literal for int() with base 10: '61\xa01/2'
+[INFO] [2026-01-09 22:11:24] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Misc. with name Dungeoneer's Pack. Author: Gilbio
+[INFO] [2026-01-09 22:12:09] [main.py/save_new_class] @POST[/info/classes] Saving a new class. Author: Gilbio
+[INFO] [2026-01-09 22:12:41] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Druid] Fetching Wikidot class info for class: Druid
+[INFO] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Club. Author: Gilbio
+[INFO] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Dagger. Author: Gilbio
+[INFO] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Dart. Author: Gilbio
+[INFO] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Mace. Author: Gilbio
+[INFO] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Quarterstaff. Author: Gilbio
+[INFO] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Scimitar. Author: Gilbio
+[INFO] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Sickle. Author: Gilbio
+[INFO] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Sling. Author: Gilbio
+[INFO] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Spear. Author: Gilbio
+[INFO] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Tool with name Herbalism Kit. Author: Gilbio
+[INFO] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Spear. Author: Gilbio
+[ERROR] [2026-01-09 22:12:45] [main.py/save_new_item] @POST[/info/save_item] Could not save new item of type: Weapon with name Spear. Error: Weapon with this name already exists
+[INFO] [2026-01-09 22:12:52] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Druid] Fetching Wikidot class info for class: Druid
+[INFO] [2026-01-09 22:13:44] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Druidic_Focus] Fetching Wikidot item info for item: Druidic_Focus
+[ERROR] [2026-01-09 22:13:52] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Druidic_Focus] Could not fetch item info for item: Druidic_Focus. Error: 'Description'
+[INFO] [2026-01-09 22:13:55] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Druidic_Focus] Fetching Wikidot item info for item: Druidic_Focus
+[ERROR] [2026-01-09 22:13:57] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Druidic_Focus] Could not fetch item info for item: Druidic_Focus. Error: 'Description'
+[INFO] [2026-01-09 22:14:23] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Misc. with name Druidic Focus. Author: Gilbio
+[INFO] [2026-01-09 22:14:39] [main.py/save_new_class] @POST[/info/classes] Saving a new class. Author: Gilbio
+[INFO] [2026-01-09 22:14:59] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Bard] Fetching Wikidot class info for class: Bard
+[INFO] [2026-01-09 22:15:08] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Hand Crossbow. Author: Gilbio
+[INFO] [2026-01-09 22:15:08] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Longsword. Author: Gilbio
+[INFO] [2026-01-09 22:15:08] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Rapier. Author: Gilbio
+[INFO] [2026-01-09 22:15:08] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Shortsword. Author: Gilbio
+[INFO] [2026-01-09 22:15:08] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Tool with name Three Musical Instruments Of Your Choice. Author: Gilbio
+[INFO] [2026-01-09 22:15:08] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Tool with name Three Musical Instruments Of Your Choice. Author: Gilbio
+[ERROR] [2026-01-09 22:15:08] [main.py/save_new_item] @POST[/info/save_item] Could not save new item of type: Tool with name Three Musical Instruments Of Your Choice. Error: Tool with this name already exists
+[INFO] [2026-01-09 22:15:10] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Bard] Fetching Wikidot class info for class: Bard
+[INFO] [2026-01-09 22:16:28] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Diplomat's_Pack] Fetching Wikidot item info for item: Diplomat's_Pack
+[INFO] [2026-01-09 22:16:34] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Misc. with name Diplomat's Pack. Author: Gilbio
+[INFO] [2026-01-09 22:17:11] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Entertainer's_Pack] Fetching Wikidot item info for item: Entertainer's_Pack
+[INFO] [2026-01-09 22:17:24] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Misc. with name Entertainer's Pack. Author: Gilbio
+[INFO] [2026-01-09 22:17:42] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Lute] Fetching Wikidot item info for item: Lute
+[INFO] [2026-01-09 22:17:52] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Misc. with name Lute. Author: Gilbio
+[INFO] [2026-01-09 22:19:10] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Misc. with name Any Other Musical Instrument. Author: Gilbio
+[INFO] [2026-01-09 22:20:25] [main.py/save_new_class] @POST[/info/classes] Saving a new class. Author: Gilbio
+[INFO] [2026-01-09 22:20:49] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Cleric] Fetching Wikidot class info for class: Cleric
+[INFO] [2026-01-09 22:20:51] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name All Simple Weapon. Author: Gilbio
+[INFO] [2026-01-09 22:20:51] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name All Simple Weapon. Author: Gilbio
+[ERROR] [2026-01-09 22:20:51] [main.py/save_new_item] @POST[/info/save_item] Could not save new item of type: Weapon with name All Simple Weapon. Error: Weapon with this name already exists
+[INFO] [2026-01-09 22:20:53] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Cleric] Fetching Wikidot class info for class: Cleric
+[INFO] [2026-01-09 22:25:17] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Cleric] Fetching Wikidot class info for class: Cleric
+[INFO] [2026-01-09 22:26:22] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Warhammer] Fetching Wikidot item info for item: Warhammer
+[INFO] [2026-01-09 22:26:38] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Warhammer. Author: Gilbio
+[INFO] [2026-01-09 22:26:52] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Scale_Mail] Fetching Wikidot item info for item: Scale_Mail
+[ERROR] [2026-01-09 22:26:55] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Scale_Mail] Could not fetch item info for item: Scale_Mail. Error: invalid literal for int() with base 10: '14 + Dex modifier (max 2)'
+[INFO] [2026-01-09 22:26:58] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Scale_Mail] Fetching Wikidot item info for item: Scale_Mail
+[ERROR] [2026-01-09 22:27:01] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Scale_Mail] Could not fetch item info for item: Scale_Mail. Error: invalid literal for int() with base 10: '14 + Dex modifier (max 2)'
+[INFO] [2026-01-09 22:27:03] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Scale] Fetching Wikidot item info for item: Scale
+[ERROR] [2026-01-09 22:27:05] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Scale] Could not fetch item info for item: Scale. Error: 'Description'
+[INFO] [2026-01-09 22:27:34] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Armor with name Scale Mail. Author: Gilbio
+[INFO] [2026-01-09 22:28:35] [main.py/save_new_class] @POST[/info/classes] Saving a new class. Author: Gilbio
+[INFO] [2026-01-09 22:28:46] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Monk] Fetching Wikidot class info for class: Monk
+[INFO] [2026-01-09 22:28:50] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Tool with name Choose One Type Of Artisan'S Tools Or One Musical Instrument. Author: Gilbio
+[INFO] [2026-01-09 22:28:51] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Tool with name Choose One Type Of Artisan'S Tools Or One Musical Instrument. Author: Gilbio
+[ERROR] [2026-01-09 22:28:51] [main.py/save_new_item] @POST[/info/save_item] Could not save new item of type: Tool with name Choose One Type Of Artisan'S Tools Or One Musical Instrument. Error: Tool with this name already exists
+[INFO] [2026-01-09 22:28:52] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Monk] Fetching Wikidot class info for class: Monk
+[INFO] [2026-01-09 22:31:05] [main.py/save_new_class] @POST[/info/classes] Saving a new class. Author: Gilbio
+[INFO] [2026-01-09 22:31:08] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 22:32:01] [main.py/edit_item] @POST[/info/edit_item] New edit of item type: Tool with name Choose One Type Of Artisan'S Tools Or One Musical Instrument. Author: Gilbio
+[INFO] [2026-01-09 22:32:30] [main.py/edit_item] @POST[/info/edit_item] New edit of item type: Tool with name Three Musical Instruments Of Your Choice. Author: Gilbio
+[INFO] [2026-01-09 22:32:44] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 22:33:08] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Ranger] Fetching Wikidot class info for class: Ranger
+[INFO] [2026-01-09 22:34:54] [main.py/save_new_class] @POST[/info/classes] Saving a new class. Author: Gilbio
+[INFO] [2026-01-09 22:34:57] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 22:35:29] [main.py/save_new_class] @POST[/info/classes] Edited class . Author: Gilbio
+[INFO] [2026-01-09 22:39:05] [main.py/save_new_class] @POST[/info/classes] Edited class . Author: Gilbio
+[INFO] [2026-01-09 22:39:45] [main.py/save_new_class] @POST[/info/classes] Edited class . Author: Gilbio
+[INFO] [2026-01-09 22:39:57] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 22:40:15] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Rogue] Fetching Wikidot class info for class: Rogue
+[INFO] [2026-01-09 22:40:16] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Tool with name Thieves' Tools. Author: Gilbio
+[INFO] [2026-01-09 22:40:16] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Tool with name Thieves' Tools. Author: Gilbio
+[ERROR] [2026-01-09 22:40:16] [main.py/save_new_item] @POST[/info/save_item] Could not save new item of type: Tool with name Thieves' Tools. Error: Tool with this name already exists
+[INFO] [2026-01-09 22:40:17] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Rogue] Fetching Wikidot class info for class: Rogue
+[INFO] [2026-01-09 22:41:03] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Shortbow] Fetching Wikidot item info for item: Shortbow
+[INFO] [2026-01-09 22:41:37] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Weapon with name Shortbow. Author: Gilbio
+[INFO] [2026-01-09 22:42:23] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Burglar's_Pack] Fetching Wikidot item info for item: Burglar's_Pack
+[ERROR] [2026-01-09 22:42:26] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Burglar's_Pack] Could not fetch item info for item: Burglar's_Pack. Error: invalid literal for int() with base 10: '47\xa01/2'
+[INFO] [2026-01-09 22:42:28] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Burglar's_Pack] Fetching Wikidot item info for item: Burglar's_Pack
+[ERROR] [2026-01-09 22:42:30] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Burglar's_Pack] Could not fetch item info for item: Burglar's_Pack. Error: invalid literal for int() with base 10: '47\xa01/2'
+[INFO] [2026-01-09 22:42:44] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Burglars_Pack] Fetching Wikidot item info for item: Burglars_Pack
+[ERROR] [2026-01-09 22:42:45] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Burglars_Pack] Could not fetch item info for item: Burglars_Pack. Error: invalid literal for int() with base 10: '47\xa01/2'
+[INFO] [2026-01-09 22:42:57] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Misc. with name Burglar's Pack. Author: Gilbio
+[INFO] [2026-01-09 22:43:40] [main.py/save_new_class] @POST[/info/classes] Saving a new class. Author: Gilbio
+[INFO] [2026-01-09 22:43:48] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Sorcerer] Fetching Wikidot class info for class: Sorcerer
+[INFO] [2026-01-09 22:43:52] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Sorcerer] Fetching Wikidot class info for class: Sorcerer
+[INFO] [2026-01-09 22:43:54] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Sorcerer] Fetching Wikidot class info for class: Sorcerer
+[INFO] [2026-01-09 22:43:56] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Sorcerer] Fetching Wikidot class info for class: Sorcerer
+[INFO] [2026-01-09 22:44:04] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Sorcerer] Fetching Wikidot class info for class: Sorcerer
+[INFO] [2026-01-09 22:44:19] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Sorcerer] Fetching Wikidot class info for class: Sorcerer
+[INFO] [2026-01-09 22:44:22] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Sorcerer] Fetching Wikidot class info for class: Sorcerer
+[INFO] [2026-01-09 22:44:30] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Warlock] Fetching Wikidot class info for class: Warlock
+[INFO] [2026-01-09 22:45:28] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Component_Pouch] Fetching Wikidot item info for item: Component_Pouch
+[INFO] [2026-01-09 22:45:33] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Misc. with name Component Pouch. Author: Gilbio
+[INFO] [2026-01-09 22:45:46] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Arcane_Focus] Fetching Wikidot item info for item: Arcane_Focus
+[ERROR] [2026-01-09 22:45:46] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Arcane_Focus] Could not fetch item info for item: Arcane_Focus. Error: 'Description'
+[INFO] [2026-01-09 22:45:48] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Arcane_Focus] Fetching Wikidot item info for item: Arcane_Focus
+[ERROR] [2026-01-09 22:45:49] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Arcane_Focus] Could not fetch item info for item: Arcane_Focus. Error: 'Description'
+[INFO] [2026-01-09 22:46:06] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Arcane_Focus] Fetching Wikidot item info for item: Arcane_Focus
+[ERROR] [2026-01-09 22:46:09] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Arcane_Focus] Could not fetch item info for item: Arcane_Focus. Error: 'Description'
+[INFO] [2026-01-09 22:47:18] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Misc. with name Arcane Focus. Author: Gilbio
+[INFO] [2026-01-09 22:47:32] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Scholar's_Pack] Fetching Wikidot item info for item: Scholar's_Pack
+[INFO] [2026-01-09 22:47:37] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Misc. with name Scholar's Pack. Author: Gilbio
+[INFO] [2026-01-09 22:48:45] [main.py/save_new_class] @POST[/info/classes] Saving a new class. Author: Gilbio
+[INFO] [2026-01-09 22:49:54] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Sorcerer] Fetching Wikidot class info for class: Sorcerer
+[INFO] [2026-01-09 22:51:37] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Sorcerer] Fetching Wikidot class info for class: Sorcerer
+[INFO] [2026-01-09 22:55:42] [main.py/save_new_class] @POST[/info/classes] Saving a new class. Author: Gilbio
+[INFO] [2026-01-09 22:55:48] [main.py/get_wikidot_class_info] @GET[/wikidot/class/Wizard] Fetching Wikidot class info for class: Wizard
+[INFO] [2026-01-09 22:58:13] [main.py/get_wikidot_item_info] @GET[/wikidot/item/Spellbook] Fetching Wikidot item info for item: Spellbook
+[INFO] [2026-01-09 22:58:26] [main.py/save_new_item] @POST[/info/save_item] Saving a new item of type Misc. with name Spellbook. Author: Gilbio
+[INFO] [2026-01-09 22:58:31] [main.py/save_new_class] @POST[/info/classes] Saving a new class. Author: Gilbio
+[INFO] [2026-01-09 23:01:17] [main.py/save_new_race] @POST[/info/races] Creating a new race  . Author: Gilbio
+[INFO] [2026-01-09 23:02:37] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 23:02:38] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 23:02:38] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Paladin
+[INFO] [2026-01-09 23:02:39] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 23:02:39] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-09 23:03:15] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-10 11:12:58] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 4bcdf2b0abd023c7c30d0f1fe7ccc865b567b50b04627e6c92535631dc3d0dbc
+[ERROR] [2026-01-10 11:12:58] [main.py/login_for_access_token] @POST[/auth/token] Could not log in user: 4bcdf2b0abd023c7c30d0f1fe7ccc865b567b50b04627e6c92535631dc3d0dbc. Error: User does not exist.
+[INFO] [2026-01-10 11:13:10] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b
+[INFO] [2026-01-10 11:13:18] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b)
+[INFO] [2026-01-10 11:23:50] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: de5f580cae8df54591807ee503f7ce822ed2fb0a8c00028a6daa8ac7c9c86e21
+[ERROR] [2026-01-10 11:23:50] [main.py/login_for_access_token] @POST[/auth/token] Could not log in user: de5f580cae8df54591807ee503f7ce822ed2fb0a8c00028a6daa8ac7c9c86e21. Error: User does not exist.
+[INFO] [2026-01-10 11:24:30] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b)
+[INFO] [2026-01-10 11:24:36] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 6a49a4d14b76cc35d65c628c78424c986edb134a10325cae3bee1cf5a50e7200
+[ERROR] [2026-01-10 11:24:36] [main.py/login_for_access_token] @POST[/auth/token] Could not log in user: 6a49a4d14b76cc35d65c628c78424c986edb134a10325cae3bee1cf5a50e7200. Error: User does not exist.
+[INFO] [2026-01-10 11:24:44] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 2d9eda86e7c4f082d2b21f71f122f4e205b93808e24198c3b85df22d5d150c3f
+[ERROR] [2026-01-10 11:24:44] [main.py/login_for_access_token] @POST[/auth/token] Could not log in user: 2d9eda86e7c4f082d2b21f71f122f4e205b93808e24198c3b85df22d5d150c3f. Error: User does not exist.
+[INFO] [2026-01-10 11:24:47] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: a8cb0fb865cd2bebed90d45cd8f8497ed5c50dd43c634a65447933ed25576169
+[ERROR] [2026-01-10 11:24:47] [main.py/login_for_access_token] @POST[/auth/token] Could not log in user: a8cb0fb865cd2bebed90d45cd8f8497ed5c50dd43c634a65447933ed25576169. Error: User does not exist.
+[INFO] [2026-01-10 11:24:49] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 7827c22ab218e42051a078208c8d980737d16b7766ce0ed535f566cf50349af3
+[ERROR] [2026-01-10 11:24:49] [main.py/login_for_access_token] @POST[/auth/token] Could not log in user: 7827c22ab218e42051a078208c8d980737d16b7766ce0ed535f566cf50349af3. Error: User does not exist.
+[INFO] [2026-01-10 11:24:53] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: e8d02acc6eee18191740405f7b904dbf564836670160f7572730d31ecae159f5
+[ERROR] [2026-01-10 11:24:53] [main.py/login_for_access_token] @POST[/auth/token] Could not log in user: e8d02acc6eee18191740405f7b904dbf564836670160f7572730d31ecae159f5. Error: User does not exist.
+[INFO] [2026-01-10 11:24:56] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: a8cb0fb865cd2bebed90d45cd8f8497ed5c50dd43c634a65447933ed25576169
+[ERROR] [2026-01-10 11:24:56] [main.py/login_for_access_token] @POST[/auth/token] Could not log in user: a8cb0fb865cd2bebed90d45cd8f8497ed5c50dd43c634a65447933ed25576169. Error: User does not exist.
+[INFO] [2026-01-10 11:25:02] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 3f3d416e77d59c2e5436910fe15b4eadd938395abab0eb482f13a5ffd265c10e
+[ERROR] [2026-01-10 11:25:02] [main.py/login_for_access_token] @POST[/auth/token] Could not log in user: 3f3d416e77d59c2e5436910fe15b4eadd938395abab0eb482f13a5ffd265c10e. Error: User does not exist.
+[INFO] [2026-01-10 11:25:12] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b
+[INFO] [2026-01-10 11:25:14] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b)
+[INFO] [2026-01-10 11:25:25] [main.py/register_user] @POST[/auth/register] Registering user: Tete2001
+[INFO] [2026-01-10 11:25:34] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: a80b61884eea0a4e6ed75faee118b5c13626c0cb9d473a46a9671bbe56b41bd0
+[INFO] [2026-01-10 11:25:37] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (a80b61884eea0a4e6ed75faee118b5c13626c0cb9d473a46a9671bbe56b41bd0)
+[INFO] [2026-01-10 11:25:52] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (a80b61884eea0a4e6ed75faee118b5c13626c0cb9d473a46a9671bbe56b41bd0)
+[INFO] [2026-01-10 11:33:47] [main.py/login_for_access_token] @POST[/auth/token] Logging in user: 99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9
+[INFO] [2026-01-10 11:33:48] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-10 11:33:53] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (a80b61884eea0a4e6ed75faee118b5c13626c0cb9d473a46a9671bbe56b41bd0)
+[INFO] [2026-01-10 11:34:34] [main.py/save_new_race] @POST[/info/races] Creating a new race Dark . Author: ToniMontanelas
+[INFO] [2026-01-10 11:36:42] [main.py/save_new_race] @POST[/info/races] Creating a new race (Variant) . Author: Gilbio
+[INFO] [2026-01-10 11:37:04] [main.py/new_sheet] @POST[/sheets/new] Saving a new character sheet to the DB for user: (True, 'ToniMontanelas')
+[INFO] [2026-01-10 11:37:04] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Warlock
+[INFO] [2026-01-10 11:37:19] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (a80b61884eea0a4e6ed75faee118b5c13626c0cb9d473a46a9671bbe56b41bd0)
+[INFO] [2026-01-10 11:38:34] [main.py/new_sheet] @POST[/sheets/new] Saving a new character sheet to the DB for user: (True, 'Tete2001')
+[INFO] [2026-01-10 11:38:52] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Fighter
+[INFO] [2026-01-10 11:40:43] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-10 11:40:46] [main.py/delete_sheet] @DELETE[/sheets/username/sheet_id] Deleting character sheet (3) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-10 11:46:03] [main.py/get_wikidot_subclass_info] @GET[/wikidot/subclass/Warlock/Hexblade] Fetching Wikidot subclass info for subclass: Hexblade and class: Warlock
+[INFO] [2026-01-10 11:47:33] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Creating a new subclass Hexblade for class: Warlock. Author: ToniMontanelas
+[INFO] [2026-01-10 11:51:13] [main.py/new_sheet] @POST[/sheets/new] Saving a new character sheet to the DB for user: (True, 'Gilbio')
+[INFO] [2026-01-10 11:51:41] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Faerie_Fire] Fetching Wikidot spell info for spell: Faerie_Fire
+[INFO] [2026-01-10 11:51:53] [main.py/save_new_spell] @POST[/info/spells] Creating a new spell faerie fire. Author: ToniMontanelas
+[INFO] [2026-01-10 11:52:05] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (4) for user: (840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b)
+[INFO] [2026-01-10 11:52:13] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (4) for user: (840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b)
+[INFO] [2026-01-10 11:52:13] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Warlock
+[INFO] [2026-01-10 11:52:26] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Druid
+[INFO] [2026-01-10 11:52:28] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (4) for user: (840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b)
+[INFO] [2026-01-10 11:52:29] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Warlock
+[INFO] [2026-01-10 11:52:34] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Feather_Fall] Fetching Wikidot spell info for spell: Feather_Fall
+[INFO] [2026-01-10 11:52:44] [main.py/save_new_spell] @POST[/info/spells] Creating a new spell feather fall. Author: Gilbio
+[INFO] [2026-01-10 11:52:50] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (6) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-10 11:53:15] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (6) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-10 11:54:26] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Darkness] Fetching Wikidot spell info for spell: Darkness
+[INFO] [2026-01-10 11:54:29] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (6) for user: (99bab994afde9a084a1144108d2cca5c457e748fef331f563233e98120894fb9)
+[INFO] [2026-01-10 12:18:06] [main.py/save_new_spell] @POST[/info/spells] Creating a new spell darkness. Author: ToniMontanelas
+[INFO] [2026-01-10 12:22:25] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Fetching Wikidot spell info for spell: Shadow_Blade
+[ERROR] [2026-01-10 12:22:33] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Could not fetch spell info for spell: Shadow_Blade. Error: 'spell_details'
+[INFO] [2026-01-10 12:23:27] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Fetching Wikidot spell info for spell: Shadow_Blade
+[ERROR] [2026-01-10 12:23:36] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Could not fetch spell info for spell: Shadow_Blade. Error: 'spell_details'
+[INFO] [2026-01-10 12:25:17] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Fetching Wikidot spell info for spell: Shadow_Blade
+[ERROR] [2026-01-10 12:25:22] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Could not fetch spell info for spell: Shadow_Blade. Error: 'spell_details'
+[INFO] [2026-01-10 12:25:28] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Fetching Wikidot spell info for spell: Shadow_Blade
+[ERROR] [2026-01-10 12:25:32] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Could not fetch spell info for spell: Shadow_Blade. Error: 'spell_details'
+[INFO] [2026-01-10 12:26:26] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Fetching Wikidot spell info for spell: Shadow_Blade
+[ERROR] [2026-01-10 12:26:29] [main.py/get_wikidot_spell_info] @GET[/wikidot/spell/Shadow_Blade] Could not fetch spell info for spell: Shadow_Blade. Error: 'spell_details'
+[INFO] [2026-01-10 12:27:11] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (a80b61884eea0a4e6ed75faee118b5c13626c0cb9d473a46a9671bbe56b41bd0)
+[INFO] [2026-01-10 12:27:17] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (5) for user: (a80b61884eea0a4e6ed75faee118b5c13626c0cb9d473a46a9671bbe56b41bd0)
+[INFO] [2026-01-10 12:31:42] [main.py/save_new_spell] @POST[/info/spells] Creating a new spell shadow blade. Author: ToniMontanelas
+[INFO] [2026-01-10 12:36:46] [main.py/fetch_all_sheets] @GET[/sheets/username] Fetching all character sheets for user: (a80b61884eea0a4e6ed75faee118b5c13626c0cb9d473a46a9671bbe56b41bd0)
+[INFO] [2026-01-10 12:36:47] [main.py/fetch_sheet_specific] @GET[/sheets/username/sheet_id] Fetching character sheet (5) for user: (a80b61884eea0a4e6ed75faee118b5c13626c0cb9d473a46a9671bbe56b41bd0)
+[INFO] [2026-01-10 12:36:48] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (4) for user: (840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b)
+[INFO] [2026-01-10 12:38:09] [main.py/get_available_subclasses] @GET[/info/subclasses/class_name] Fetching available subclasses for class: Fighter
+[INFO] [2026-01-10 12:55:56] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (4) for user: (840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b)
+[INFO] [2026-01-10 16:18:54] [main.py/save_sheet_specific] @POST[/sheets/username/sheet_id] Saving character sheet (4) for user: (840c675654848b38a96ddcefb0cc35c75044a90373bc4b592bbb22dc963ac87b)
