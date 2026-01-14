@@ -35,6 +35,7 @@
 ## Known Issues
 Low Priority:
 - BUG! Starting equipment selection is buggy. If you select equipment, then change class, then change back, the previously selected equipment is still selected and adds on top of the new class equipment.
+- BUG! When editing a race, no pop-up to confirm success was shown.
 
 
 
