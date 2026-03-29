@@ -89,6 +89,7 @@ export function ItemEditPage() {
     if (success) {
       await ForceCacheRefresh();
       setRefreshPage(true);
+      showNotification(`Item ${editedItem ? 'updated' : 'created'} successfully`, 'success');
     }
   }
 

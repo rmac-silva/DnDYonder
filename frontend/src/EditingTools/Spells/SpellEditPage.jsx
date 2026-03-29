@@ -128,6 +128,9 @@ export function SpellEditPage() {
             if (!res.ok) {
                 const errorData = await res.json().catch(() => ({}));
                 throw new Error(`HTTP ${res.status} - ${errorData.detail || 'Unknown error'}`);
+            } else {
+                showNotification('Spell updated successfully', 'success');
+                console.log("Updated spell:", payload)
             }
         } catch (error) {
             console.error('Edit failed:', error);

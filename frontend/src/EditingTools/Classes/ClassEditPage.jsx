@@ -10,14 +10,14 @@ import {
   CardActions,
   Button
 } from '@mui/material';
-
+import { useNotification } from '../../Utils/NotificationContext.jsx';
 import Navbar from '../../Navbar/Navbar';
 import ClassEdit from './ClassEditPanel.jsx'; // use the class edit panel
 
 export function ClassEditPage() {
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const { showNotification } = useNotification();
   // edit dialog state (kept if you want to edit/delete classes here)
   const [editedClass, setEditedClass] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
@@ -97,6 +97,7 @@ export function ClassEditPage() {
         } catch (e) {
           console.error('Failed to refresh classes:', e);
         }
+        showNotification('Class updated successfully', 'success');
       })();
     } else {
         setEditedClass(null);

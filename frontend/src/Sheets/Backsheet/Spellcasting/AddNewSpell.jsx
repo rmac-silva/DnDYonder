@@ -56,7 +56,9 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
       duration: "",
 
       school: "None",
-      is_ritual: false
+      is_ritual: false,
+    is_concentration:false
+
     });
   }
 
@@ -72,7 +74,8 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
     duration: "",
 
     school: "None",
-    is_ritual: false
+    is_ritual: false,
+    is_concentration:false
   });
 
   const wipeSpellData = () => {
@@ -177,7 +180,9 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
     newSpell.level = data.level !== undefined ? data.level : newSpell.level;
     newSpell.school = data.school ? data.school.charAt(0).toUpperCase() + data.school.slice(1) : newSpell.school;
     newSpell.is_ritual = data.is_ritual !== undefined ? data.is_ritual : newSpell.is_ritual;
+    newSpell.is_concentration = data.duration.toLowerCase().includes("concentration") ? true : false;
 
+    setNewSpell({ ...newSpell });
   }
 
   const handleCreateSpell = async () => {
@@ -406,6 +411,13 @@ function AddNewSpell({ draft, setDraft, onAdd }) {
                     <Checkbox
                       checked={newSpell.is_ritual}
                       onChange={(e) => setNewSpell((s) => ({ ...s, is_ritual: e.target.checked }))}
+                    />
+                  </Box>
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Typography variant="body2">Concentration</Typography>
+                    <Checkbox
+                      checked={newSpell.is_concentration}
+                      onChange={(e) => setNewSpell((s) => ({ ...s, is_concentration: e.target.checked })) } 
                     />
                   </Box>
                 </FormControl>

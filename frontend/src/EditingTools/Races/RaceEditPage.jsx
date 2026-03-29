@@ -120,11 +120,15 @@ export function RaceEditPage() {
             if (!res.ok) {
                 const errorData = await res.json().catch(() => ({}));
                 throw new Error(` ${errorData.detail || 'Unknown error'}`);
+            } else {
+                showNotification('Race updated successfully', 'success');
             }
         } catch (error) {
             console.error('Edit failed:', error);
             showNotification(`Failed to edit race: ${error.message}`, 'error');
         }
+
+        
     }
 
 

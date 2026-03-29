@@ -6,6 +6,7 @@ class CharacterStats():
         self.level = 1
         self.proficiency_bonus = self.get_proficiency_bonus()
         
+        
         self.armor_class = 10 #TODO - Set based on armor and dexterity modifier (if applicable)
         self.armor_class_temp = 0 #TODO - Set based on armor and dexterity modifier (if applicable)
         self.initiative_bonus = 0 #TODO - Set based on dexterity modifier

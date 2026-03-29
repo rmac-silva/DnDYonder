@@ -159,8 +159,24 @@ function SpellList({ draft, setDraft }) {
         s?.school || s?.school_of_magic || s?.school_name || '—';
 
     const getCastTime = (s) => {
-        return s.casting_time.split(',')[0];
+        if(s.is_ritual) {
+            return "(R) " + s.casting_time.split(',')[0];
+        } else {
+            return s.casting_time.split(',')[0];
+        }
+        
     }
+
+    const getDuration = (s) => {
+        let parts = s.duration.split("Concentration,");
+
+        if(parts.length > 1) {
+            return "(C) " + parts[1].trim().charAt(0).toUpperCase() + parts[1].trim().slice(1);
+        } else if(s.is_concentration) {
+            return "(C) " + s.duration.trim().charAt(0).toUpperCase() + s.duration.trim().slice(1);
+        }
+    };
+
 
     const columnTemplates = {
         xs: 'minmax(90px,1.4fr) minmax(50px,0.5fr) minmax(60px,0.7fr) minmax(75px,0.8fr) minmax(85px,1fr)',
@@ -214,9 +230,9 @@ function SpellList({ draft, setDraft }) {
                         }}
                     >
                         <span>Name</span>
-                        <span>Time</span>
+                        <span>C. Time</span>
                         <span>Range</span>
-                        <span>School</span>
+                        <span>Duration</span>
                         <span>Components</span>
                     </Box>
 
@@ -284,8 +300,9 @@ function SpellList({ draft, setDraft }) {
                                         </Box>
                                         <span style={{ whiteSpace: 'nowrap', lineHeight: 1, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}>{getCastTime(spell) || '—'}</span>
                                         <span style={{ whiteSpace: 'nowrap', lineHeight: 1, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}>{spell.range || '—'}</span>
-                                        <span style={{ whiteSpace: 'nowrap', lineHeight: 1, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}>{getSchool(spell)}</span>
-                                        <span style={{ fontSize: '0.68rem', marginRight: 4, whiteSpace: 'nowrap', lineHeight: 1, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}>{spell.components || '—'}</span>
+                                        <span style={{ whiteSpace: 'nowrap', lineHeight: 1, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}>{getDuration(spell)}</span>
+                                        <span style={{ fontSize: '0.68rem', marginRight: 4, whiteSpace: 'nowrap', lineHeight: 1, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}>{
+                                        spell.components && spell.components.length > 35 ? `${spell.components.substring(0, 35)}...` : spell.components || '—'}</span>
                                     </Box>
                                 </AccordionSummary>
                                 <AccordionDetails sx={{ px: 2, py: 1 }}>
@@ -339,7 +356,9 @@ function SpellList({ draft, setDraft }) {
                                             className='!text-xs !font-semibold '
                                             sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mr: 0.5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
                                         >
-                                            {"Cast time:"}
+                                            {spell.is_ritual ? "(Ritual) Casting Time :" : "Casting Time:"}
+                                        
+                                            
                                         </Typography>
                                         <Typography
                                             variant="body2"
@@ -347,6 +366,25 @@ function SpellList({ draft, setDraft }) {
                                             sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: .5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
                                         >
                                             {spell.casting_time || 'No description.'}
+                                        </Typography>
+                                    </Box>
+                                    <Box display={"flex"}>
+
+                                        <Typography
+                                            variant="body2"
+                                            className='!text-xs !font-semibold '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mr: 0.5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
+                                        >
+                                            {"Duration: "}
+                                        
+                                            
+                                        </Typography>
+                                        <Typography
+                                            variant="body2"
+                                            className='!text-xs font-normal '
+                                            sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.4, mb: .5, color: (spell.level > spellcastingLevel) ? '#888' : 'inherit'  }}
+                                        >
+                                            {getDuration(spell) || '—'}
                                         </Typography>
                                     </Box>
                                     <Box display={"flex"}>
@@ -365,6 +403,8 @@ function SpellList({ draft, setDraft }) {
                                             {spell.components || '—'}
                                         </Typography>
                                     </Box>
+                                    
+                                    
                                     <Button
                                         variant="outlined"
                                         color="error"

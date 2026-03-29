@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import Navbar from '../../Navbar/Navbar';
+import { useNotification } from '../../Utils/NotificationContext.jsx';
 import SubclassEditPanel from './SubclassesEditPanel.jsx'; // use the class edit panel
 
 export function SubclassEditPage() {
@@ -19,6 +20,7 @@ export function SubclassEditPage() {
   const [loading, setLoading] = useState(false);
   const [forceRefresh, setForceRefresh] = useState(false);
   // edit dialog state (kept if you want to edit/delete classes here)
+  const { showNotification } = useNotification();
   const [editedSubclass, setEditedSubclass] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
 
@@ -79,8 +81,10 @@ export function SubclassEditPage() {
       });
 
       if (!res.ok) {
+        showNotification('Failed to delete subclass', 'error');
         throw new Error(`Delete failed: ${res.status}`);
       } else {
+        showNotification('Subclass deleted successfully', 'success');
         console.log("Deleted subclass:", payload)
         setForceRefresh(true);
       }
@@ -112,14 +116,16 @@ export function SubclassEditPage() {
       if (!res.ok) {
         throw new Error(`Delete failed: ${res.status}`);
       } else {
-        console.log("Deleted subclass:", payload)
+        showNotification('Subclass created successfully', 'success');
+        console.log("Created subclass:", payload)
         setForceRefresh(true);
       }
 
       setLoading(false);
 
     } catch (error) {
-      console.error('Failed to delete subclass:', error);
+      showNotification('Failed to create subclass', 'error');
+      console.error('Failed to create subclass:', error);
       setLoading(false);
       return;
     }
@@ -159,12 +165,14 @@ export function SubclassEditPage() {
       if (!res.ok) {
         throw new Error(`Update failed: ${res.detail}`);
       } else {
+        showNotification('Subclass updated successfully', 'success');
         console.log("Updated subclass:", payload)
         setForceRefresh(true);
       }
 
     } catch (error) {
       console.error('Failed to update subclass:', error);
+      showNotification('Failed to update subclass', 'error');
     }
   }
 
@@ -221,7 +229,7 @@ export function SubclassEditPage() {
                     </Typography>
 
                     <Stack spacing={.5} sx={{ mt: 1, paddingBottom: 6, marginBottom: 10 }}>
-                      <Typography variant="body1">
+                      <Typography variant="body1 font-semibold">
                         Class: {subClass.sc_content.class_name}
                       </Typography>
 

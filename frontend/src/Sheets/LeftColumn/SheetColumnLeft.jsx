@@ -126,9 +126,10 @@ function SheetLeftColumn({ draft, setDraft }) {
                         </Box>
                         <Box
                             component="input"
-                            className={`mt-2 px-2 py-1 text-center font-semibold text-gray-700 w-full ${textClasses}`}
+                            className={`mt-2 px-2 py-1 text-center font-semibold text-gray-700 w-full cursor-default ${textClasses}`}
                             placeholder='1'
                             min={1}
+                            readOnly={true}
                             max={20}
                             type='text'
                             value={GetProficiencyBonus(draft.stats.level)}
@@ -181,13 +182,13 @@ function SheetLeftColumn({ draft, setDraft }) {
                         </Box>
                         <Box
                             component="input"
-                            className={`mt-2 px-2 py-1 text-center font-semibold text-gray-700 w-full ${textClasses}`}
+                            className={`mt-2 px-2 py-1 text-center font-semibold text-gray-700 w-full cursor-default ${textClasses}`}
                             placeholder='1'
                             min={1}
                             max={20}
                             type='text'
+                            readOnly={true}
                             value={GetPassivePerception()}
-                            onBlur={(e) => { draft.stats.level = e.target.value; setDraft({ ...draft }) }}
                             sx={{
                                 fontSize: { xs: '1.05rem', sm: '1.2rem', md: '1.4rem', lg: '1.4rem', xl: '1.8rem' },
                                 borderBottom: `2px solid ${theme.palette.baseColor.main}`,
@@ -221,9 +222,10 @@ function SheetLeftColumn({ draft, setDraft }) {
                         </Box>
                         <Box
                             component="input"
-                            className={`mt-2 px-2 py-1 text-center font-semibold text-gray-700 w-full ${textClasses}`}
+                            className={`mt-2 px-2 py-1 text-center font-semibold text-gray-700 w-full cursor-default ${textClasses}`}
                             placeholder='1'
                             min={1}
+                            readOnly={true}
                             max={20}
                             type='text'
                             value={GetPassiveInsight()}
