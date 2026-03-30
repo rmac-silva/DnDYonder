@@ -1,11 +1,12 @@
 import { React, useState, useEffect } from 'react';
-import { getDraftGlobal, saveNewSheet } from './SheetManager.js';
+import { saveNewSheet } from './SheetManager.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../Auth/AuthContext.jsx';
 import { initSheetManager, setDraftGlobal, isSheetSaved, saveSheet } from './SheetManager.js';
 
 import Navbar from '../Navbar/Navbar.jsx';
 import Box from '@mui/material/Box';
+import Loading from '../Utils/Loading.jsx';
 
 //Left column
 import PlayerStats from './MiddleColumn/Stats/PlayerStats.jsx';
@@ -203,7 +204,7 @@ function GetSheet() {
         const handleBeforeUnload = (e) => {
             try {
                 if (!isSheetSaved()) {
-                    // Use the browser native dialog. Setting returnValue is required.
+                    
                     e.preventDefault();
                     e.returnValue = '';
                     // Do not call window.confirm here — browsers ignore custom prompts in beforeunload.
@@ -218,7 +219,22 @@ function GetSheet() {
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, [/* no deps so always uses latest isSheetSaved implementation */]);
 
-    if (loading) return <div>Loading sheet…</div>; //TODO - Make a generic loading screen that receives a message
+    // Refresh Request Handler
+    useEffect(() => {
+        const handleRefreshRequest = (event) => {
+            console.log("Refresh requested because:", event.detail?.reason);
+            // This re-runs the existing loading logic to fetch fresh data
+            loadExistingSheet(true); 
+        };
+
+        window.addEventListener('sheet-update-required', handleRefreshRequest);
+
+        return () => {
+            window.removeEventListener('sheet-update-required', handleRefreshRequest);
+        };
+    }, [authUsername, sheetid]);
+
+    if (loading) return <Loading message="Loading sheet…" />;
     if (error) return <div>{String(error)}</div>;
     if (!draft) return null;
     if (draft === null || draft === undefined || draft.class === undefined || draft.race === undefined) {

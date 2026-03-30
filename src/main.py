@@ -207,6 +207,26 @@ def import_shared_sheet(share_code: str, data : dict):
         raise HTTPException(status_code=500, detail=res[1])
     else:
         return res[1]
+    
+@app.delete("/sheets/{username}/{sheet_id}/subclass")
+def delete_sheet_subclass(username: str, sheet_id: int, data : dict):
+    lg.log(f"[main.py/delete_sheet_subclass] @DELETE[/sheets/username/sheet_id] Deleting character sheet subclass ({sheet_id}) for user: ({username})")
+    token = data.get('token', False)
+    if not token:
+        lg.log_error(f"[main.py/delete_sheet_subclass] @DELETE[/sheets/username/sheet_id] No token provided for deleting character sheet ({sheet_id}) for user: ({username})")
+        raise HTTPException(status_code=403, detail="No token provided")
+    
+    if(jwt_manager.verify_token(token)[0] is False):
+        lg.log_error(f"[main.py/delete_sheet_subclass] @DELETE[/sheets/username/sheet_id] Invalid token provided for deleting character sheet ({sheet_id}) for user: ({username})")
+        raise HTTPException(status_code=403, detail="Invalid token")
+    
+    res = db.delete_character_sheet_subclass(username, sheet_id)
+    if res[0] is False:
+        lg.log_error(f"[main.py/delete_sheet_subclass] @DELETE[/sheets/username/sheet_id] Could not delete character sheet subclass ({sheet_id}) for user: ({username}). Error: {res[1]}")
+        raise HTTPException(status_code=500, detail=res[1])
+    else:
+        return res[1]
+    
 #endregion - Sheets
 
 #region - Sheet Information
@@ -319,22 +339,19 @@ def save_subclass_edit(data: dict):
         return res[1]
 
 @app.delete("/info/subclasses")
-def delete_subclass(data: dict):
-    
-    
-    
+def delete_subclass_registry(data: dict):
     username = jwt_manager.fetch_username_from_token(data.get('token', False))
     
     if username[0] is False:
-        lg.log_error(f"[main.py/delete_subclass] @DELETE[/info/subclasses/class_name] Could not authenticate user for deleting subclass {data.get('subclass', {}).get('name','')} for class: {data.get('subclass', {}).get('class_name','')}. Error: {username[1]}")
+        lg.log_error(f"[main.py/delete_subclass_registry] @DELETE[/info/subclasses/class_name] Could not authenticate user for deleting subclass {data.get('subclass', {}).get('name','')} for class: {data.get('subclass', {}).get('class_name','')}. Error: {username[1]}")
         raise HTTPException(status_code=403, detail=username[1])
     
-    lg.log(f"[main.py/get_available_subclasses] @DELETE[/info/subclasses/class_name] Deleting a subclass {data.get('subclass', {}).get('name','')} for class: {data.get('subclass', {}).get('class_name','')}. Author: {username[1]}")
+    lg.log(f"[main.py/delete_subclass_registry] @DELETE[/info/subclasses/class_name] Deleting a subclass {data.get('subclass', {}).get('name','')} for class: {data.get('subclass', {}).get('class_name','')}. Author: {username[1]}")
     
     
     res = info_manager.delete_subclass(data.get('subclass_name', ''),data.get('class_name',''))
     if res[0] is False:
-        lg.log_error(f"[main.py/delete_subclass] @DELETE[/info/subclasses/class_name] Could not delete subclass {data.get('subclass', {}).get('name','')} for class: {data.get('subclass', {}).get('class_name','')}. Error: {res[1]}")
+        lg.log_error(f"[main.py/delete_subclass_registry] @DELETE[/info/subclasses/class_name] Could not delete subclass {data.get('subclass', {}).get('name','')} for class: {data.get('subclass', {}).get('class_name','')}. Error: {res[1]}")
         raise HTTPException(status_code=500, detail=res[1])
     else:
         return res[1]

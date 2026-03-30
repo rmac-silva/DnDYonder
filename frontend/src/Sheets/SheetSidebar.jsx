@@ -1,12 +1,21 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import { saveSheet, isSheetSaving, getDraftGlobal } from './SheetManager';
+import { saveSheet, isSheetSaving, getDraftGlobal, deleteSubclass  } from './SheetManager';
 import { useNotification } from '../Utils/NotificationContext';
 function SheetSidebar() {
     const { showNotification } = useNotification();
 
     async function handleSave() {
-        var res = await saveSheet(); // return (true,"Save successful");
+        var res = await saveSheet();
+        if (res?.res === true) {
+            showNotification(res.msg, "success");
+        } else if (res?.msg) {
+            showNotification(res.msg, "error");
+        }
+    }
+
+    async function handleDeleteSubclass() {
+        var res = await deleteSubclass(); 
         if (res?.res === true) {
             showNotification(res.msg, "success");
         } else if (res?.msg) {
@@ -20,7 +29,7 @@ function SheetSidebar() {
 
             {/* Save button */}
             <div className="relative inline-block w-full shadow ">
-                <Button onClick={() => { handleSave(); }} loading={isSheetSaving()} variant="contained" className='h-15 w-full text-6xl' color="success">
+                <Button onClick={() => { handleSave(); }} loading={isSheetSaving()} variant="contained" className='h-15 w-full text-6xl' color="primary">
                     <span className='text-2xl font-bold text-gray-100'>Save</span>
                 </Button>
             </div>
@@ -28,6 +37,12 @@ function SheetSidebar() {
             <div className="relative inline-block w-full shadow">
                 <Button onClick={() => { console.log(getDraftGlobal()) }} variant="contained" className='h-15 w-full text-6xl' color="primary">
                     <span className='text-2xl font-bold text-gray-100'>Debug</span>
+                </Button>
+            </div>
+            {/* Subclass Delete */}
+            <div className="relative inline-block w-full shadow">
+                <Button onClick={() => { handleDeleteSubclass(); }} variant="contained" className='h-15 w-full text-6xl' color="primary">
+                    <span className='text-2xl font-bold text-gray-100'>Delete Subclass</span>
                 </Button>
             </div>
 

@@ -90,3 +90,6 @@ class ItemChoice():
         return {
             "choices": [[item.jsonify() for item in group] for group in self.choices]
         }
+    def load_from_dict(self, data: dict):
+        self.choices = [[Item().load_from_dict(item) for item in group] for group in (data if type(data) is list else data.get("choices", []))]
+        return self

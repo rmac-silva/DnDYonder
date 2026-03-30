@@ -131,6 +131,7 @@ function SubclassSelect({ draft, setDraft }) {
     // Set the subclass features onto the draft. 
     const selectedSubclass = fetchedSubclasses.find((sc) => sc.c_name === val);
     draft.class.subclass = selectedSubclass.c_content;
+    console.log("Selected subclass: ", selectedSubclass.c_content);
     setDraft({ ...draft });
 
     // Set the draft.class.subclass.selected = true so it shows the new information

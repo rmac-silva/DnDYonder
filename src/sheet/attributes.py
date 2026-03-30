@@ -30,7 +30,7 @@ class Attribute():
     
     def jsonify(self):
         return {
-            "name": self.name,
+            "name": self.name.value,
             "value": self.value,
             "skills": [skill.jsonify() for skill in self.skills]
         }
@@ -57,7 +57,7 @@ class CharacterAttributes():
         }
     
     def load_from_dict(self, data: dict):
-        
+        print("Loading attributes from dict: ", data)
         attr_data = data["Strength"]
         self.Strength.value = attr_data.get("value", 10)
         self.Strength.skills = [Skill(Skills(skill["name"]), skill["value"], skill["proficient"], skill.get("expertise")) for skill in attr_data.get("skills", [])]
@@ -81,3 +81,5 @@ class CharacterAttributes():
         attr_data = data["Charisma"]
         self.Charisma.value = attr_data.get("value", 10)
         self.Charisma.skills = [Skill(Skills(skill["name"]), skill["value"], skill["proficient"], skill.get("expertise")) for skill in attr_data.get("skills", [])]
+        
+        return self

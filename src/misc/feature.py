@@ -1,11 +1,13 @@
 class Feature():
     """This class will hold the representation of a DnD feature."""
     
-    def __init__(self):
-        self.name = ""
-        self.description = ""
-        self.level_requirement = 0
-        self.benefits = [] #This will somehow have to be hard-coded.
+    def __init__(self, name:str = "", description:str = "", tables: list = [], level_requirement: int = 0, benefits: list = []):
+        self.name = name
+        self.description = description
+        self.level_requirement = level_requirement
+        self.benefits = benefits #This will somehow have to be hard-coded.
+        self.tables = tables
+        self.benefits = benefits 
         
         # For example, Druids get their druid circle feature at level 2.
         # When a druid reaches level 2, this feature should automatically prompt the 
@@ -17,6 +19,7 @@ class Feature():
         return {
             "name": self.name,
             "description": self.description,
+            "tables": self.tables,
             "level_requirement": self.level_requirement,
             "benefits": self.benefits
         }
@@ -24,6 +27,7 @@ class Feature():
     def load_from_dict(self, data: dict):
         self.name = data.get("name", "")
         self.description = data.get("description", "")
+        self.tables = data.get("tables", [])
         self.level_requirement = data.get("level_requirement", 0)
         self.benefits = data.get("benefits", [])
         return self

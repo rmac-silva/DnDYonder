@@ -4,6 +4,9 @@ import random
 import json
 from db_utils.db_setup import setup_database
 import threading
+from sheet.sheet import CharacterSheet
+from sheet.subclass import Subclass
+from sheet.cclass import CharacterClass
 ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
@@ -271,8 +274,68 @@ class DatabaseManager:
             print(f"Error deleting character sheet: {e}")
             return (False, f"Error deleting character sheet: {e}")
 
+    def get_subclass_template_for_class(self, class_name: str) -> Subclass:
+        """Returns the subclass entry for a given class name
+
+        Args:
+            class_name (str): The class name. Eg. 'Paladin'
+
+        Returns:
+            Subclass: The default subclass for the class. That appears whenever the subclass can select.
+        """
+        
+        com = """
+        SELECT content FROM classes WHERE name = ?;
+        """
+        
+        conn = self.c().connection
+        res = conn.execute(com, (class_name,)).fetchone()
+        if res is None:
+            return Subclass()
+        else:
+            class_data = json.loads(res[0])
+            newClass = CharacterClass().load_from_dict(class_data)
+            return newClass.subclass #Return the empty subclass entry, with the details for the class such as level and description
+    
+    def delete_character_sheet_subclass(self, username: str, sheet_id: int) -> tuple[bool, str]:
+        """Deletes the subclass from a given character sheet.
+
+        Args:
+            username (str): the username hash of the user.
+            sheet_id (int): the ID of the sheet to delete the subclass from.
+
+        Returns:
+            tuple[bool, str]: _description_
+        """
+        
+        #Fetch the sheet
+        current_sheet = self.retrieve_character_sheet(username, sheet_id)
+        if current_sheet[0] is False:
+            return (False, "Sheet not found.")
+
+        sheet_data = current_sheet[1]
+        if(type(sheet_data) == dict):
+            #Load the sheet_data into a CharacterSheet object
+            
+            try:
+                character_sheet = CharacterSheet().load_from_dict(sheet_data)
+                
+                character_sheet.cclass.subclass = self.get_subclass_template_for_class(character_sheet.cclass.class_name)
+                
+                #Save the sheet back to the database
+                res = self.update_character_sheet(username, sheet_id, character_sheet.jsonify())
+                
+                if res[0] is False:
+                    return (False, "Error updating sheet after deleting subclass.")
+                else:
+                    return (True, "Subclass deleted successfully.")
+            except Exception as e:
+                print(f"Error loading character sheet data: {e}")
+                return (False, "Error loading character sheet data.")
+        else:
+            return (False, "Invalid sheet data format.")
+    
     def generate_shareable_link(self, username: str, sheet_id: int) -> tuple[bool, str]:
-        print("Generating a share link ," f" for user {username} and sheet {sheet_id}")
 
         shared_link = f"{username}:{sheet_id}"
 
@@ -294,7 +357,6 @@ class DatabaseManager:
             return (False, f"Error sharing character sheet: {e}")
 
     def import_shared_sheet(self, share_code: str, username: str) -> tuple[bool, str | dict]:
-        print("Importing shared sheet with code:", share_code)
         try:
             imported_sheet_username, sheet_id_str = share_code.split("-")
             sheet_id = int(sheet_id_str)

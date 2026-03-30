@@ -20,6 +20,7 @@ function PlayerStats({ draft, setDraft }) {
         let level = parseInt(draft.stats.level);
         let conMod = Math.floor((draft.attributes.Constitution.value - 10) / 2);
         let calcHP = (startingHitpoints + conMod) + ((hpPerLevel + conMod) * (level - 1));
+        console.log("Calculated HP:", { startingHitpoints, hpPerLevel, level, conMod, calcHP });
         if (isNaN(calcHP) || !isFinite(calcHP)) {
             return "";
         }

@@ -1,18 +1,16 @@
-import {useState} from 'react';
 import SubclassSelect from './SubclassSelect';
 function SubclassInfo({ draft, setDraft }) {
 
     function GetSubclassDescription() {
         const paragraphs = (draft.class.subclass?.description || '').split(/\.\s*/).filter(Boolean);
+        console.log("Subclass description paragraphs: ", paragraphs);
         return (
           <div className="text-md mt-2 font-semibold">
             {paragraphs.map((p,i) => <p key={i}>{p.trim()}{i < paragraphs.length-1 ? '.' : ''}</p>)}
           </div>
         );
     }
-
-    const [subclassSelected, setSubclassSelected] = useState(false);
-
+    
     if (!draft.class.subclass || draft.class.subclass.level === -1 || draft.class.subclass.level > draft.stats.level) {
         return null;
     }
@@ -43,10 +41,13 @@ function SubclassInfo({ draft, setDraft }) {
                 </div>
             </div>
 
-            {!subclassSelected && 
-                <>
-                {GetSubclassDescription()}
+            <>
+            {GetSubclassDescription()}
+</>
 
+            {draft.class.subclass?.selected === false && 
+                <>
+                
                 <SubclassSelect draft={draft} setDraft={setDraft}></SubclassSelect>
                 </>
                 }

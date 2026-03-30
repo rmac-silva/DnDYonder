@@ -15,7 +15,7 @@ class CharacterClass():
         self.hit_dice = "d6"
         self.used_hit_dice = 0
         self.starting_hitpoints = 0
-        self.next_hitpoints = 0
+        self.hitpoints_per_level = 0
         
         #Proficiencies
         self.armor_proficiencies : List[ArmorType] = []
@@ -48,7 +48,7 @@ class CharacterClass():
             "hit_dice": self.hit_dice,
             "used_hit_dice": self.used_hit_dice,
             "starting_hitpoints": self.starting_hitpoints,
-            "next_hitpoints": self.next_hitpoints,
+            "hitpoints_per_level": self.hitpoints_per_level,
             "armor_proficiencies": [ap.value for ap in self.armor_proficiencies],
             "weapon_proficiencies": [wp for wp in self.weapon_proficiencies],
             "tool_proficiencies": [tp.value for tp in self.tool_proficiencies],
@@ -67,7 +67,7 @@ class CharacterClass():
         self.hit_dice = data.get("hit_dice", "1d6")
         self.used_hit_dice = data.get("used_hit_dice", 0)
         self.starting_hitpoints = data.get("starting_hitpoints", 0)
-        self.next_hitpoints = data.get("next_hitpoints", 0)
+        self.hitpoints_per_level = data.get("hitpoints_per_level", 0)
         
         self.armor_proficiencies = [ArmorType(ap) for ap in data.get("armor_proficiencies", [])]
         self.weapon_proficiencies = [str(wp) for wp in data.get("weapon_proficiencies", [])]
@@ -77,12 +77,14 @@ class CharacterClass():
         self.skill_proficiency = [Skills(skill) for skill in data.get("skill_proficiency", [])]
         self.num_skill_proficiencies = data.get("num_skill_proficiencies", 0)
         self.starting_equipment = [Item(**item) for item in data.get("starting_equipment", [])]
-        self.starting_equipment_choices = [ItemChoice(choice) for choice in data.get("starting_equipment_choices", [])]
+        self.starting_equipment_choices = [ItemChoice().load_from_dict(choice) for choice in data.get("starting_equipment_choices", [])]
         
         self.class_features = [ ClassFeature().load_from_dict(feature) for feature in data.get("class_features", []) ]
         self.spellcasting = Spellcasting().load_from_dict(data.get("spellcasting", {}))
         self.subclass = Subclass().load_from_dict(data.get("subclass", {}))
-    
+
+        return self
+        
     def get_features(self) -> List[dict]:
         return [feature.__dict__ for feature in self.class_features]
 # To create a new class, create a CharacterClass object and fill in the details. 

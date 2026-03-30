@@ -193,6 +193,15 @@ export default function SubclassEditPanel({ dialogOpen, editedSubclass, onSubmit
                             margin="normal"
                         />
                         <TextField
+                            sx={{ minWidth: 300, maxWidth: 300 }}
+
+                            label="Level"
+                            variant="outlined"
+                            value={newSubclass.level}
+                            onChange={(e) => setNewSubclass((s) => ({ ...s, level: e.target.value }))}
+                            margin="normal"
+                        />
+                        <TextField
                             sx={{ minWidth: 900 }}
 
                             label="Description"

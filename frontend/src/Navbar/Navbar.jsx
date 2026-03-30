@@ -20,23 +20,16 @@ function Navbar() {
 
     const handleNavigate = async (path) => {
         try {
-            // Check if we are on a sheet page by path
-            // (Optional check: if pathname starts with /Sheets/)
+            
+            // Just save if it isn't saved.
             if (!isSheetSaved()) {
-                const wantToSave = window.confirm('You have unsaved changes. Click OK to save and leave, or Cancel to discard changes and leave.');
-                
-                if (wantToSave) {
-                    const success = await saveSheet(true); // silent=true so we use custom notification
-                    if (success) {
-                        showNotification("Save successful!", "success");
-                    } else if (success === false) {
-                        showNotification("Save failed!", "error");
-                        // Decide if we should block navigation on failure?
-                        // For now, let's allow since the user wanted to leave.
-                    }
-                } else {
-                     // User cancelled (discard changes)
-                     // Do nothing, just proceed to navigate
+                const success = await saveSheet(true); // silent=true so we use custom notification
+                if (success) {
+                    showNotification("Save successful!", "success");
+                } else if (success === false) {
+                    showNotification("Save failed!", "error");
+                    // Decide if we should block navigation on failure?
+                    // For now, let's allow since the user wanted to leave.
                 }
             }
         } catch (err) {
