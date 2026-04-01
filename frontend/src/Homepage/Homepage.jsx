@@ -1,4 +1,3 @@
-import React from 'react';
 import Navbar from '../Navbar/Navbar.jsx';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -6,10 +5,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
-import BookIcon from '@mui/icons-material/Book';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import ShareIcon from '@mui/icons-material/Share';
+import Links from './Links.jsx';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../Auth/AuthContext.jsx';
 
@@ -93,6 +89,8 @@ function Homepage() {
           {/* (You can re-add features/cards below — avoid Grid item/props and use Box/CSS grid similarly) */}
         </Container>
       </Box>
+
+      <Links></Links>
     </>
     
     )
