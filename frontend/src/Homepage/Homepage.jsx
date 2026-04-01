@@ -15,10 +15,10 @@ function Homepage() {
      const { isLoggedIn,authUsername } = useAuth();
 
     return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
 
-      <Box className=" bg-gradient-to-b py-12">
+      <Box className="bg-gradient-to-b py-12 flex-grow">
         <Container maxWidth="lg">
           {/* Hero */}
           <Paper elevation={1} className="p-8 md:p-12 rounded-lg">
@@ -91,7 +91,7 @@ function Homepage() {
       </Box>
 
       <Links></Links>
-    </>
+    </div>
     
     )
 }

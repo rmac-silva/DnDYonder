@@ -29,20 +29,20 @@ export default function Links() {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '0.5rem',
+    padding: '0.35rem 0.5rem',
     borderRadius: '0.5rem',
     backgroundColor: hoveredLink === linkId ? '#3a3a3a' : 'rgba(0, 0, 0, 0.05)',
     transition: 'all 0.2s ease',
   });
 
   const iconStyle = {
-    fontSize: '1.5rem',
+    fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
     transition: 'color 0.2s ease',
   };
 
   return (
-    <footer className="absolute bottom-0 left-0 w-full bg-white py-8 border-t border-gray-200">
-      <div className="flex flex-row flex-wrap justify-center gap-x-8 gap-y-4 text-sm md:text-base px-4">
+    <footer className="w-full mt-auto bg-white py-3 md:py-4 border-t border-gray-200 z-10">
+      <div className="flex flex-row flex-wrap justify-center gap-x-3 sm:gap-x-6 md:gap-x-8 gap-y-2 text-xs sm:text-sm md:text-base px-2 md:px-4">
         <a
           href="https://github.com/rmac-silva/"
           style={linkStyle('github')}
